@@ -1,0 +1,198 @@
+%% $RCSfile: proj_proposal.tex,v $
+%% $Revision: 1.4 $
+%% $Date: 2017/10/06 02:55:50 $
+%% $Author: kevin $
+
+\documentclass[11pt, a4paper, twoside, openright]{report}
+
+\usepackage{float} % lets you have non-floating floats
+
+\usepackage{url} % for typesetting urls
+\usepackage{hyperref}
+
+%  We don't want figures to float so we define
+%
+\newfloat{fig}{thp}{lof}[chapter]
+\floatname{fig}{Figure}
+
+%% These are standard LaTeX definitions for the document
+%%
+\title{Project Proposal: aWall}
+\author{Simon Glew}
+
+%% This file can be used for creating a wide range of reports
+%%  across various Schools
+%%
+%% Set up some things, mostly for the front page, for your specific document
+%
+% Current options are:
+% [ecs|msor|sms]          Which school you are in.
+%                         (msor option retained for reproducing old data)
+% [bschonscomp|mcompsci]  Which degree you are doing
+%                          You can also specify any other degree by name
+%                          (see below)
+% [font|image]            Use a font or an image for the VUW logo
+%                          The font option will only work on ECS systems
+%
+\usepackage[image,ecs,behons]{vuwproject} 
+
+% You should specifiy your supervisor here with
+%     \supervisor{Firstname Lastname}
+% use \supervisors if there are more than one supervisor
+\supervisor {Dr. Craig Anslow}
+% Unless you've used the bschonscomp or mcompsci
+%  options above use
+%   \otherdegree{OTHER DEGREE OR DIPLOMA NAME}
+% here to specify degree
+
+% Comment this out if you want the date printed.
+\date{}
+
+\begin{document}
+
+% Make the page numbering roman, until after the contents, etc.
+\frontmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+  This report is the proposal for the ENGR489 honours project for the aWall project supervised by Craig Anslow. This proposal summarises the project with the problem that the project is attempting to solve and the proposed solution for the project that will be undertaken this year. It also contains the extra resourcing needs of the project such as ethics approval. 
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\maketitle
+
+%\tableofcontents
+
+% we want a list of the figures we defined
+%\listof{fig}{Figures}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mainmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{1. Introduction}
+
+aWall is a tool used to facilitate agile meetings using touch screens within software teams that helps them to have access to information in a single located place that everyone can access, unlike tools such as physical cardwalls. aWall is a project that is based in Switzerland at FHNW that was built by Professor Martin Kropp and Dr. Craig Anslow. 
+This project is working on the retrospective part of the agile methodology to find and implement a solution that can be integrated within the current system that has already been built.  
+
+Agile Retrospectives are normally held at the end of an iteration within the lifecycle of the project and are used to identify improvements from problems that were discovered in previous iterations of the project. 
+
+
+\section*{2. The Problem}
+
+The problem that this project is attempting to solve is attempting to find a solution to help facilitate agile retrospectives that can support differently located members within a software team. This is a problem as this puts a major restriction on software teams to attempt to co-locate their different software teams, as there isn’t one tool that allows sprint retrospectives for differently located teams. 
+
+This will be achieved by creating a solution to facilitate different forms of agile retrospectives within the aWall product, by researching, implementing and evaluating the different solutions by user testing.
+
+\section*{3. Proposed Solution}
+During this project, I would like to implement 4 different retrospective methods within the aWall project, with of them being implemented in the first four implementations.
+
+Currently only one of the retrospective methods have been confirmed, this method is the 3W's method. 
+This method has been chosen due to my experience with it in both academic and industry use, this will be the first method to be implemented, during the first iteration of work.
+
+The other three methods will be found by researching by either reading academic papers or talking to people within the industry space. \\
+
+The Proposed timeline for this project can be found below:
+
+\textbf{Iteration One:}  6th April - 20th April
+\begin{itemize}
+\item Familiarization of the aWall codebase
+\item Researching and Picking of the other 3 retrospective methods
+\item Agile Retrospective Method: 3W's
+	\begin{itemize}
+		\item Planning
+        \item Implementation
+        \item Testing
+	\end{itemize}
+\end{itemize}
+
+\textbf{Iteration Two:}  20th April - 4th May
+\begin{itemize}
+\item Readings around Agile Retrospectives for background section of report
+\item Ethics Application
+\item Agile Retrospective Method: [TBD]
+	\begin{itemize}
+		\item Planning
+        \item Implementation
+        \item Testing
+	\end{itemize}
+\end{itemize}
+
+\textbf{Iteration Three:}  4th May – 18th May
+\begin{itemize}
+\item Readings around Agile Retrospectives for background section of report
+\item Agile Retrospective Method: [TBD]
+	\begin{itemize}
+		\item Planning
+        \item Implementation
+        \item Testing
+	\end{itemize}
+\end{itemize}
+
+\textbf{Iteration Four:}  18th May - 1st June
+\begin{itemize}
+\item Readings around Agile Retrospectives for background section of report
+\item Agile Retrospective Method: [TBD]
+	\begin{itemize}
+		\item Planning
+        \item Implementation
+        \item Testing
+	\end{itemize}
+\end{itemize}
+
+\textbf{Iteration Five:}  1st June - 8th June
+\begin{itemize}
+\item Progress Report \\
+\end{itemize}
+
+A plan for the second trimester of work will be finalised before the end of the final iteration (8th June). It will involve tasks such as:
+\begin{itemize}
+\item User testing of different retrospectives
+\item Implement the most effective method of retrospective into the aWall project
+\item Writing of the final report
+\end{itemize}
+
+Using the implementation of the four-different agile retrospective methods and the results from the user testing of the different methods, I should be able to implement the most effective retrospective method into the aWall project. 
+
+
+\section*{4. Evaluating your Solution}
+
+The solution will be one of the four agile retrospectives methods that were implemented in the first 5 iterations of work. The solution will be found from user testing the four different methods with ENGR301-ENGR302 students during there retrospective phases during their project lifecycle. 
+
+From the results of the user testing, the most effective retrospective method will then be implemented into the aWall project.
+
+
+\section*{5. Resource Requirements}
+
+\subsection*{5.1. Ethics}
+
+Ethics approval will be needed for user testing in the second trimester of the year, the deadline for getting it is the during iteration two (30th April). 
+
+\subsection*{5.2. Safety}
+
+There are no safety concerns during the projects lifecycle.
+
+\subsection*{5.3. Budget}
+
+No specialised equipment is needed for the project at the current time of writing this proposal. 
+
+\subsection*{5.4. Space and Access}
+
+The codebase for this project will be found on both the Victoria University Gitlab \url{https://gitlab.ecs.vuw.ac.nz/} and the FHNW Gitlab \url{https://gitlab.fhnw.ch}. The Gitlab for ecs will be the main source of management for the project with the issue tracker and wiki being used for the project.
+
+\subsection*{5.5. Intellectual Property}
+
+All intellectual property for this project will be property of their respective parties
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \backmatter
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% %\bibliographystyle{ieeetr}
+% \bibliographystyle{acm}
+% \bibliography{sample}
+\end{document}
