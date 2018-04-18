@@ -3,12 +3,24 @@ var app = express();
 var server = require('http').createServer(app);
 
 var router = require('./src/js/router'),
-    config = require('./config')
+    config = require('./config');
 
-server.listen(config.port, function() {
-	console.log('Listening on port ' + config.port);
+var mongoSetup = require('./src/js/mongosetup')
+
+global.Promise = require('bluebird')
+
+mongoSetup.connect()
+    .then(res => {
+        if (!res) throw "Mongo did not connect";
+    })
+
+server.listen(config.port, function () {
+    console.log('Listening on port ' + config.port);
 });
 
+app.set('view engine', 'ejs');
 app.set('views', './src/views');
 app.use(express.static('public'));
 app.use('/', router);
+
+
