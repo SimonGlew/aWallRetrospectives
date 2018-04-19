@@ -2,7 +2,8 @@ const express = require('express'),
     router = express.Router();
 
 //add Handlers
-const sessionHandler = require('./handlers/sessionHandler')
+const sessionHandler = require('./handlers/sessionHandler'),
+    retrospectiveTypesHandler = require('./handlers/retrospectiveTypesHandler')
 
 router.get('/', function (req, res) {
     res.render('login');
@@ -12,11 +13,11 @@ router.get('/login', function (req, res) {
     res.render('login');
 });
 
-router.get('/mod/:id', function (req, res) {
+router.get(':id/:type/mod/', function (req, res) {
     res.send('currently in moderator base view')
 });
 
-router.get('/par/:id', function (req, res) {
+router.get(':id/:type/par/', function (req, res) {
     res.send('currently in participant base view')
 });
 
@@ -33,5 +34,12 @@ router.get('/api/session/join', function(req, res){
             res.send(result)
         })
 });
+
+router.get('/api/retrospectivetypes', function(req, res){
+    retrospectiveTypesHandler.getAllRetrospectiveTypes()
+        .then(result => {
+            res.send(result)
+        })
+})
 
 module.exports = router;

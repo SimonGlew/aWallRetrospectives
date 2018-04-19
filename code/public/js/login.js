@@ -1,5 +1,6 @@
 let joinSessionValues = ['sessionName', 'sprintNumber', 'username', 'password', 'joinConfirmBtn'],
-    createSessionValues = ['sessionName', 'sprintNumber', 'boardName', 'password', 'createConfirmBtn'];
+    createSessionValues = ['sessionName', 'sprintNumber', 'boardName', 'retrospectiveType',  'password', 'createConfirmBtn'],
+    retrospectiveTypes = [];
 
 let currentState = 'j';
 
@@ -7,8 +8,8 @@ $('#joinSessionBtn').click(function () {
     if (currentState != 'j') {
         $('#errLabel').text('');
         currentState = 'j';
-        $('#boardName').css('display', 'none')
-        $('#boardName').hide('fast')
+        $('#boardInfo').css('display', 'none')
+        $('#boardInfo').hide('fast')
 
         $('#createConfirmBtn').css('display', 'none')
         $('#createConfirmBtn').hide('fast')
@@ -31,27 +32,16 @@ $('#joinSessionBtn').click(function () {
 
 $('#createSessionBtn').click(function () {
     if (currentState != 'c') {
-        $('#errLabel').text('');
-        currentState = 'c';
-        $('#username').css('display', 'none')
-        $('#username').hide('fast')
-
-        $('#joinConfirmBtn').css('display', 'none')
-        $('#joinConfirmBtn').hide('fast')
-
-        $('#boardName').css('display', 'block')
-        $('#boardName').hide('fast')
-
-        $('#createConfirmBtn').css('display', 'block')
-        $('#createConfirmBtn').hide('fast')
-
-        joinSessionValues.forEach(function (ele) {
-            $('#' + ele).hide('fast')
-        })
-
-        createSessionValues.forEach(function (ele) {
-            $('#' + ele).show('medium', 'linear')
-        })
+        if(!retrospectiveTypes.length){
+            $.get('/api/retrospectivetypes', { 
+            }, function (data) {
+                data.forEach(function (type) {
+                    retrospectiveTypes.push(type);
+                })
+                createSessionBtnClick();
+            })
+        }
+        createSessionBtnClick();
     }
 })
 
@@ -90,3 +80,28 @@ $('#joinConfirmBtn').click(function () {
         })
     }
 })
+
+
+function createSessionBtnClick(){
+    $('#errLabel').text('');
+    currentState = 'c';
+    $('#username').css('display', 'none')
+    $('#username').hide('fast')
+
+    $('#joinConfirmBtn').css('display', 'none')
+    $('#joinConfirmBtn').hide('fast')
+
+    $('#boardInfo').css('display', 'block')
+    $('#boardInfo').hide('fast')
+
+    $('#createConfirmBtn').css('display', 'block')
+    $('#createConfirmBtn').hide('fast')
+
+    joinSessionValues.forEach(function (ele) {
+        $('#' + ele).hide('fast')
+    })
+
+    createSessionValues.forEach(function (ele) {
+        $('#' + ele).show('medium', 'linear')
+    })
+};
