@@ -1,13 +1,15 @@
 let joinSessionValues = ['sessionName', 'sprintNumber', 'username', 'password', 'joinConfirmBtn'],
-    createSessionValues = ['sessionName', 'sprintNumber', 'boardName', 'retrospectiveType',  'password', 'createConfirmBtn'],
+    createSessionValues = ['sessionName', 'sprintNumber', 'boardInfo', 'boardName', 'retrospectiveType',  'password', 'createConfirmBtn'],
     retrospectiveTypes = [];
 
-let currentState = 'j';
+let currentState = 'j',
+    currentRetrospectiveMethod = null;
 
 $('#joinSessionBtn').click(function () {
     if (currentState != 'j') {
         $('#errLabel').text('');
         currentState = 'j';
+
         $('#boardInfo').css('display', 'none')
         $('#boardInfo').hide('fast')
 
@@ -20,6 +22,9 @@ $('#joinSessionBtn').click(function () {
         $('#joinConfirmBtn').css('display', 'block')
         $('#joinConfirmBtn').hide('fast')
 
+        currentRetrospectiveMethod = null;
+        $('#dropdownMenuButton').html('Select a Retrospective Type')
+
         createSessionValues.forEach(function (ele) {
             $('#' + ele).hide('fast')
         })
@@ -27,6 +32,8 @@ $('#joinSessionBtn').click(function () {
         joinSessionValues.forEach(function (ele) {
             $('#' + ele).show('medium', 'linear')
         })
+
+
     }
 });
 
@@ -35,18 +42,29 @@ $('#createSessionBtn').click(function () {
         if(!retrospectiveTypes.length){
             $.get('/api/retrospectivetypes', { 
             }, function (data) {
+                let retroHTML = '';
                 data.forEach(function (type) {
+                    let item = '<button class="dropdown-item" type="button" id='+ type._id +'>' + type.name + '</button>'; 
+                    retroHTML += item;
                     retrospectiveTypes.push(type);
                 })
+                $('#retrospectiveDropdown').html(retroHTML);
                 createSessionBtnClick();
             })
+        }else{
+            createSessionBtnClick();
         }
-        createSessionBtnClick();
     }
 })
 
+$('.dropdown-menu').on('click', 'button', function(e){
+    currentRetrospectiveMethod = $(this).attr('id');
+    $('#dropdownMenuButton').html($(this).text())
+});
+    
+
 $('#createConfirmBtn').click(function () {
-    if (!$('#sessionNameValue').val() || !$('#sprintNumberValue').val() || !$('#boardNameValue').val() || !$('#passwordValue').val()) {
+    if (!$('#sessionNameValue').val() || !$('#sprintNumberValue').val() || !$('#boardNameValue').val() || !$('#passwordValue').val() || !currentRetrospectiveMethod) {
         $('#errLabel').text("Please enter all fields correctly");
     }
     else {
@@ -55,10 +73,16 @@ $('#createConfirmBtn').click(function () {
             projectName: $('#sessionNameValue').val(),
             sprintNumber: $('#sprintNumberValue').val(),
             boardName: $('#boardNameValue').val(),
-            password: $('#passwordValue').val()
+            password: $('#passwordValue').val(),
+            retrospectiveType: currentRetrospectiveMethod
         }, function (data) {
-            if(data.err) $('#errLabel').text(data.err);
-            else window.location = "/mod/" + data._id 
+            if(data.err){
+                $('#errLabel').text(data.err);
+            } 
+            else {
+                localStorage.setItem('username', 'moderator');
+                window.location = data._id + "/" + data.retrospectiveType + "/mod"
+            }
         })
     }
 })
@@ -75,8 +99,13 @@ $('#joinConfirmBtn').click(function () {
             username: $('#usernameValue').val(),
             password: $('#passwordValue').val()
         }, function (data) {
-            if(data.err) $('#errLabel').text(data.err);
-            else window.location = "/par/" + data._id
+            if(data.err){
+                $('#errLabel').text(data.err);
+            } 
+            else {
+                localStorage.setItem('username', $('#usernameValue').val());
+                window.location = data._id + "/" + data.retrospectiveType + "/par"
+            } 
         })
     }
 })
@@ -91,7 +120,7 @@ function createSessionBtnClick(){
     $('#joinConfirmBtn').css('display', 'none')
     $('#joinConfirmBtn').hide('fast')
 
-    $('#boardInfo').css('display', 'block')
+    $('#boardInfo').css('display', '')
     $('#boardInfo').hide('fast')
 
     $('#createConfirmBtn').css('display', 'block')
