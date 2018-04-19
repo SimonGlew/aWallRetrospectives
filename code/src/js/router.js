@@ -13,16 +13,16 @@ router.get('/login', function (req, res) {
     res.render('login');
 });
 
-router.get(':id/:type/mod/', function (req, res) {
+router.get('/:id/:type/mod', function (req, res) {
     res.send('currently in moderator base view')
 });
 
-router.get(':id/:type/par/', function (req, res) {
+router.get('/:id/:type/par', function (req, res) {
     res.send('currently in participant base view')
 });
 
 router.get('/api/session/create', function(req, res){
-    sessionHandler.createSession(req.query.projectName, req.query.sprintNumber, req.query.boardName, req.query.password)
+    sessionHandler.createSession(req.query.projectName, req.query.sprintNumber, req.query.boardName, req.query.password, req.query.retrospectiveType)
         .then(result => {
             res.send(result)
         })
