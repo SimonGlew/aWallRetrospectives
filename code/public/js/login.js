@@ -81,7 +81,7 @@ $('#createConfirmBtn').click(function () {
             } 
             else {
                 localStorage.setItem('username', 'moderator');
-                window.location = data._id + "/" + data.retrospectiveType + "/mod"
+                window.location = data._id + "/" + data.retrospectiveType.name + "/mod"
             }
         })
     }
@@ -104,7 +104,8 @@ $('#joinConfirmBtn').click(function () {
             } 
             else {
                 localStorage.setItem('username', $('#usernameValue').val());
-                window.location = data._id + "/" + data.retrospectiveType + "/par"
+                let endURL = $('#usernameValue').val() == 'moderator' ? '/mod' : '/par'
+                window.location = data._id + "/" + data.retrospectiveType.name + endURL;  
             } 
         })
     }

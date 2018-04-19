@@ -13,12 +13,12 @@ router.get('/login', function (req, res) {
     res.render('login');
 });
 
-router.get('/:id/:type/mod', function (req, res) {
-    res.send('currently in moderator base view')
+router.get('/:id/3W/mod', function (req, res) {
+    res.send('currently in moderator base view for retrospective type 3W')
 });
 
-router.get('/:id/:type/par', function (req, res) {
-    res.send('currently in participant base view')
+router.get('/:id/3W/par', function (req, res) {
+    res.send('currently in participant base view for retrospective type 3W')
 });
 
 router.get('/api/session/create', function(req, res){

@@ -8,11 +8,15 @@ function createSession(projectName, sprintNumber, boardName, password, rType) {
         password: password,
         retrospectiveType: rType,
         active: true
-    }).save();
+    }).save()
+        .then(session => {
+            return joinSession(projectName, sprintNumber, username, password)
+        })
 }
 
 function joinSession(projectName, sprintNumber, username, password) {
     return Session.findOne({ project: projectName, sprint: sprintNumber, password: password, active: true }, '_id retrospectiveType')
+        .populate('retrospectiveType', 'name')
         .then(session => {
             if (!session) return { err: 'Cannot find session with parameters' }
             else return session
