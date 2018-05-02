@@ -74,6 +74,7 @@ $('#createConfirmBtn').click(function () {
             sprintNumber: $('#sprintNumberValue').val(),
             boardName: $('#boardNameValue').val(),
             password: $('#passwordValue').val(),
+            username: 'moderator',
             retrospectiveType: currentRetrospectiveMethod
         }, function (data) {
             if(data.err){
@@ -81,7 +82,7 @@ $('#createConfirmBtn').click(function () {
             } 
             else {
                 localStorage.setItem('username', 'moderator');
-                window.location = data._id + "/" + data.retrospectiveType.name + "/mod"
+                window.location = data._id + "/" + data.retrospectiveType.name + '/mod/check'
             }
         })
     }
@@ -104,7 +105,7 @@ $('#joinConfirmBtn').click(function () {
             } 
             else {
                 localStorage.setItem('username', $('#usernameValue').val());
-                let endURL = $('#usernameValue').val() == 'moderator' ? '/mod' : '/par'
+                let endURL = $('#usernameValue').val() == 'moderator' ? '/mod/check' : '/par'
                 window.location = data._id + "/" + data.retrospectiveType.name + endURL;  
             } 
         })

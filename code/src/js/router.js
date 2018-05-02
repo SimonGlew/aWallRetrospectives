@@ -13,11 +13,18 @@ router.get('/login', function (req, res) {
     res.render('login');
 });
 
-router.get('/:id/3W/mod', function (req, res) {
+router.get('/:sessionId/3W/mod/check', function (req, res) {
+    res.render('checkin', {
+        sessionId: req.params.sessionId
+    });
+    //res.send('currently in moderator base view for retrospective type 3W')
+});
+
+router.get('/:sessionId/3W/mod', function (req, res) {
     res.send('currently in moderator base view for retrospective type 3W')
 });
 
-router.get('/:id/3W/par', function (req, res) {
+router.get('/:sessionId/3W/par', function (req, res) {
     res.send('currently in participant base view for retrospective type 3W')
 });
 
@@ -37,6 +44,13 @@ router.get('/api/session/join', function(req, res){
 
 router.get('/api/retrospectivetypes', function(req, res){
     retrospectiveTypesHandler.getAllRetrospectiveTypes()
+        .then(result => {
+            res.send(result)
+        })
+})
+
+router.get('/api/:sessionId/getMetadata', function(req, res){
+    sessionHandler.getMetadata(req.params.sessionId)
         .then(result => {
             res.send(result)
         })
