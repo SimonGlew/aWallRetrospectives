@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
+var socket = require('socket.io')(server)
 
 var router = require('./src/js/router'),
     config = require('./config');
@@ -24,3 +25,4 @@ app.use(express.static('public'));
 app.use('/', router);
 
 
+socket.on('connection')
