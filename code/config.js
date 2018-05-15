@@ -1,5 +1,5 @@
 var config = {
-    port: 74666,
+    port: 52723,
     mongo: {
         hosts: 'awall-shard-00-00-ahazm.mongodb.net:27017,awall-shard-00-01-ahazm.mongodb.net:27017,awall-shard-00-02-ahazm.mongodb.net',
         port: 27017,
