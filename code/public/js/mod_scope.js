@@ -1,6 +1,6 @@
 var socket = io()
 
-var sessionId = window.location.href.split('8081/')[1].split('/')[0]
+var sessionId = window.location.href.split('52723/')[1].split('/')[0]
 var username = localStorage.getItem('username')
 
 function sendBaseMessage(){
