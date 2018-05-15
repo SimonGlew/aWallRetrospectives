@@ -14,8 +14,7 @@ let sessionSchema = new mongoose.Schema({
         type: String
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     active: {
         type: Boolean,
