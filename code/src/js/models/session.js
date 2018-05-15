@@ -22,8 +22,7 @@ let sessionSchema = new mongoose.Schema({
     },
     retrospectiveType: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'retrospectiveType',
-        required: true
+        ref: 'retrospectiveType'
     },
     members: {
         type: [String]
