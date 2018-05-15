@@ -2,6 +2,7 @@ const Session = require('../models/session'),
     RetrospectiveType = require('../models/retrospectiveType')
 
 function createSession(projectName, sprintNumber, boardName, password, rType) {
+    console.log(projectName, 'attempting to create new board', boardName, 'for sprint', sprintNumber)
     return RetrospectiveType.findOne({ name: 'Check-in' }, '_id').lean()
         .then(retroType => {
             return new Session({
@@ -22,6 +23,7 @@ function createSession(projectName, sprintNumber, boardName, password, rType) {
 }
 
 function joinSession(projectName, sprintNumber, username, password) {
+    console.log(username, 'attempted to join', projectName, 'sprint', sprint)
     return Session.findOne({ project: projectName, sprint: sprintNumber, password: password, active: true }, '_id retrospectiveType members')
         .populate('retrospectiveType', 'name')
         .then(session => {
@@ -34,7 +36,6 @@ function joinSession(projectName, sprintNumber, username, password) {
             }
 
             return session.save();
-            //return Session.join(session._id, username);
         });
 }
 
