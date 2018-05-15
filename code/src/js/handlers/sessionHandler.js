@@ -23,7 +23,7 @@ function createSession(projectName, sprintNumber, boardName, password, rType) {
 }
 
 function joinSession(projectName, sprintNumber, username, password) {
-    console.log(username, 'attempted to join', projectName, 'sprint', sprint)
+    console.log(username, 'attempted to join', projectName, 'sprint', sprintNumber)
     return Session.findOne({ project: projectName, sprint: sprintNumber, password: password, active: true }, '_id retrospectiveType members')
         .populate('retrospectiveType', 'name')
         .then(session => {
