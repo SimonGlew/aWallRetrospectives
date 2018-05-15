@@ -82,7 +82,7 @@ $('#createConfirmBtn').click(function () {
             } 
             else {
                 localStorage.setItem('username', 'moderator');
-                window.location = data._id + "/" + data.retrospectiveType.name + '/mod/check'
+                window.location = data._id + '/mod'
             }
         })
     }
@@ -105,8 +105,8 @@ $('#joinConfirmBtn').click(function () {
             } 
             else {
                 localStorage.setItem('username', $('#usernameValue').val());
-                let endURL = $('#usernameValue').val() == 'moderator' ? '/mod/check' : '/par'
-                window.location = data._id + "/" + data.retrospectiveType.name + endURL;  
+                let endURL = $('#usernameValue').val() == 'mod' ? '/mod' : '/par'
+                window.location = data._id + endURL;  
             } 
         })
     }
