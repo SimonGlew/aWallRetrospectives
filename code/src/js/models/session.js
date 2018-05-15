@@ -14,7 +14,8 @@ let sessionSchema = new mongoose.Schema({
         type: String
     },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     active: {
         type: Boolean,
@@ -22,7 +23,8 @@ let sessionSchema = new mongoose.Schema({
     },
     retrospectiveType: {
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'retrospectiveType'
+        ref: 'retrospectiveType',
+        required: true
     },
     members: {
         type: [String]
