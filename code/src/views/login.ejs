@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div id='nonMobile' class="container">
         <div style="min-height:210px"></div>
         <div class="container" style="text-align:center">
             <h1>aWall - Retrospectives</h1>
@@ -15,9 +15,9 @@
         <div style="min-height:30px"></div>
         <div class="container" style="text-align:center; padding: 0px !important; ">
             <div class="container" style="width: 50%">
-                <a href="#" class="btn btn-default btn-lg" style="width: 49.5%; border-color: black; border-bottom-color: white; border-radius: 0%;"
+                <a href="#" class="btn btn-default btn-lg" style="width: 47%; border-color: black; border-bottom-color: white; border-radius: 0%;"
                     id="joinSessionBtn">Join Session</a>
-                <a href="#" class="btn btn-default btn-lg" style="width: 49.5%; border-color: black; border-bottom-color: white; border-radius: 0%;"
+                <a href="#" class="btn btn-default btn-lg" style="width: 47%; border-color: black; border-bottom-color: white; border-radius: 0%;"
                     id="createSessionBtn">Create Session</a>
             </div>
         </div>
@@ -32,7 +32,7 @@
                 <div class='col-sm-3' style='padding-left:2px;'>
                     <div class="form-group" id='sprintNumber'>
                         <label class="control-label" for="focusedInput">Sprint</label>
-                        <input type="text" class="form-control" id="sprintNumberValue" placeholder="Sprint Number">
+                        <input type="number" class="form-control" id="sprintNumberValue" placeholder="Sprint Number">
                     </div>
                 </div>
             </div>
@@ -67,17 +67,49 @@
                 <input type="password" class="form-control" id="passwordValue" placeholder="Enter Password">
             </div>
 
-            <a href="#" class="btn btn-default btn-lg" id="joinConfirmBtn" style='width:100%; border-color:black;'><i class="fas fa-tv"></i>  Join Session</a>
-            <a href="#" class="btn btn-default btn-lg" id="createConfirmBtn" style='width:100%; border-color:black; display:none;'><i class="fas fa-wrench"></i>  Create Session</a>
+            <a href="#" class="btn btn-default btn-lg" id="joinConfirmBtn" style='width:100%; border-color:black;'>
+                <i class="fas fa-tv"></i> Join Session</a>
+            <a href="#" class="btn btn-default btn-lg" id="createConfirmBtn" style='width:100%; border-color:black; display:none;'>
+                <i class="fas fa-wrench"></i> Create Session</a>
 
             <p class="text-danger" id="errLabel"></p>
         </div>
-
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"></script>
-        <script src="/lib/bootstrap/bootstrap.min.js"></script>
-        <script src="/js/login.js"></script>
     </div>
+
+    <div id=mobile class="container" style='display:none;'>
+        <div style="min-height:100px"></div>
+        <div class="container" style="text-align:center;">
+            <h1 style='font-size:600%;'>aWall - Retrospectives</h1>
+        </div>
+        <div style="min-height:50px"></div>
+        <div class="container">
+            <div class="form-group" id='sessionName'>
+                <label class="control-label" for="focusedInput" style='font-size:400%;'>Project Name</label>
+                <input type="text" class="form-control" id="sessionNameValueMobile" placeholder="Enter Project Name" style='height:100px;font-size:30px;'>
+            </div>
+            <div class="form-group" id='sprintNumber'>
+                <label class="control-label" for="focusedInput" style='font-size:400%;'>Sprint</label>
+                <input type="number" class="form-control" id="sprintNumberValueMobile" placeholder="Sprint Number" style='height:100px;font-size:30px;'>
+            </div>
+            <div class="form-group" id='username'>
+                <label class="control-label" for="focusedInput" style='font-size:400%;'>Name</label>
+                <input type="text" class="form-control" id="usernameValueMobile" placeholder="Enter Name" style='height:100px;font-size:30px;'>
+            </div>
+            <div class="form-group" id='password'>
+                <label class="control-label" for="focusedInput" style='font-size:400%;'>Password</label>
+                <input type="password" class="form-control" id="passwordValueMobile" placeholder="Enter Password" style='height:100px;font-size:30px;'>
+            </div>
+
+            <div style="min-height:50px"></div>
+            <a href="#" class="btn btn-default btn-lg" id="joinConfirmBtnMobile" style='height:100px;border-color:black;font-size:50px;width:100%'>
+                <i class="fas fa-tv" style='font-size:50px;'></i> Join Session</a>
+            <p class="text-danger" id="errLabelMobile"></p>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"></script>
+    <script src="/lib/bootstrap/bootstrap.min.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 
 </html>
