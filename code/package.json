@@ -13,7 +13,8 @@
     "bluebird": "^3.5.1",
     "ejs": "^2.5.8",
     "express": "^4.16.3",
-    "mongoose": "^5.0.15"
+    "mongoose": "^5.0.15",
+    "socket.io": "^2.1.0"
   },
   "devDependencies": {
     "nodemon": "^1.17.3"

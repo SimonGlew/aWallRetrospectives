@@ -25,6 +25,14 @@ let sessionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'retrospectiveType',
         required: true
+    },
+    members: {
+        type: [String]
+    },
+    currentState: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'retrospectiveType',
+        required: true
     }
 });
 

@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
+var socket = require('socket.io')(server)
+
+require('./src/js/socketrouter')(socket)
 
 var router = require('./src/js/router'),
     config = require('./config');

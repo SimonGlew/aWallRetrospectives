@@ -5,6 +5,12 @@ let retrospectiveTypeSchema = new mongoose.Schema({
         type: String,
         required: true,
         index: true
+    },
+    length: {
+        type: Number
+    },
+    mainRetro: {
+        type: Boolean
     }
 });
 
