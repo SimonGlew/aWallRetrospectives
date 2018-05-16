@@ -1,5 +1,5 @@
 var config = {
-    port: 8081,
+    port: 52724,
     mongo: {
         hosts: 'engr489awall-shard-00-00-ahazm.mongodb.net:27017,engr489awall-shard-00-01-ahazm.mongodb.net:27017,engr489awall-shard-00-02-ahazm.mongodb.net',
         port: 27017,
