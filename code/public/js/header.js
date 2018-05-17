@@ -54,7 +54,12 @@ function tick() {
             //retrospectiveName name: retrospectiveType.name
             $('#retrospectiveName').html("<b>Retrospective:</b> " + data.name + ", Type: " + data.retrospectiveType.name);
             //members iterate through members
-            $('#members').html(JSON.stringify(data.members));
+            let tableRowOne = '<tr>', tableRowTwo = '<tr>'
+            data.members.forEach(function(member) {
+                tableRowOne += '<td>IMAGE HERE</td>'
+                tableRowTwo += '<td style="text-align:center;">' + member + '</td>'
+            })
+            $('#members').html(tableRowOne + tableRowTwo);
             //work out times for timers
             let timers = msToHMS(new Date().getTime() - currentDate.getTime())
             //currentState = currentState.name
