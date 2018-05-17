@@ -23,7 +23,7 @@ function createSession(projectName, sprintNumber, boardName, password, rType) {
                         .then(session => {
                             return joinSession(projectName, sprintNumber, "moderator", password)
                         })
-                }) 
+                })
         })
 }
 
@@ -47,6 +47,8 @@ function joinSession(projectName, sprintNumber, username, password) {
 function addMember(sessionId, member) {
     return Session.findOne({ _id: sessionId })
         .then(session => {
+            if (!session) return;
+
             if (!session.members) session.members = []
 
             session.members.push(member);
@@ -57,6 +59,8 @@ function addMember(sessionId, member) {
 function removeMember(sessionId, member) {
     return Session.findOne({ _id: sessionId })
         .then(session => {
+            if (!session) return;
+
             if (!session.members) session.members = []
 
             session.members = session.members.filter(m => m != member)
