@@ -71,10 +71,21 @@ function getMetadata(sessionId) {
         .lean();
 }
 
+function getSprintSessionsFromId(sessionId) {
+    return Session.findOne({ _id: sessionId }, 'project')
+        .lean()
+        .then(projectName => {
+            return Session.find({ project: projectName.project }, '_id')
+                .lean()
+                .then(sessionIds => sessionIds.map(sessionId => sessionId._id))
+        })
+}
+
 module.exports = {
     createSession: createSession,
     joinSession: joinSession,
     getMetadata: getMetadata,
     addMember: addMember,
-    removeMember: removeMember
+    removeMember: removeMember,
+    getSprintSessionsFromId: getSprintSessionsFromId
 };
