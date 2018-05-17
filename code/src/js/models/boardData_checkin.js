@@ -4,12 +4,12 @@ let checkInSchema = new mongoose.Schema({
     session: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'session',
-        required: true
+        required: true,
+        index: true
     },
-    data: [{
-        user: String,
-        value: mongoose.Schema.Types.Mixed
-    }]
+    data: {
+        type: Object
+    }
 });
 
 module.exports = mongoose.model('boardData_checkin', checkInSchema); 

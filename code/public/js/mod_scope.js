@@ -1,13 +1,12 @@
 var socket = io()
 
-var sessionId = window.location.href.split('52723/')[1].split('/')[0]
+var sessionId = window.location.href.split('52724/')[1].split('/')[0]
 var username = localStorage.getItem('username')
 
 function sendBaseMessage(){
     socket.emit('moderatorConnection', { name: username, sessionId: sessionId })
 }
 
-
-socket.on('startValue', function(data) {
+socket.on('checkin_data', function(data){
     console.log(data)
 })
