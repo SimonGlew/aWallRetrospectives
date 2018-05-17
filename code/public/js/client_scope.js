@@ -1,6 +1,6 @@
 var socket = io()
 
-var sessionId = window.location.href.split('52723/')[1].split('/')[0]
+var sessionId = window.location.href.split('52724/')[1].split('/')[0]
 var username = localStorage.getItem('username')
 
 function sendBaseMessage() {
@@ -66,7 +66,7 @@ function drawVoter(width, height) {
         })
         .datum(i)
         .on("click", function(d){
-            console.log(d);
+            sendCheckinVote(d);
         })
 
         circleG.append('text')

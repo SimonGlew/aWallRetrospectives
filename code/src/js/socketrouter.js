@@ -1,13 +1,14 @@
-const sessionHandler = require('./handlers/sessionHandler')
+const sessionHandler = require('./handlers/sessionHandler'),
+    boardDataHandler = require('./handlers/boardDataHandler')
 
 function socketRouter(io) {
-    let moderatorSocket = {_id: null, _socket: null, name: 'moderator'}
+    let moderatorSocket = { _id: null, _socket: null, name: 'moderator' }
     let clientSockets = []
-    
+
     io.on('connection', (socket) => {
         socket.on('disconnect', (data) => {
             clientSockets.forEach(sock => {
-                if(sock._id == socket.id) {
+                if (sock._id == socket.id) {
                     sessionHandler.removeMember(sock.sessionId, sock.name)
                 }
             })
@@ -19,7 +20,7 @@ function socketRouter(io) {
 
         socket.on('clientConnection', (data) => {
             clientSockets.forEach(sock => {
-                if(sock._id == socket.id) {
+                if (sock._id == socket.id) {
                     return
                 }
             })
@@ -27,6 +28,23 @@ function socketRouter(io) {
             sessionHandler.addMember(data.sessionId, data.name)
         })
 
+
+        socket.on('checkinVote', (data) => {
+            let sessionId = data.sessionId
+            delete data.sessionId
+
+            return boardDataHandler.saveCheckin(data, sessionId)
+                .then(() => {
+                    return sessionHandler.getSprintSessionsFromId(sessionId)
+                        .then(sessionIds => {
+                            return boardDataHandler.getCheckinData(sessionIds)
+                                .then(data => {
+                                    moderatorSocket._socket ? moderatorSocket._socket.emit('checkin_data', data) : null
+                                })
+                        })
+                })
+
+        })
     });
 }
 
