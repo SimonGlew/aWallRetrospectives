@@ -56,6 +56,7 @@ function tick() {
             //members iterate through members
             let tableRowOne = '<tr>', tableRowTwo = '<tr>'
             data.members.forEach(function(member) {
+                member = member.length > 12 ? member.substring(0,10) + '...' : member
                 tableRowOne += '<td><img src="/assets/pictures/noavatar.png" alt="" height="42" width="42"></td>'
                 tableRowTwo += '<td style="text-align:center;">' + member + '</td>'
             })

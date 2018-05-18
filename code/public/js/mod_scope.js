@@ -32,7 +32,7 @@ function redrawVotingScreen(){
         tableRowTwo += '<td style="text-align:center;padding:0 10px 0 10px;">' + member + '</td>'
     })
     if(!checkin_data.length){
-        members.forEach(function(member) { tableRowThree += '<td style="padding:0 10px 0 10px;><i class="fas fa-exclamation fa-lg"></i></td>' })
+        members.forEach(function(member) { tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-exclamation fa-lg"></i></td>' })
     }else{
         checkin_data.forEach(function(dat){
             if(dat.session.sprint == sprint){
@@ -40,11 +40,11 @@ function redrawVotingScreen(){
                     let found = false
                     dat.data.forEach(function(row){
                         if(row.data.name == member && !found) {
-                            tableRowThree += '<td style="padding:0 10px 0 10px;><i class="fas fa-check fa-lg"></i></td>'
+                            tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-check fa-lg"></i></td>'
                             found = true
                         }
                     })
-                    if(!found) tableRowThree += '<td style="padding:0 10px 0 10px;><i class="fas fa-exclamation fa-lg"></i></td>'
+                    if(!found) tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-exclamation fa-lg"></i></td>'
                 })
             }
         })
