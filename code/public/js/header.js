@@ -56,10 +56,10 @@ function tick() {
             //members iterate through members
             let tableRowOne = '<tr>', tableRowTwo = '<tr>'
             data.members.forEach(function(member) {
-                tableRowOne += '<td>IMAGE HERE</td>'
+                tableRowOne += '<td><img src="/assets/pictures/noavatar.png" alt="" height="42" width="42"></td>'
                 tableRowTwo += '<td style="text-align:center;">' + member + '</td>'
             })
-            $('#members').html(tableRowOne + tableRowTwo);
+            $('#members').html((tableRowOne + '</td>') + (tableRowTwo + '</td>'));
             //work out times for timers
             let timers = msToHMS(new Date().getTime() - currentDate.getTime())
             //currentState = currentState.name
