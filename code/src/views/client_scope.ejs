@@ -4,6 +4,7 @@
 <head>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link href="/css/fontawesome-all.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
@@ -22,16 +23,17 @@
             $("#start").load("/assets/views/client/start.ejs", function () {
                 $("#main").load("/assets/views/client/main.ejs", function () {
                     $("#end").load("/assets/views/client/end.ejs", function () {
-                        var width = isNaN(window.innerWidth) ? window.clientWidth : window.innerWidth;
-                        var height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
-
-                        $('#start').css('display', 'block')
-                        $('#d3voter').css({'min-height': height * 0.75})
-
-                        sendBaseMessage()
                         $('#title').html('<i class="fas fa-angle-double-right"></i>   Sprint <%=sessionData.sprint%>')
+                        $('#main').css('display', 'block')
+                        // var width = isNaN(window.innerWidth) ? window.clientWidth : window.innerWidth;
+                        // var height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
+
+                        // $('#start').css('display', 'block')
+                        // $('#d3voter').css({'min-height': height * 0.75})
+
+                        // sendBaseMessage()
                         
-                        drawVoter(width, height *0.75)
+                        // drawVoter(width, height * 0.75)
                     });
                 });
             });

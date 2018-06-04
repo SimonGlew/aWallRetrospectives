@@ -3,6 +3,8 @@ var socket = io()
 var sessionId = window.location.href.split('52724/')[1].split('/')[0]
 var username = localStorage.getItem('username')
 
+var cardColor = null;
+
 function sendBaseMessage() {
     socket.emit('clientConnection', { name: username, sessionId: sessionId })
 }
@@ -52,8 +54,8 @@ function drawVoter(width, height) {
     var circleOriginY = originY - ((outerCircleRadius) * Math.cos(0.2 * 2 * Math.PI));
 
     var colourScale = d3.scale.linear()
-        .domain([1,5,10])
-        .range(['#fc8d59','#ffffbf','#91cf60']);
+        .domain([1, 5, 10])
+        .range(['#fc8d59', '#ffffbf', '#91cf60']);
 
     for (let i = 0; i <= 10; i++) {
         circleG.append('circle').attr({
@@ -64,10 +66,10 @@ function drawVoter(width, height) {
             fill: colourScale(i),
             stroke: "black"
         })
-        .datum(i)
-        .on("click", function(d){
-            sendCheckinVote(d);
-        })
+            .datum(i)
+            .on("click", function (d) {
+                sendCheckinVote(d);
+            })
 
         circleG.append('text')
             .text(i)
@@ -84,3 +86,26 @@ function drawVoter(width, height) {
 
 
 }
+
+function changeCardColor(col) {
+    if (col == 'good' || col == 'bad' || col == 'eh') {
+        cardColor = col
+    }
+
+    if(col == 'good'){
+        $('#good').css('border', '10px solid black')
+        $('#bad').css('border', '0px solid black')
+        $('#eh').css('border', '0px solid black')
+    }
+    else if(col == 'bad'){
+        $('#bad').css('border', '10px solid black')
+        $('#good').css('border', '0px solid black')
+        $('#eh').css('border', '0px solid black')
+
+    }
+    else if(col == 'eh'){
+        $('#eh').css('border', '10px solid black')
+        $('#bad').css('border', '0px solid black')
+        $('#good').css('border', '0px solid black')
+    }
+} 
