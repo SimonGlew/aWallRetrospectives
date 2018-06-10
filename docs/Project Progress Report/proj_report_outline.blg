@@ -1,6 +1,51 @@
-This is BibTeX, Version 0.99dThe top-level auxiliary file: proj_report_outline.aux
+This is BibTeX, Version 0.99d (Web2C 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: proj_report_outline.aux
 The style file: acm.bst
 Database file #1: biblo.bib
 Warning--entry type for "fully-managed-mongodb-hosted-on-aws-azure-and-gcp_2018" isn't style-file defined
 --line 166 of file biblo.bib
-(There was 1 warning)
+Warning--to sort, need author or key in agile_2013
+Warning--empty author in agile_2013
+You've used 14 entries,
+            2253 wiz_defined-function locations,
+            592 strings with 5465 characters,
+and the built_in function-call counts, 3575 in all, are:
+= -- 312
+> -- 156
+< -- 0
++ -- 64
+- -- 50
+* -- 216
+:= -- 582
+add.period$ -- 33
+call.type$ -- 14
+change.case$ -- 62
+chr.to.int$ -- 0
+cite$ -- 16
+duplicate$ -- 142
+empty$ -- 343
+format.name$ -- 50
+if$ -- 757
+int.to.chr$ -- 0
+int.to.str$ -- 14
+missing$ -- 9
+newline$ -- 64
+num.names$ -- 28
+pop$ -- 113
+preamble$ -- 1
+purify$ -- 51
+quote$ -- 0
+skip$ -- 107
+stack$ -- 0
+substring$ -- 128
+swap$ -- 33
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 50
+warning$ -- 2
+while$ -- 33
+width$ -- 16
+write$ -- 129
+(There were 3 warnings)
