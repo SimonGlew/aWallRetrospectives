@@ -1,16 +1,14 @@
 \contentsline {chapter}{\numberline {1}Introduction}{1}
 \contentsline {section}{\numberline {1.1}The Problem}{1}
-\contentsline {section}{\numberline {1.2}Overview of Research Project}{1}
-\contentsline {chapter}{\numberline {2}Some \LaTeX \ hints and tips}{3}
-\contentsline {section}{\numberline {2.1}Floats}{3}
-\contentsline {section}{\numberline {2.2}URL's}{4}
-\contentsline {section}{\numberline {2.3}Graphics and \LaTeX }{4}
-\contentsline {section}{\numberline {2.4}The bibliography}{4}
-\contentsline {section}{\numberline {2.5}Run \LaTeX , run}{4}
-\contentsline {section}{\numberline {2.6}Find out more by\dots }{5}
-\contentsline {section}{\numberline {2.7}Summary}{5}
-\contentsline {chapter}{\numberline {3}Proposal Review}{7}
-\contentsline {section}{\numberline {3.1}Changes}{7}
-\contentsline {chapter}{\numberline {4}Work Done}{9}
-\contentsline {section}{\numberline {4.1}Floats}{9}
-\contentsline {chapter}{\numberline {5}Future Work}{11}
+\contentsline {section}{\numberline {1.2}Overview of Research Project}{2}
+\contentsline {chapter}{\numberline {2}Background Review and Related Work}{3}
+\contentsline {section}{\numberline {2.1}Agile and Agile Retrospectives}{3}
+\contentsline {section}{\numberline {2.2}aWall}{3}
+\contentsline {chapter}{\numberline {3}Work Done}{5}
+\contentsline {section}{\numberline {3.1}Technical Work}{5}
+\contentsline {subsection}{\numberline {3.1.1}Design}{5}
+\contentsline {subsection}{\numberline {3.1.2}Design Choices}{6}
+\contentsline {subsection}{\numberline {3.1.3}Current Implementation Progress}{7}
+\contentsline {section}{\numberline {3.2}Evaluation of Solution}{8}
+\contentsline {chapter}{\numberline {4}Future Work}{9}
+\contentsline {section}{\numberline {4.1}Project Components left to complete}{9}

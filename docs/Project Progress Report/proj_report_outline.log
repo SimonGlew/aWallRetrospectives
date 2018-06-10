@@ -1,12 +1,12 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.5.27)  4 JUN 2018 21:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.6.10)  10 JUN 2018 18:51
 entering extended mode
 **./proj_report_outline.tex
 (proj_report_outline.tex
 LaTeX2e <2017-04-15>
 Babel <3.18> and hyphenation patterns for 75 language(s) loaded.
-("C:\Program Files\MiKTeX 2.9\tex\latex\base\report.cls"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\report.cls"
 Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
-("C:\Program Files\MiKTeX 2.9\tex\latex\base\size11.clo"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\size11.clo"
 File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -21,46 +21,50 @@ File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\float\float.sty"
+) ("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\float\float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \c@float@type=\count88
 \float@exts=\toks14
 \float@box=\box26
 \@float@everytoks=\toks15
 \@floatcapt=\box27
-)
-("C:\Program Files\MiKTeX 2.9\tex\latex\url\url.sty"
+) ("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty"
 \Urlmuskip=\muskip10
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 \@float@every@fig=\toks16
 \c@fig=\count89
 
-("C:/TeX Files\tex/latex\misc\vuwproject.sty"
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\mathpazo.sty"
+(vuwproject.sty
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\mathpazo.st
+y"
 Package: mathpazo 2005/04/12 PSNFSS-v9.2a Palatino w/ Pazo Math (D.Puga, WaS) 
 \symupright=\mathgroup4
 )
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphicx.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphicx.
+sty"
 Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\keyval.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\keyval.st
+y"
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks17
 )
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\graphics.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphics.
+sty"
 Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics\trig.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\trig.sty"
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-cfg\graphics.cfg"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics-cfg\graph
+ics.cfg"
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 99.
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\graphics-def\pdftex.def"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics-def\pdfte
+x.def"
 File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen103
@@ -70,8 +74,7 @@ VUW Honours reports modifications -- Mar 1995
 Modified to handle different degrees 2003
 Modified to handle duplex printing properly 2006
 \@abstract=\box28
-) (proj_report_outline.aux (acknowledge.aux) (introduction.aux) (background.aux
-) (propreview.aux) (workdone.aux) (futurework.aux))
+) (proj_report_outline.aux)
 \openout1 = `proj_report_outline.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
@@ -88,12 +91,13 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
 LaTeX Font Info:    ... okay on input line 59.
 LaTeX Font Info:    Try loading font information for OT1+ppl on input line 59.
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1ppl.fd"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1ppl.fd"
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
 \big@size=\dimen105
 
-("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\context\base\supp-pdf.mk
+ii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count90
 \scratchdimen=\dimen106
@@ -106,31 +110,41 @@ File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 \MPnumerator=\count94
 \makeMPintoPDFobject=\count95
 \everyMPtoPDFconversion=\toks19
-) ("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\epstopdf-base.sty"
+)
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\oberdiek\epstopdf-
+base.sty"
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\infwarerr.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\infware
+rr.sty"
 Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 )
-("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\grfext.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\oberdiek\grfext.st
+y"
 Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
 
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvdefinekeys.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\kvdefin
+ekeys.sty"
 Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
 
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\ltxcmds
+.sty"
 Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 )))
-("C:\Program Files\MiKTeX 2.9\tex\latex\oberdiek\kvoptions.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\oberdiek\kvoptions
+.sty"
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\kvsetkeys.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\kvsetke
+ys.sty"
 Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
 
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\etexcmds.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\etexcmd
+s.sty"
 Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
 
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifluatex.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\ifluate
+x.sty"
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
 )
@@ -139,11 +153,13 @@ Package etexcmds Info: Could not find \expanded.
 (etexcmds)             that some package has redefined \expanded.
 (etexcmds)             In the latter case, load this package earlier.
 )))
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\pdftexcmds.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\pdftexc
+mds.sty"
 Package: pdftexcmds 2018/01/21 v0.26 Utility functions of pdfTeX for LuaTeX (HO
 )
 
-("C:\Program Files\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.sty"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\generic\oberdiek\ifpdf.s
+ty"
 Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
 )
 Package pdftexcmds Info: LuaTeX not detected.
@@ -166,25 +182,25 @@ Package pdftex.def Info: VUWlogo.png  used on input line 77.
 LaTeX Font Info:    Try loading font information for OML+zplm on input line 77.
 
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omlzplm.fd"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\omlzplm.fd"
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
 LaTeX Font Info:    Try loading font information for OMS+zplm on input line 77.
 
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omszplm.fd"
+ ("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\omszplm.fd
+"
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
 LaTeX Font Info:    Try loading font information for OMX+zplm on input line 77.
 
 
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omxzplm.fd"
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\omxzplm.fd"
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
 LaTeX Font Info:    Try loading font information for OT1+zplm on input line 77.
 
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\ot1zplm.fd"
+ ("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\ot1zplm.fd
+"
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <17.28> not available
@@ -193,151 +209,124 @@ LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10.95> not available
 (Font)              Font shape `OT1/ppl/b/n' tried instead on input line 77.
  [-1
 
-{C:/Users/Simon/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <C:/TeX File
-s/tex/latex/misc/VUWlogo.png>] [0]
-\openout2 = `acknowledge.aux'.
-
- (acknowledge.tex
-LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 1.
-) [1
-
-
-
-] [2
-
-
-] (proj_report_outline.toc
-LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 4.
-)
-\tf@toc=\write3
-\openout3 = `proj_report_outline.toc'.
-
- [3]
-[4
-
-] (proj_report_outline.lof)
-\tf@lof=\write4
-\openout4 = `proj_report_outline.lof'.
-
- [5] [6
-
-]
-\openout2 = `introduction.aux'.
-
- (introduction.tex
+{C:/Users/Simon/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <./VUWlogo.p
+ng>] [0]
 Chapter 1.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 1.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 86.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <24.88> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 86.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 2.
-<aWall_introduction.png, id=32, 391.4625pt x 225.84375pt>
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 87.
+<aWall_introduction.png, id=12, 391.4625pt x 225.84375pt>
 File: aWall_introduction.png Graphic file (type png)
 <use aWall_introduction.png>
-Package pdftex.def Info: aWall_introduction.png  used on input line 9.
+Package pdftex.def Info: aWall_introduction.png  used on input line 94.
 (pdftex.def)             Requested size: 391.46153pt x 225.84319pt.
-LaTeX Font Info:    Try loading font information for OMS+ppl on input line 17.
-("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\omsppl.fd"
-File: omsppl.fd 
-)
-LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 17.
+
+Underfull \vbox (badness 5756) has occurred while \output is active []
+
  [1
 
 
- <C:/TeX Files/tex/latex/misc/aWall_introduction.png>]
 
-LaTeX Warning: Citation `AgileRetrospectivesEstherDerby' on page 2 undefined on
- input line 22.
-
-
-LaTeX Warning: Citation `normanKeith' on page 2 undefined on input line 22.
+ <./aWall_introduction.png>]
+LaTeX Font Info:    Try loading font information for OMS+ppl on input line 103.
 
 
-LaTeX Warning: Citation `AgileRetrospectivesEstherDerby' on page 2 undefined on
- input line 32.
-
-) [2]
-\openout2 = `background.aux'.
-
- (background.tex
+("C:\Users\Simon\AppData\Local\Programs\MiKTeX 2.9\tex\latex\psnfss\omsppl.fd"
+File: omsppl.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 103.
+[2]
 Chapter 2.
+[3
 
-Underfull \vbox (badness 1478) has occurred while \output is active []
-
- [3
-
-
-
-]
-LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 86.
-
-[4]) [5]
-\openout2 = `propreview.aux'.
-
- (propreview.tex [6
-
-
+] [4
 
 ]
 Chapter 3.
-) [7]
-\openout2 = `workdone.aux'.
+LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 138.
+<arch_diagram.png, id=29, 391.4625pt x 225.84375pt>
+File: arch_diagram.png Graphic file (type png)
+<use arch_diagram.png>
+Package pdftex.def Info: arch_diagram.png  used on input line 142.
+(pdftex.def)             Requested size: 391.46153pt x 225.84319pt.
+[5 <./arch_diagram.png>]
+Overfull \hbox (18.99692pt too wide) in paragraph at lines 152--153
+\OT1/ppl/m/n/10.95 The tech-nolo-gies cho-sen for this project are: a jQuery fr
+on-tend ap-pli-ca-tion, with a node.js/socket
+ []
 
- (workdone.tex [8
 
+Overfull \hbox (8.20009pt too wide) in paragraph at lines 155--156
+\OT1/ppl/m/n/10.95 setup and in-te-grat-ing into other parts of the pro-to-type
+ through li-braries such as \OT1/ppl/m/it/10.95 Socket.IO
+ []
 
+[6]
+<moderator_progress.png, id=38, 260.975pt x 156.08313pt>
+File: moderator_progress.png Graphic file (type png)
+<use moderator_progress.png>
+Package pdftex.def Info: moderator_progress.png  used on input line 177.
+(pdftex.def)             Requested size: 260.97437pt x 156.08273pt.
 
-]
+Overfull \hbox (4.12755pt too wide) in paragraph at lines 174--180
+\OT1/ppl/m/n/10.95 work-ing and also one of the ret-ro-spec-tive meth-ods. This
+ header file is con-stant through-
+ []
+
+<header.png, id=39, 376.40625pt x 36.88782pt>
+File: header.png Graphic file (type png)
+<use header.png>
+Package pdftex.def Info: header.png  used on input line 185.
+(pdftex.def)             Requested size: 376.40532pt x 36.88771pt.
+<participant_progress.png, id=40, 179.16937pt x 221.82875pt>
+File: participant_progress.png Graphic file (type png)
+<use participant_progress.png>
+Package pdftex.def Info: participant_progress.png  used on input line 193.
+(pdftex.def)             Requested size: 179.16893pt x 221.82819pt.
+[7 <./moderator_progress.png> <./header.png>]
+Overfull \hbox (4.24759pt too wide) in paragraph at lines 204--206
+\OT1/ppl/m/n/10.95 Within this user study I am look-ing to test on 4 -5 teams, 
+from teams within the ENGR301/302
+ []
+
+[8 <./participant_progress.png>]
 Chapter 4.
-) [9]
-\openout2 = `futurework.aux'.
+<timeline.png, id=49, 376.40625pt x 124.96687pt>
+File: timeline.png Graphic file (type png)
+<use timeline.png>
+Package pdftex.def Info: timeline.png  used on input line 227.
+(pdftex.def)             Requested size: 376.40532pt x 124.96657pt.
+[9
 
- (futurework.tex [10
+ <./timeline.png>] [10
 
-
+] (proj_report_outline.bbl) [11
 
 ]
-Chapter 5.
-
-LaTeX Warning: Reference `C:us' on page 11 undefined on input line 4.
-
-
-LaTeX Warning: Reference `C:con' on page 11 undefined on input line 4.
-
-) [11] [12
-
-
-] (proj_report_outline.bbl) [13
-
-] (proj_report_outline.aux
-(acknowledge.aux) (introduction.aux) (background.aux) (propreview.aux)
-(workdone.aux) (futurework.aux))
-
-LaTeX Warning: There were undefined references.
-
- ) 
+(proj_report_outline.aux) ) 
 Here is how much of TeX's memory you used:
- 1956 strings out of 493305
- 28806 string characters out of 3138874
- 88189 words of memory out of 3000000
- 5407 multiletter control sequences out of 15000+200000
- 39432 words of font info for 99 fonts, out of 3000000 for 9000
+ 1897 strings out of 493305
+ 28678 string characters out of 3129802
+ 84566 words of memory out of 3000000
+ 5403 multiletter control sequences out of 15000+200000
+ 28857 words of font info for 71 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,10n,25p,623b,275s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/Program Files/MiKTeX 2.9
-/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
-lic/mathpazo/fplmr.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/mathpazo
-/fplmri.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C
-:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb><C:/Program File
-s/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on proj_report_outline.pdf (21 pages, 406717 bytes).
+ 41i,6n,25p,1217b,277s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Users/Simon/AppData/Local/Programs/MiKTeX 2.9/fo
+nts/enc/dvips/base/8r.enc}<C:/Users/Simon/AppData/Local/Programs/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Simon/AppData/Local/Programs/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Simon/AppData/Loc
+al/Programs/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Users/Simon/AppD
+ata/Local/Programs/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb><C:/Users/Sim
+on/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on proj_report_outline.pdf (13 pages, 507340 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
+ 79 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

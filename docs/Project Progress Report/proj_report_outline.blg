@@ -1,12 +1,6 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: proj_report_outline.aux
-A level-1 auxiliary file: acknowledge.aux
-A level-1 auxiliary file: introduction.aux
-A level-1 auxiliary file: background.aux
-A level-1 auxiliary file: propreview.aux
-A level-1 auxiliary file: workdone.aux
-A level-1 auxiliary file: futurework.aux
 The style file: acm.bst
-Database file #1: sample.bib
-Warning--I didn't find a database entry for "AgileRetrospectivesEstherDerby"
-Warning--I didn't find a database entry for "normanKeith"
-(There were 2 warnings)
+Database file #1: biblo.bib
+Warning--entry type for "fully-managed-mongodb-hosted-on-aws-azure-and-gcp_2018" isn't style-file defined
+--line 166 of file biblo.bib
+(There was 1 warning)

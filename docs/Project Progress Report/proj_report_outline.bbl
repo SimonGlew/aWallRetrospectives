@@ -1,39 +1,58 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
-\bibitem{Dum93}
-{\sc Dummett, M.}
-\newblock {\em The Seas of Language}.
-\newblock Oxford University Press, Oxford, England, 1993.
+\bibitem{AgileRetrospectivesEstherDerby}
+{\sc Derby, E., and Larsen, D.}
+\newblock {\em Agile Retrospectives: Making Good Teams Great}.
+\newblock Pragmatic Bookshelf, Raleigh, North Carolina, 2006.
 
-\bibitem{Dum93a}
-{\sc Dummett, M.}
-\newblock What is a theory of meaning? (i).
-\newblock In {\em The Seas of Language\/} \cite{Dum93}, pp.~1--33.
-\newblock First published in S. Guttenplan, editor, {\it Mind and Language},
-  Oxford University Press, Oxford, England, 1975.
+\bibitem{foundation_2018}
+{\sc Foundation, N.}
+\newblock Node.js, 2018.
 
-\bibitem{Dum93b}
-{\sc Dummett, M.}
-\newblock What is a theory of meaning? (ii).
-\newblock In {\em The Seas of Language\/} \cite{Dum93}, pp.~34--105.
-\newblock First published in G. Evans and J. McDowell, editors, {\it Truth and
-  Meaning}, Oxford University Press, Oxford, England, 1976.
+\bibitem{GettingValueFromRetrospectives}
+{\sc Goncalves, L., and Linders, B.}
+\newblock {\em Getting value out of Agile Retrospectives: A Toolbox of
+  Retrospective Exercises}.
+\newblock Leanpub Publishing, Victoria, British Columbia, 2013.
 
-\bibitem{GMS94}
-{\sc Goosens, M., Mittelbach, F., and Samarin, A.}
-\newblock {\em The \LaTeX\ Companion}.
-\newblock Addison-Wesley, Reading, Massachusetts, USA, 1994.
+\bibitem{js.foundation_2018}
+{\sc js.foundation, J.}
+\newblock jquery, 2018.
 
-\bibitem{GRM97GC}
-{\sc Goosens, M., Rahtz, S. P.~Q., and Mittelbach, F.}
-\newblock {\em The \LaTeX\ Graphics Companion: illustrating documents with
-  \TeX\ and PostScript}.
-\newblock Addison-Wesley, Reading, Massachusetts, USA, 1997.
+\bibitem{normanKeith}
+{\sc Keith, N.}
+\newblock {\em Project retrospectives: a handbook for team reviews}.
+\newblock Dorset House Publishing, New York, New York, 2001.
 
-\bibitem{Lam94}
-{\sc Lamport, L.}
-\newblock {\em \LaTeX: a document preparation system: user's guide and
-  reference manual}, {S}econd~ed.
-\newblock Addison-Wesley, Reading, Massachusetts, USA, 1994.
+\bibitem{xp2017_aWall}
+{\sc Kropp, M., Anslow, C., Mateescu, M., Burkhard, R., Vischi, D., and Zahn,
+  C.}
+\newblock Enhancing agile team collaboration through the use of large digital
+  multi-touch cardwalls.
+\newblock {\em LNBIP}, 283 (2017), 119--134.
+
+\bibitem{retrospectiveFacilator}
+{\sc Linders, B.}
+\newblock 7 retrospective facilitation good practices, 2016.
+
+\bibitem{fully-managed-mongodb-hosted-on-aws-azure-and-gcp_2018}
+{\sc MongoDB}.
+\newblock Mongo atlas, 2018.
+
+\bibitem{mongodb-for-giant-ideas_2018}
+{\sc MongoDB}.
+\newblock Mongodb, 2018.
+
+\bibitem{mongoose-odm-v5.1.3_2018}
+{\sc mongoose}.
+\newblock mongoose, 2018.
+
+\bibitem{welcome-to-python.org_2018}
+{\sc Python.org}.
+\newblock Python, 2018.
+
+\bibitem{socket.io_2018}
+{\sc socket.io}.
+\newblock socket.io, 2018.
 
 \end{thebibliography}
