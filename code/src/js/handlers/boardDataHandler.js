@@ -20,7 +20,7 @@ function saveCheckin(data, sessionId) {
 }
 
 function getCheckinData(sessionIds) {
-    console.log(sessionIds)
+    outputToLog(sessionIds, null)
     return CheckIn.aggregate([
         { $match: { session: { $in: sessionIds.map(id => mongoose.Types.ObjectId(id)) } } },
         {

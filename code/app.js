@@ -12,6 +12,13 @@ var mongoSetup = require('./src/js/mongosetup')
 
 global.Promise = require('bluebird')
 
+global.outputToLog = function(str, mem){
+    let date = new Date().toISOString()
+
+    console.log("[",date,"] Member:", (mem ? mem : null), ": ", str)
+}
+
+
 mongoSetup.connect()
     .then(res => {
         if (!res) throw "Mongo did not connect";
