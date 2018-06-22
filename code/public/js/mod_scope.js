@@ -64,3 +64,5 @@ function redrawVotingScreen(){
 function redrawGraphScreen(){
     
 }
+
+redrawVotingScreen() 
