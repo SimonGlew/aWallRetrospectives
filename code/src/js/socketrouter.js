@@ -24,6 +24,10 @@ function socketRouter(io) {
         socket.on('moderatorConnection', (data) => {
             outputToLog('MODERATOR_CONNECTION', null)
             moderatorSocket = ({ _id: socket.id, _socket: socket, name: "moderator" })
+            return sessionHandler.getMetadata(data.sessionId)
+                .then(data => {
+                    socket.emit('mod_instructions', data);
+                }) 
         })
 
         socket.on('clientConnection', (data) => {

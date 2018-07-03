@@ -53,3 +53,7 @@ div.h-200{
     height:200px;
 }
 
+p.floatLeft {
+    text-align:left;
+    margin-bottom:0px;
+}
