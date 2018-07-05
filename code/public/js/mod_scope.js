@@ -16,7 +16,6 @@ socket.on('mod_instructions', function (data) {
 })
 
 socket.on('members_mod', function (data) {
-    console.log('members_mod')
     members = data.members
     sprint = data.spr
     redrawVotingScreen()
@@ -24,8 +23,6 @@ socket.on('members_mod', function (data) {
 
 
 socket.on('checkin_data', function (data) {
-    console.log('checkin_data')
-
     checkin_data = data
     redrawVotingScreen()
     redrawGraphScreen()
@@ -69,27 +66,58 @@ function redrawVotingScreen() {
 }
 
 function redrawGraphScreen() {
-    let chartPoints = []
-    if(checkin_data.length){
+    let chartPoints = [], maxSprint = 0, minSprint = 100
+    if (checkin_data.length) {
         checkin_data.forEach(d => {
             let x = parseInt(d.session.sprint), y = 0;
             d.data.forEach(node => {
                 y += node.data.data
             })
-            if(d.data.length) y = y / d.data.length
-            chartPoints.push({x: x, y: y})
+            if (d.data.length) y = y / d.data.length
+            chartPoints.push({ x: x, y: y })
+            maxSprint = Math.max(maxSprint, x)
+            minSprint = Math.min(minSprint, x)
         })
 
         var ctx = document.getElementById('myChart').getContext('2d');
         var myLineChart = new Chart(ctx, {
             type: 'line',
-            data: { datasets: [{ data: chartPoints }] },
+            data: {
+                datasets: [{
+                    data: chartPoints,
+                    backgroundColor: 'rgb(0, 0, 0)',
+                    borderColor: '#66adff',
+                    fill: false
+                }]
+            },
             options: {
                 scales: {
                     xAxes: [{
                         type: 'linear',
-                        position: 'bottom'
+                        position: 'bottom',
+                        ticks: {
+                            min: minSprint,
+                            max: maxSprint,
+                            stepSize: 1,
+                            fontSize: 20
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Sprints',
+                            fontSize: 20
+                          }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 1,
+                            max: 10,
+                            stepSize: 1,
+                            fontSize: 20
+                        }
                     }]
+                },
+                legend: {
+                    display: false
                 }
             }
         });

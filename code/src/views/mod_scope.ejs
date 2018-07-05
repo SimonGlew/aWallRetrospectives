@@ -11,6 +11,7 @@
     <div id='start' style='display:none;'></div>
     <div id='main' style='display:none;'></div>
     <div id='end' style='display:none;'></div>
+    <div id="footer" style='position: fixed; bottom:0; width:100%;'></div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"></script>
@@ -20,9 +21,11 @@
     <script>
         $(function () {
             $("#header").load("/assets/views/moderator/header.ejs");
+            $("#footer").load("/assets/views/moderator/footer.ejs");
             $("#start").load("/assets/views/moderator/start.ejs");
             $("#main").load("/assets/views/moderator/main.ejs");
             $("#end").load("/assets/views/moderator/end.ejs");
+
 
             $('#start').css('display', 'block')
 
