@@ -69,6 +69,20 @@ function drawVoter(width, height) {
             .datum(i)
             .on("click", function (d) {
                 sendCheckinVote(d);
+
+                circleG.transition()
+                    .duration(2000)
+                    .ease('linear')
+                    .style("opacity", "0");
+
+                g.select('text')
+                    .transition()
+                    .duration(2000)
+                    .ease('linear')
+                    .text('Voted')
+
+                $('#voteButton').fadeIn('slow')
+
             })
 
         circleG.append('text')
@@ -85,6 +99,12 @@ function drawVoter(width, height) {
     }
 
 
+}
+
+function voteFinish(){
+    $('#start').css('display', 'none')
+    $('#main').css('display', 'block')
+    $('#title').html('<i class="fas fa-angle-double-right"></i>   Sprint <%=sessionData.sprint%>')
 }
 
 function changeCardColor(col) {
