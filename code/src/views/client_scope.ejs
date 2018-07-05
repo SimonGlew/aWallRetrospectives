@@ -24,6 +24,7 @@
                 $("#main").load("/assets/views/client/main.ejs", function () {
                     $("#end").load("/assets/views/client/end.ejs", function () {
                         $('#title').html('<i class="fas fa-angle-double-right"></i>   Sprint <%=sessionData.sprint%>')
+                        $('#titleMain').html('<i class="fas fa-angle-double-right"></i>   Sprint <%=sessionData.sprint%>')
                         var width = isNaN(window.innerWidth) ? window.clientWidth : window.innerWidth;
                         var height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
 

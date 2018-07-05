@@ -65,6 +65,28 @@ function socketRouter(io) {
                 })
 
         })
+
+        socket.on('terminateRetrospective', (data) => {
+            let sessionId = data.sessionId
+            return sessionHandler.disactiveSession(sessionId)
+                .then(() => {
+                    clientSockets.forEach(sock => {
+                        if(String(sock.sessionId) == String(sessionId)) 
+                            sock._socket.emit('terminateRetrospective', {})
+                    })
+                })
+        })
+
+        socket.on('closeRetrospective', (data) => {
+            let sessionId = data.sessionId
+            return sessionHandler.closeSession(sessionId)
+                .then(() => {
+                    clientSockets.forEach(sock => {
+                        if(String(sock.sessionId) == String(sessionId)) 
+                            sock._socket.emit('closeRetrospective', {})
+                    })
+                })
+        })
     });
 }
 
