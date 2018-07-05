@@ -40,6 +40,7 @@ function redrawVotingScreen() {
     if (!checkin_data.length) {
         members.forEach(function (member) { tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-exclamation fa-lg"></i></td>' })
     } else {
+        let average = { total: 0, amount: 0 }
         checkin_data.forEach(function (dat) {
             if (dat.session.sprint == sprint) {
                 members.forEach(function (member) {
@@ -63,7 +64,9 @@ function redrawVotingScreen() {
                 })
             }
         })
+        $('#currentAverage').html('Average Vote: <b>' + (average.amount != 0 ? (average.total / average.amount) : 0) + '</b>')
     }
+
 
     $('#memberGraphic').html((tableRowOne + '</td>') + (tableRowTwo + '</td>') + (tableRowThree + '</td>') + (tableRowFour + '</td>'));
     $('#averageThisSprint').html('This Sprint Average: <b>' + (average.amount == 0 ? 0 : (average.total / average.amount)) + '</b>')
@@ -127,7 +130,6 @@ function redrawGraphScreen() {
                 }
             });
         }
-        
     }
 }
 
@@ -156,7 +158,5 @@ function terminateRetrospective(){
     socket.emit('terminateRetrospective', { sessionId: sessionId })
     window.location.href = window.location.href.split('52724/')[0] + '52724';
 }
-
-
 
 redrawVotingScreen() 
