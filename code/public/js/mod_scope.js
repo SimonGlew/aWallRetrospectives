@@ -39,12 +39,15 @@ function redrawVotingScreen() {
     if (!checkin_data.length) {
         members.forEach(function (member) { tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-exclamation fa-lg"></i></td>' })
     } else {
+        let average = { total: 0, amount: 0 }
         checkin_data.forEach(function (dat) {
             if (dat.session.sprint == sprint) {
                 members.forEach(function (member) {
                     let found = false
                     dat.data.forEach(function (row) {
                         if (row.data.name == member && !found) {
+                            average.total += row.data.data;
+                            average.amount += 1;
                             let coloredLength = row.data.data != 0 ? (row.data.data / 10 * 500) : 0
                             let pad = 500 - coloredLength
                             tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-check fa-lg"></i></td>'
@@ -60,7 +63,9 @@ function redrawVotingScreen() {
                 })
             }
         })
+        $('#currentAverage').html('Average Vote: <b>' + (average.amount != 0 ? (average.total / average.amount) : 0) + '</b>')
     }
+
 
     $('#memberGraphic').html((tableRowOne + '</td>') + (tableRowTwo + '</td>') + (tableRowThree + '</td>') + (tableRowFour + '</td>'));
 }
@@ -79,48 +84,50 @@ function redrawGraphScreen() {
             minSprint = Math.min(minSprint, x)
         })
 
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myLineChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                datasets: [{
-                    data: chartPoints,
-                    backgroundColor: 'rgb(0, 0, 0)',
-                    borderColor: '#66adff',
-                    fill: false
-                }]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                        type: 'linear',
-                        position: 'bottom',
-                        ticks: {
-                            min: minSprint,
-                            max: maxSprint,
-                            stepSize: 1,
-                            fontSize: 20
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Sprints',
-                            fontSize: 20
-                          }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            min: 1,
-                            max: 10,
-                            stepSize: 1,
-                            fontSize: 20
-                        }
+        if(chartPoints.length != 1){
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        data: chartPoints,
+                        backgroundColor: 'rgb(0, 0, 0)',
+                        borderColor: '#66adff',
+                        fill: false
                     }]
                 },
-                legend: {
-                    display: false
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'linear',
+                            position: 'bottom',
+                            ticks: {
+                                min: minSprint,
+                                max: maxSprint,
+                                stepSize: 1,
+                                fontSize: 20
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Sprints',
+                                fontSize: 20
+                              }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                min: 1,
+                                max: 10,
+                                stepSize: 1,
+                                fontSize: 20
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 }
 
@@ -128,6 +135,23 @@ function drawInstruction(data) {
     $('#instructionsSessionName').html('Session Name: <b>' + data.name + '</b>')
     $('#instructionsSprintNumber').html('Sprint Number: <b>' + data.sprint + '</b>')
     $('#instructionsPassword').html('Password: <b>' + data.password + '</b>')
+}
+
+
+function next(){
+    console.log('FJNUWEISVOGNRIEONIGEO')
+}
+
+function previous(){
+
+}
+
+function closeSprint(){
+
+}
+
+function finishSprint(){
+
 }
 
 redrawVotingScreen() 
