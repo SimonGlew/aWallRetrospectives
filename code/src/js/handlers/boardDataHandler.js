@@ -3,14 +3,24 @@ const mongoose = require('mongoose')
 const CheckIn = require('../models/boardData_checkin')
 
 function saveCheckin(data, sessionId) {
-    return new CheckIn({
-        session: sessionId,
-        data: data
-    }).save()
+    return CheckIn.findOne({session: sessionId, 'data.name': data.name })
+        .lean()
+        .then(res => {
+            if(!res){
+                return new CheckIn({
+                    session: sessionId,
+                    data: data
+                }).save()
+            }else{
+                //update vote
+                return CheckIn.update({ _id: res._id }, { $set: { 'data.data': data.data } })
+            }
+        })
+    
 }
 
 function getCheckinData(sessionIds) {
-    console.log(sessionIds)
+    outputToLog(sessionIds, null)
     return CheckIn.aggregate([
         { $match: { session: { $in: sessionIds.map(id => mongoose.Types.ObjectId(id)) } } },
         {

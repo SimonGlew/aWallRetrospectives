@@ -1,9 +1,7 @@
-var config = require('../../config').mongo
-
 var mongoose = require('mongoose'),
     includeModels = require('./includeModels')
 
-function connect() {
+function connect(config) {
     let uri = 'mongodb://' + config.user + ':' + config.password + "@" + config.hosts + ':' + config.port + '/' + config.db
 
     return mongoose.connect(uri, {
