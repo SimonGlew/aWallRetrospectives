@@ -92,6 +92,16 @@ function getSprintFromId(sessionId){
         .then(project => project.sprint)
 }
 
+function disactiveSession(sessionId){
+    return Session.update({ _id: sessionId }, { $set: { active: false } })
+}
+
+function closeSession(sessionId){
+    return Promise.resolve(true);
+    //write output
+}
+
+
 module.exports = {
     createSession: createSession,
     joinSession: joinSession,
@@ -99,5 +109,7 @@ module.exports = {
     addMember: addMember,
     removeMember: removeMember,
     getSprintSessionsFromId: getSprintSessionsFromId,
-    getSprintFromId: getSprintFromId
+    getSprintFromId: getSprintFromId,
+    disactiveSession: disactiveSession,
+    closeSession: closeSession
 };

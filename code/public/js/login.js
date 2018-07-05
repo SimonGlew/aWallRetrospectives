@@ -89,6 +89,7 @@ $('#createConfirmBtn').click(function () {
             }
             else {
                 localStorage.setItem('username', 'moderator');
+                localStorage.setItem('sprint', $('#sprintNumberValue').val());
                 window.location = data._id + '/mod'
             }
         })
@@ -112,8 +113,9 @@ $('#joinConfirmBtn').click(function () {
             }
             else {
                 localStorage.setItem('username', $('#usernameValue').val());
+                localStorage.setItem('sprint', $('#sprintNumberValue').val());
                 let endURL = $('#usernameValue').val() == 'mod' ? '/mod' : '/par'
-                window.location = data._id + endURL;
+                window.location = data._id + "/" + data.retrospectiveType.name + endURL;
             }
         })
     }
@@ -135,9 +137,10 @@ $('#joinConfirmBtnMobile').click(function () {
                 $('#errLabelMobile').text(data.err);
             }
             else {
+                console.log(data)
                 localStorage.setItem('username', $('#usernameValueMobile').val());
                 let endURL = $('#usernameValueMobile').val() == 'mod' ? '/mod' : '/par'
-                window.location = data._id + endURL;
+                window.location = data._id + "/" + data.retrospectiveType.name + endURL;
             }
         })
     }
