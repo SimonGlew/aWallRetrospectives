@@ -1,0 +1,70 @@
+\begin{thebibliography}{10}
+
+\bibitem{agile_2013}
+Agile.
+\newblock {\em ITNOW 55}, 2 (2013), 6--8.
+
+\bibitem{AgileRetrospectivesEstherDerby}
+{\sc Derby, E., and Larsen, D.}
+\newblock {\em Agile Retrospectives: Making Good Teams Great}.
+\newblock Pragmatic Bookshelf, Raleigh, North Carolina, 2006.
+
+\bibitem{GettingValueFromRetrospectives}
+{\sc Goncalves, L., and Linders, B.}
+\newblock {\em Getting value out of Agile Retrospectives: A Toolbox of
+  Retrospective Exercises}.
+\newblock Leanpub Publishing, Victoria, British Columbia, 2013.
+
+\bibitem{js.foundation_2018}
+{\sc jQuery Foundation}.
+\newblock jquery, 2018.
+
+\bibitem{normanKeith}
+{\sc Keith, N.}
+\newblock {\em Project retrospectives: a handbook for team reviews}.
+\newblock Dorset House Publishing, New York, New York, 2001.
+
+\bibitem{xp2017_aWall}
+{\sc Kropp, M., Anslow, C., Mateescu, M., Burkhard, R., Vischi, D., and Zahn,
+  C.}
+\newblock Enhancing agile team collaboration through the use of large digital
+  multi-touch cardwalls.
+\newblock {\em LNBIP}, 283 (2017), 119--134.
+
+\bibitem{retrospectiveFacilator}
+{\sc Linders, B.}
+\newblock 7 retrospective facilitation good practices, 2016.
+
+\bibitem{10.1007/978-3-642-15666-3_6}
+{\sc Maierhofer, S., Stelzmann, E., Kohlbacher, M., and Fellner, B.}
+\newblock Requirement changes and project success: The moderating effects of
+  agile approaches in system engineering projects.
+\newblock In {\em Systems, Software and Services Process Improvement\/}
+  (Berlin, Heidelberg, 2010), A.~Riel, R.~O'Connor, S.~Tichkiewitch, and
+  R.~Messnarz, Eds., Springer Berlin Heidelberg, pp.~60--70.
+
+\bibitem{fully-managed-mongodb-hosted-on-aws-azure-and-gcp_2018}
+{\sc MongoDB}.
+\newblock Mongo atlas, 2018.
+
+\bibitem{mongodb-for-giant-ideas_2018}
+{\sc MongoDB}.
+\newblock Mongodb, 2018.
+
+\bibitem{mongoose-odm-v5.1.3_2018}
+{\sc mongoose}.
+\newblock mongoose, 2018.
+
+\bibitem{foundation_2018}
+{\sc Node.js}.
+\newblock Node.js, 2018.
+
+\bibitem{welcome-to-python.org_2018}
+{\sc Python.org}.
+\newblock Python, 2018.
+
+\bibitem{socket.io_2018}
+{\sc socket.io}.
+\newblock socket.io, 2018.
+
+\end{thebibliography}

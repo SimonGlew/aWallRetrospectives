@@ -7,7 +7,7 @@ function createSession(projectName, sprintNumber, boardName, password, rType) {
         .then(count => {
             if (!!count) return { err: 'Session already exists' };
 
-            console.log(projectName, 'attempting to create new board', boardName, 'for sprint', sprintNumber)
+            outputToLog(projectName + ' attempting to create new board ' + boardName + ' for sprint ' + sprintNumber, null)
             return RetrospectiveType.findOne({ name: 'Check-in' }, '_id').lean()
                 .then(retroType => {
                     return new Session({
@@ -28,7 +28,7 @@ function createSession(projectName, sprintNumber, boardName, password, rType) {
 }
 
 function joinSession(projectName, sprintNumber, username, password) {
-    console.log(username, 'attempted to join', projectName, 'sprint', sprintNumber)
+    outputToLog(username + ' attempted to join ' + projectName +  ' sprint ' + sprintNumber, username)
     return Session.findOne({ project: projectName, sprint: sprintNumber, password: password, active: true }, '_id retrospectiveType members')
         .populate('retrospectiveType', 'name')
         .then(session => {
@@ -52,7 +52,7 @@ function addMember(sessionId, member) {
             if (!session.members) session.members = []
 
             session.members.push(member);
-            return session.save()
+            return session.save().then(session => session.members)
         })
 }
 
@@ -64,7 +64,8 @@ function removeMember(sessionId, member) {
             if (!session.members) session.members = []
 
             session.members = session.members.filter(m => m != member)
-            return session.save()
+
+            return session.save().then(session => session.members)
         })
 }
 
@@ -85,11 +86,18 @@ function getSprintSessionsFromId(sessionId) {
         })
 }
 
+function getSprintFromId(sessionId){
+    return Session.findOne({ _id: sessionId }, 'sprint')
+        .lean()
+        .then(project => project.sprint)
+}
+
 module.exports = {
     createSession: createSession,
     joinSession: joinSession,
     getMetadata: getMetadata,
     addMember: addMember,
     removeMember: removeMember,
-    getSprintSessionsFromId: getSprintSessionsFromId
+    getSprintSessionsFromId: getSprintSessionsFromId,
+    getSprintFromId: getSprintFromId
 };

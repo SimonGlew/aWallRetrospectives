@@ -1,0 +1,60 @@
+div.w-10 {
+    width: 10%;
+}
+
+div.w-20 {
+    width: 20%;
+}
+
+div.w-30 {
+    width: 30%;
+}
+
+div.w-40 {
+    width: 50%;
+}
+
+div.w-50 {
+    width: 60%;
+}
+
+div.w-60 {
+    width: 60%;
+}
+
+div.w-80 {
+    width: 70%;
+}
+
+div.w-80 {
+    width: 80%;
+}
+
+div.w-90 {
+    width: 90%;
+}
+
+div.w-100 {
+    width: 100%;
+}
+
+div.h-100{
+    min-height:100px;
+    height:100px;
+}
+
+div.h-150{
+    min-height:150px;
+    height:150px;
+}
+
+div.h-200{
+    min-height:200px;
+    height:200px;
+}
+
+p.floatLeft {
+    text-align:left;
+    margin-bottom:0px;
+    font-size:16px;
+}
