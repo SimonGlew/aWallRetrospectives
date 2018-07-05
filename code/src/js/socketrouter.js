@@ -66,6 +66,16 @@ function socketRouter(io) {
 
         })
 
+        socket.on('ThreeWCard', (data) => {
+            let sessionId = data.sessionId
+            delete data.sessionId
+
+            return boardDataHandler.saveCard(data, sessionId)
+                .then(card => {
+                    moderatorSocket._socket ? moderatorSocket._socket.emit('3w_card', { name: socket.name, data: card }) : null
+                })
+        })
+
         socket.on('terminateRetrospective', (data) => {
             let sessionId = data.sessionId
             return sessionHandler.disactiveSession(sessionId)

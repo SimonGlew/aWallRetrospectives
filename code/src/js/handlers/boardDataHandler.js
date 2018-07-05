@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
-const CheckIn = require('../models/boardData_checkin')
+const CheckIn = require('../models/boardData_checkin'),
+    ThreeW = require('../models/3W')
 
 function saveCheckin(data, sessionId) {
     return CheckIn.findOne({session: sessionId, 'data.name': data.name })
@@ -16,11 +17,13 @@ function saveCheckin(data, sessionId) {
                 return CheckIn.update({ _id: res._id }, { $set: { 'data.data': data.data } })
             }
         })
-    
+}
+
+function saveCard(data, sessionId){
+    return new ThreeW({ sessionId: sessionId, data: data }).save()
 }
 
 function getCheckinData(sessionIds) {
-    outputToLog(sessionIds, null)
     return CheckIn.aggregate([
         { $match: { session: { $in: sessionIds.map(id => mongoose.Types.ObjectId(id)) } } },
         {
@@ -39,5 +42,6 @@ function getCheckinData(sessionIds) {
 
 module.exports = {
     saveCheckin: saveCheckin,
+    saveCard: saveCard,
     getCheckinData: getCheckinData
 }

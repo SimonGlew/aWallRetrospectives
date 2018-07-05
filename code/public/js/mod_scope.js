@@ -4,7 +4,8 @@ var sessionId = window.location.href.split('52724/')[1].split('/')[0]
 var username = localStorage.getItem('username')
 var members = [],
     checkin_data = [],
-    sprint = -1
+    sprint = -1,
+    cards = {}
 
 
 function sendBaseMessage() {
@@ -26,6 +27,16 @@ socket.on('checkin_data', function (data) {
     checkin_data = data
     redrawVotingScreen()
     redrawGraphScreen()
+})
+
+socket.on('3w_card', function (data) {
+    let user = data.name
+    let data = data.data
+    //cards is a map
+    if(!cards[user])
+        cards[user] = []
+
+    cards[user].push(data)
 })
 
 
