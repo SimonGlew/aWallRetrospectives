@@ -12,11 +12,11 @@ function sendBaseMessage() {
 }
 
 socket.on('mod_instructions', function (data) {
-    console.log(data)
     drawInstruction(data)
 })
 
 socket.on('members_mod', function (data) {
+    console.log('members_mod')
     members = data.members
     sprint = data.spr
     redrawVotingScreen()
@@ -24,6 +24,8 @@ socket.on('members_mod', function (data) {
 
 
 socket.on('checkin_data', function (data) {
+    console.log('checkin_data')
+
     checkin_data = data
     redrawVotingScreen()
     redrawGraphScreen()
@@ -67,7 +69,31 @@ function redrawVotingScreen() {
 }
 
 function redrawGraphScreen() {
+    let chartPoints = []
+    if(checkin_data.length){
+        checkin_data.forEach(d => {
+            let x = parseInt(d.session.sprint), y = 0;
+            d.data.forEach(node => {
+                y += node.data.data
+            })
+            if(d.data.length) y = y / d.data.length
+            chartPoints.push({x: x, y: y})
+        })
 
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: { datasets: [{ data: chartPoints }] },
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }]
+                }
+            }
+        });
+    }
 }
 
 function drawInstruction(data) {
