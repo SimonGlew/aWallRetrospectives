@@ -104,6 +104,7 @@ function drawVoter(width, height) {
 function voteFinish(){
     $('#start').css('display', 'none')
     $('#main').css('display', 'block')
+    $('#title').html('<i class="fas fa-angle-double-right"></i>   Sprint <%=sessionData.sprint%>')
 }
 
 function changeCardColor(col) {
