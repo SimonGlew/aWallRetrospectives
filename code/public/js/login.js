@@ -115,7 +115,7 @@ $('#joinConfirmBtn').click(function () {
                 localStorage.setItem('username', $('#usernameValue').val());
                 localStorage.setItem('sprint', $('#sprintNumberValue').val());
                 let endURL = $('#usernameValue').val() == 'mod' ? '/mod' : '/par'
-                window.location = data._id + "/" + data.retrospectiveType.name + endURL;
+                window.location = 'session/' + data._id + "/type/" + data.retrospectiveType.name + endURL;
             }
         })
     }
@@ -140,7 +140,7 @@ $('#joinConfirmBtnMobile').click(function () {
                 console.log(data)
                 localStorage.setItem('username', $('#usernameValueMobile').val());
                 let endURL = $('#usernameValueMobile').val() == 'mod' ? '/mod' : '/par'
-                window.location = data._id + "/" + data.retrospectiveType.name + endURL;
+                window.location = 'session/' + data._id + "/type/" + data.retrospectiveType.name + endURL;
             }
         })
     }

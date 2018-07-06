@@ -1,6 +1,9 @@
 var socket = io()
 
-var sessionId = window.location.href.split('52724/')[1].split('/')[0]
+const PORT = 52724
+
+var sessionId = window.location.href.split('session/')[1].split('/')[0]
+var retroType = window.location.href.split('type/')[1].split('/')[0]
 var username = localStorage.getItem('username')
 var sprint = localStorage.getItem('sprint')
 
@@ -15,15 +18,19 @@ function sendCheckinVote(d) {
 }
 
 socket.on('closeRetrospective', function (data) {
-    window.location.href = window.location.href.split('52724/')[0] + '52724';
+    window.location.href = window.location.href.split(PORT + '/')[0] + PORT;
 })
 
 socket.on('terminateRetrospective', function (data) {
-    window.location.href = window.location.href.split('52724/')[0] + '52724';
+    window.location.href = window.location.href.split(PORT + '/')[0] + PORT;
 })
 
-
+var g, circleG
 function drawVoter(width, height) {
+    if(g || circleG){
+        g = null
+        circleG = null
+    }
     var svg = d3.select("#d3voter").append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -34,7 +41,7 @@ function drawVoter(width, height) {
     var outerCircleRadius = 320;
     var voteCircleRadius = 90;
 
-    var g = svg.append("g");
+    g = svg.append("g");
     g.append("circle").attr({
         id: 'mainCircle',
         cx: originX,
@@ -53,7 +60,7 @@ function drawVoter(width, height) {
     .style("font-size", "60px")
 
 
-    var circleG = svg.append("g");
+    circleG = svg.append("g");
 
     var circleOriginX = originX + ((outerCircleRadius) * Math.sin(0.2 * 2 * Math.PI));
     var circleOriginY = originY - ((outerCircleRadius) * Math.cos(0.2 * 2 * Math.PI));
@@ -81,12 +88,10 @@ function drawVoter(width, height) {
             .style("opacity", "0");
 
             g.select('text')
-            .transition()
-            .duration(2000)
-            .ease('linear')
             .text('Voted')
 
             $('#voteButton').fadeIn('slow')
+            $('#cancelVote').fadeIn('slow')
 
         })
 
@@ -110,6 +115,20 @@ function voteFinish(){
     $('#start').css('display', 'none')
     $('#main').css('display', 'block')
 }
+
+function cancelVote(){
+    $('#voteButton').fadeOut('slow')
+    $('#cancelVote').fadeOut('slow')
+
+    circleG.transition()
+    .duration(2000)
+    .ease('linear')
+    .style("opacity", "1");
+
+    g.select('text')
+    .text('Please Vote')
+}
+
 
 function changeCardColor(col) {
     if (col == 'good' || col == 'bad') {

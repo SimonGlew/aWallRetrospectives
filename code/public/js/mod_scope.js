@@ -1,11 +1,15 @@
 var socket = io()
 
-var sessionId = window.location.href.split('52724/')[1].split('/')[0]
+const PORT = 52724
+
+var sessionId = window.location.href.split('session/')[1].split('/')[0]
 var username = localStorage.getItem('username')
 var members = [],
-    checkin_data = [],
-    sprint = -1,
-    cards = {}
+checkin_data = [],
+sprint = -1,
+cards = {}
+
+var currentState = 0
 
 
 function sendBaseMessage() {
@@ -17,9 +21,17 @@ socket.on('mod_instructions', function (data) {
 })
 
 socket.on('members_mod', function (data) {
+    updateData()
     members = data.members
-    sprint = data.spr
-    redrawVotingScreen()
+    if(parseInt(data.sprint) != -1){
+        if(data.sprint)
+            sprint = data.sprint
+        redrawVotingScreen()
+    }
+})
+
+socket.on('update_header', function (data) {
+    updateData()
 })
 
 
@@ -51,7 +63,8 @@ function redrawVotingScreen() {
     if (!checkin_data.length) {
         members.forEach(function (member) { tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-exclamation fa-lg"></i></td>' })
     } else {
-        let average = { total: 0, amount: 0 }
+        console.log('data', checkin_data)
+        console.log('sprint', sprint)
         checkin_data.forEach(function (dat) {
             if (dat.session.sprint == sprint) {
                 members.forEach(function (member) {
@@ -62,25 +75,27 @@ function redrawVotingScreen() {
                             average.amount = row.data.data == 0 ? average.amount : average.amount + 1
                             let coloredLength = row.data.data != 0 ? (row.data.data / 10 * 500) : 0
                             let pad = 500 - coloredLength
+
+                            console.log('a', row.data.data, 'b', coloredLength, 'c', pad)
                             tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-check fa-lg"></i></td>'
                             tableRowFour += ('<td style="padding:0 10px 0 10px;">' +
-                                '<div style="min-height: ' + pad + 'px; height=' + pad + 'px"> </div>' +
-                                '<div style="background-color:blue;min-height: ' + coloredLength + 'px; height=' + coloredLength + 'px"> </div>' +
+                                '<div style="min-height: ' + pad + 'px; height:' + pad + 'px"> </div>' +
+                                '<div style="background-color:blue;min-height: ' + coloredLength + 'px; height:' + coloredLength + 'px"> </div>' +
                                 '<p>' + row.data.data + '</p>' +
                                 '</td>')
                             found = true
                         }
                     })
-                    if (!found) tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-exclamation fa-lg"></i></td>'
+                    if (!found){
+                        tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-exclamation fa-lg"></i></td>'
+                        tableRowFour += ('<td style="padding:0 10px 0 10px;">' + '<div style="min-height: 500px; height: 500px"> </div>')
+                    } 
                 })
             }
         })
-        $('#currentAverage').html('Average Vote: <b>' + (average.amount != 0 ? (average.total / average.amount) : 0) + '</b>')
     }
-
-
     $('#memberGraphic').html((tableRowOne + '</td>') + (tableRowTwo + '</td>') + (tableRowThree + '</td>') + (tableRowFour + '</td>'));
-    $('#averageThisSprint').html('This Sprint Average: <b>' + (average.amount == 0 ? 0 : (average.total / average.amount)) + '</b>')
+    $('#averageThisSprint').html('This Sprint Average: <b>' + (average.amount == 0 ? 0 : (average.total / average.amount)).toFixed(2) + '</b>')
 }
 
 function redrawGraphScreen() {
@@ -151,23 +166,47 @@ function drawInstruction(data) {
 }
 
 function nextSection(){
+    if(currentState == 0){
+        $('#main').css('display', 'block')
+        $('#start').css('display', 'none')
+        socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'next' })
+
+        currentState ++;
+    }else if(currentState == 1){
+        $('#end').css('display', 'block')
+        $('#main').css('display', 'none')  
+        socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'next' })
+
+        currentState ++;
+    }
 
 }
 
 function prevSection(){
+    if(currentState == 1){
+        $('#start').css('display', 'block')
+        $('#main').css('display', 'none')
+        socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'prev' })
 
+        currentState --;
+    }else if(currentState == 2){
+        $('#main').css('display', 'block')
+        $('#end').css('display', 'none')
+        socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'prev' })
+
+        currentState --;
+    }
 }
 
 function closeRetrospective(){
     //write out some form of report, probably json
     socket.emit('closeRetrospective', { sessionId: sessionId })
-    window.location.href = window.location.href.split('52724/')[0] + '52724';
-    console.log('niw0ngriebrjiebvjre')
+    window.location.href = window.location.href.split(PORT + '/')[0] + PORT;
 }
 
 function terminateRetrospective(){
     socket.emit('terminateRetrospective', { sessionId: sessionId })
-    window.location.href = window.location.href.split('52724/')[0] + '52724';
+    window.location.href = window.location.href.split(PORT + '/')[0] + PORT;
 }
 
 redrawVotingScreen() 

@@ -86,10 +86,16 @@ function getSprintSessionsFromId(sessionId) {
         })
 }
 
+function getCurrentMembers(sessionId){
+    return Session.findOne({_id: sessionId}, 'members')
+        .lean()
+        .then(session => session.members)
+}
+
 function getSprintFromId(sessionId){
     return Session.findOne({ _id: sessionId }, 'sprint')
         .lean()
-        .then(project => project.sprint)
+        .then(project => project ? project.sprint : null)
 }
 
 function disactiveSession(sessionId){
@@ -101,15 +107,41 @@ function closeSession(sessionId){
     //write output
 }
 
+function changeState(toState, sessionId){
+    return Promise.all([
+        RetrospectiveType.findOne({ name: 'Check-in' }, '_id').lean(),
+        RetrospectiveType.findOne({ name: 'Delta' }, '_id').lean(),
+        Session.findOne({ _id: sessionId })
+    ])
+        .then(([checkin, delta, session]) => {
+            if(toState == 0)
+                session.currentState = checkin._id
+            else if(toState == 2)
+                session.currentState = delta._id
+            else if(toState == 1)
+                session.currentState = session.retrospectiveType
+            
+            return session.save()
+                .then(() => {
+                    return getMetadata(sessionId)
+                        .then(metadata => metadata)
+                })
+        })
+}
+
 
 module.exports = {
     createSession: createSession,
     joinSession: joinSession,
     getMetadata: getMetadata,
-    addMember: addMember,
-    removeMember: removeMember,
+    getCurrentMembers: getCurrentMembers,
     getSprintSessionsFromId: getSprintSessionsFromId,
     getSprintFromId: getSprintFromId,
+
     disactiveSession: disactiveSession,
-    closeSession: closeSession
+    closeSession: closeSession,
+
+    changeState: changeState,
+    addMember: addMember,
+    removeMember: removeMember
 };

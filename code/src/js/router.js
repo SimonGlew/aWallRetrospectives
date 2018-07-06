@@ -13,13 +13,13 @@ router.get('/login', function (req, res) {
     res.render('login');
 });
 
-router.get('/:sessionId/:type/mod', function (req, res) {
+router.get('/session/:sessionId/type/:type/mod', function (req, res) {
     res.render('mod_scope', {
         sessionId: req.params.sessionId
     });
 });
 
-router.get('/:sessionId/:type/par', function (req, res) {
+router.get('/session/:sessionId/type/:type/par', function (req, res) {
     sessionHandler.getMetadata(req.params.sessionId)
         .then(data => {
             res.render('client_scope', {
