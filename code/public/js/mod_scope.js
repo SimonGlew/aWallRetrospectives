@@ -76,7 +76,6 @@ function redrawVotingScreen() {
                             let coloredLength = row.data.data != 0 ? (row.data.data / 10 * 500) : 0
                             let pad = 500 - coloredLength
 
-                            console.log('a', row.data.data, 'b', coloredLength, 'c', pad)
                             tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-check fa-lg"></i></td>'
                             tableRowFour += ('<td style="padding:0 10px 0 10px;">' +
                                 '<div style="min-height: ' + pad + 'px; height:' + pad + 'px"> </div>' +
