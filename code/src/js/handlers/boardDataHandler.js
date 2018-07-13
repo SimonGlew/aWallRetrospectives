@@ -20,7 +20,7 @@ function saveCheckin(data, sessionId) {
 }
 
 function saveCard(data, sessionId){
-    return new ThreeW({ sessionId: sessionId, data: data }).save()
+    return new ThreeW({ session: sessionId, data: data }).save()
 }
 
 function getCheckinData(sessionIds) {

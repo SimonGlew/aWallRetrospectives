@@ -69,7 +69,6 @@ function socketRouter(io) {
 				.then(sessionIds => {
 					return boardDataHandler.getCheckinData(sessionIds)
 					.then(data => {
-						outputToLog(data, null)
 						moderatorSocket._socket ? moderatorSocket._socket.emit('checkin_data', data) : null
 					})
 				})
@@ -80,10 +79,11 @@ function socketRouter(io) {
 		socket.on('ThreeWCard', (data) => {
 			let sessionId = data.sessionId
 			delete data.sessionId
-
+			console.log(data)
 			return boardDataHandler.saveCard(data, sessionId)
 			.then(card => {
-				moderatorSocket._socket ? moderatorSocket._socket.emit('3w_card', { name: socket.name, data: card }) : null
+				console.log(card)
+				moderatorSocket._socket ? moderatorSocket._socket.emit('3w_card', { name: socket.name, data: card.data }) : null
 			})
 		})
 

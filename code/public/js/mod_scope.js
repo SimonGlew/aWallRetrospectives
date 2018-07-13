@@ -9,7 +9,9 @@ checkin_data = [],
 sprint = -1,
 cards = {}
 
-var currentState = 0
+var currentState = 0,
+    prevState = 0,
+    prevTime = new Date()
 
 
 function sendBaseMessage() {
@@ -42,13 +44,13 @@ socket.on('checkin_data', function (data) {
 })
 
 socket.on('3w_card', function (data) {
-    let user = data.name
-    let data = data.data
+    let user = data.data.name
+    let card = data.data.data
     //cards is a map
     if(!cards[user])
         cards[user] = []
 
-    cards[user].push(data)
+    cards[user].push(card)
 })
 
 
@@ -63,8 +65,6 @@ function redrawVotingScreen() {
     if (!checkin_data.length) {
         members.forEach(function (member) { tableRowThree += '<td style="padding:0 10px 0 10px;"><i class="fas fa-exclamation fa-lg"></i></td>' })
     } else {
-        console.log('data', checkin_data)
-        console.log('sprint', sprint)
         checkin_data.forEach(function (dat) {
             if (dat.session.sprint == sprint) {
                 members.forEach(function (member) {
@@ -165,11 +165,16 @@ function drawInstruction(data) {
 }
 
 function nextSection(){
+    if(currentState != 2){
+        prevTime = currentDate
+        currentDate = new Date()
+        prevState = currentState 
+    }
     if(currentState == 0){
         $('#main').css('display', 'block')
         $('#start').css('display', 'none')
         socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'next' })
-
+        
         currentState ++;
     }else if(currentState == 1){
         $('#end').css('display', 'block')
@@ -182,6 +187,11 @@ function nextSection(){
 }
 
 function prevSection(){
+    if(currentState != 0){
+        prevTime = currentDate
+        currentDate = new Date()
+        prevState = currentState 
+    }
     if(currentState == 1){
         $('#start').css('display', 'block')
         $('#main').css('display', 'none')

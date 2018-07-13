@@ -152,7 +152,7 @@ function addCard(){
         $('#cardErrorMessage').text('')
         let cardTextArea = $('#cardTextArea').val()
 
-        //send away card
+        socket.emit('ThreeWCard', { data: { type: cardColor, message: cardTextArea }, sessionId: sessionId, name: username })
 
         $('#cardTextArea').val('')
         $('#bad').css('border', '0px solid black')  

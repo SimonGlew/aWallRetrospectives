@@ -9,7 +9,7 @@ var startTime = new Date()
 
 var timers = []
 for (let i = 0; i < 3; i++) {
-    timers.push({ currentTime: 0, seen: false })
+    timers.push({ currentTime: 0 })
 }
 
 var color = d3.scale.linear()
@@ -52,17 +52,8 @@ tick();
 
 function tick() {
     //work out times for timers
-    let added = 0
-    if ($('#currentStateLabel').text().indexOf('Check-in') != -1) {
-        added = timers[0].currentTime
-    } else if ($('#currentStateLabel').text().indexOf('Delta') != -1) {
-        added = timers[2].currentTime
-    } else {
-        added = timers[1].currentTime
-    }
+    let added = timers[currentState].currentTime
 
-    console.log('added', added)
-    console.log('a', new Date().getTime() - currentDate.getTime())
     let currentTime = msToHMS(new Date().getTime() - currentDate.getTime() + added)
     let overallTime = msToHMS(new Date().getTime() - startTime.getTime())
 
@@ -89,19 +80,7 @@ function updateData() {
     var sessionId = window.location.href.split('session/')[1].split('/')[0]
     $.get('/api/' + sessionId + '/getMetadata', {})
         .then(data => {
-            if ($('#currentStateLabel').text().indexOf('Check-in') != -1) {
-                timers[0].currentTime += (new Date().getTime() - currentDate.getTime())
-                timers[0].seen = true
-            } else if ($('#currentStateLabel').text().indexOf('Delta') != -1) {
-                timers[2].currentTime += (new Date().getTime() - currentDate.getTime())
-                timers[2].seen = true
-            } else {
-                timers[1].currentTime += (new Date().getTime() - currentDate.getTime())
-                timers[1].seen = true
-            }
-            currentDate = new Date()
-
-            //update fields
+            timers[prevState].currentTime += (new Date().getTime() - prevTime.getTime())
             //sessionName: project: sprint
             $('#sessionName').html("<b>Project Details: </b> Sprint: " + data.sprint + ", for Project: " + data.project);
             //retrospectiveName name: retrospectiveType.name
