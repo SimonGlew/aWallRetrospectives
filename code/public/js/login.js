@@ -90,7 +90,7 @@ $('#createConfirmBtn').click(function () {
             else {
                 localStorage.setItem('username', 'moderator');
                 localStorage.setItem('sprint', $('#sprintNumberValue').val());
-                window.location = data._id + '/mod'
+                window.location = 'session/' + data._id + "/type/" + data.retrospectiveType.name + '/mod'
             }
         })
     }
