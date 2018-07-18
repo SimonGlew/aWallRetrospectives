@@ -131,17 +131,24 @@ function cancelVote(){
 
 
 function changeCardColor(col) {
-    if (col == 'good' || col == 'bad') {
+    if (col == 'good' || col == 'bad' || col =='action') {
         cardColor = col
     }
 
     if(col == 'good'){
         $('#good').css('border', '10px solid black')
         $('#bad').css('border', '0px solid black')
+        $('#action').css('border', '0px solid black')
     }
     else if(col == 'bad'){
         $('#bad').css('border', '10px solid black')
         $('#good').css('border', '0px solid black')
+        $('#action').css('border', '0px solid black')
+    }
+    else if(col == 'action'){
+        $('#bad').css('border', '0px solid black')
+        $('#good').css('border', '0px solid black')
+        $('#action').css('border', '10px solid black')
     }
 } 
 

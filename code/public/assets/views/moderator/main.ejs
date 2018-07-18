@@ -7,13 +7,38 @@
 
 <body>
 	<div style='min-height: 30px;'></div>
-	<div id='3W' class="container" style='text-align: center;'>
-		<h1>MAIN</h1>
-		<div class='row'></div>
+	<div id='3W' style='text-align: center;width:100%'>
+		<div class='row' style='width:100%'>
+			<div class='w-70'>
+				<h1>Cards</h1>
+				<table id='cardTable' style='margin-left:20px;'></table>
+			</div>
+			<div class='w-30'>
+				<h1>Action Points</h1>
+			</div>
+		</div>
+
+		<div class="modal fade" id="cardPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Working Title</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						...
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"></script>
-	<script src="/lib/bootstrap/bootstrap.min.js"></script>
 	<script>
 		$(function () {
 			let retrotype = window.location.href.split('type/')[1].split('/')[0]

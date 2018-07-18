@@ -4,8 +4,12 @@ var width = $('#timer').width(),
 var radius = height / 0.7,
     spacing = .09;
 
-var currentDate = new Date();
 var startTime = new Date()
+var currentDate = new Date();
+
+var currentState = 0,
+    prevState = 0,
+    prevTime = new Date()
 
 var timers = []
 for (let i = 0; i < 3; i++) {
@@ -46,7 +50,6 @@ field.append("path")
     .attr("id", function (d, i) { return "arc-center-" + i; })
     .attr("class", "arc-center");
 
-tick();
 
 //d3.select(self.frameElement).style("height", height + "px");
 
@@ -54,8 +57,10 @@ function tick() {
     //work out times for timers
     let added = timers[currentState].currentTime
 
-    let currentTime = msToHMS(new Date().getTime() - currentDate.getTime() + added)
-    let overallTime = msToHMS(new Date().getTime() - startTime.getTime())
+    let nowTime = new Date().getTime()
+
+    let currentTime = msToHMS(nowTime - currentDate.getTime() + added)
+    let overallTime = msToHMS(nowTime - startTime.getTime())
 
 
     $('#currentStateTime').html(currentTime);
@@ -76,11 +81,12 @@ function tick() {
     setTimeout(tick, 1000);
 }
 
-function updateData() {
+function updateData(init) {
     var sessionId = window.location.href.split('session/')[1].split('/')[0]
     $.get('/api/' + sessionId + '/getMetadata', {})
         .then(data => {
-            timers[prevState].currentTime += (new Date().getTime() - prevTime.getTime())
+            if(!init) 
+                timers[prevState].currentTime += (new Date().getTime() - prevTime.getTime())
             //sessionName: project: sprint
             $('#sessionName').html("<b>Project Details: </b> Sprint: " + data.sprint + ", for Project: " + data.project);
             //retrospectiveName name: retrospectiveType.name
@@ -97,7 +103,9 @@ function updateData() {
             $('#currentStateLabel').html("<b>Current State:</b> " + data.currentState.name);
         })
 }
-updateData()
+updateData(true)
+tick();
+
 
 function msToHMS(ms) {
     let dateString = ''

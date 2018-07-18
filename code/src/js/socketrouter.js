@@ -83,7 +83,7 @@ function socketRouter(io) {
 			return boardDataHandler.saveCard(data, sessionId)
 			.then(card => {
 				console.log(card)
-				moderatorSocket._socket ? moderatorSocket._socket.emit('3w_card', { name: socket.name, data: card.data }) : null
+				moderatorSocket._socket ? moderatorSocket._socket.emit('3w_card', { name: socket.name, _id: card._id, data: card.data }) : null
 			})
 		})
 

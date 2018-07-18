@@ -7,12 +7,8 @@ var username = localStorage.getItem('username')
 var members = [],
 checkin_data = [],
 sprint = -1,
-cards = {}
-
-var currentState = 0,
-    prevState = 0,
-    prevTime = new Date()
-
+cardsByUser = {}
+cardsById = {}
 
 function sendBaseMessage() {
     socket.emit('moderatorConnection', { name: username, sessionId: sessionId })
@@ -22,8 +18,10 @@ socket.on('mod_instructions', function (data) {
     drawInstruction(data)
 })
 
+let init = false
 socket.on('members_mod', function (data) {
-    updateData()
+    !init ? updateData(true) : updateData()
+    init = true
     members = data.members
     if(parseInt(data.sprint) != -1){
         if(data.sprint)
@@ -45,13 +43,41 @@ socket.on('checkin_data', function (data) {
 
 socket.on('3w_card', function (data) {
     let user = data.data.name
-    let card = data.data.data
+    
     //cards is a map
-    if(!cards[user])
-        cards[user] = []
+    if(!cardsByUser[user])
+        cardsByUser[user] = []
 
-    cards[user].push(card)
+    let obj = { _id: data._id, user: user,  data: data.data.data }
+
+    cardsByUser[user].push(obj)
+    cardsById[data._id] = obj
+
+    redrawCardSystem()
 })
+
+function redrawCardSystem(){
+    let tableHTML = null
+
+    Object.keys(cardsByUser).forEach(function (member){
+        tableHTML += '<tr style="margin-left:3px;">' + 
+        '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' + 
+        '</td>'
+        cardsByUser[member].forEach(function (card){
+            console.log('card', card)
+
+            let message = card.data.message, type = card.data.type
+            let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : (type == 'bad' ? 'badCard.png' : 'actionPointCard.png'))
+            tableHTML += '<td style="vertical-align:top;padding-right:10px;"><img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard('+ "'" + card._id + "'" +')"></td>'
+        })
+        tableHTML += '</tr>'
+    })
+    $('#cardTable').html(tableHTML)
+}
+
+function openCard(cardId){
+    $('#cardPopup').modal('show');
+}
 
 
 function redrawVotingScreen() {
