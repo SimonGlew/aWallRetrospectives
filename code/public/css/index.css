@@ -11,6 +11,10 @@ div.w-10 {
     width: 10%;
 }
 
+div.w-15 {
+    width: 15%;
+}
+
 div.w-20 {
     width: 20%;
 }
@@ -45,6 +49,10 @@ div.w-70 {
 
 div.w-80 {
     width: 80%;
+}
+
+div.w-85 {
+    width: 85%;
 }
 
 div.w-90 {

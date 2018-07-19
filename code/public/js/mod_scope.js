@@ -4,11 +4,13 @@ const PORT = 52724
 
 var sessionId = window.location.href.split('session/')[1].split('/')[0]
 var username = localStorage.getItem('username')
-var members = [],
-checkin_data = [],
-sprint = -1,
-cardsByUser = {}
-cardsById = {}
+var members = []
+var checkin_data = []
+var sprint = -1
+var cardsByUser = {}
+var actionCards = []
+var cardsById = {}
+var currentlySelectedCard = null
 
 function sendBaseMessage() {
     socket.emit('moderatorConnection', { name: username, sessionId: sessionId })
@@ -42,18 +44,38 @@ socket.on('checkin_data', function (data) {
 })
 
 socket.on('3w_card', function (data) {
-    let user = data.data.name
-    
-    //cards is a map
-    if(!cardsByUser[user])
-        cardsByUser[user] = []
+    if(!Array.isArray(data))
+        data = [data]
 
-    let obj = { _id: data._id, user: user,  data: data.data.data }
+    console.log(data)
 
-    cardsByUser[user].push(obj)
-    cardsById[data._id] = obj
+    data.forEach(function(card){
+        let user = card.data.name
 
+        //cards is a map
+        if(!cardsByUser[user])
+            cardsByUser[user] = []
+
+        let obj = { _id: card._id, user: user,  data: card.data.data }
+
+        cardsByUser[user].push(obj)
+        cardsById[card._id] = obj
+    })
     redrawCardSystem()
+})
+
+socket.on('action_card', function (data){
+    if(!Array.isArray(data))
+        data = [data]
+
+    data.forEach(function(card){
+        let obj = { _id: card._id, user: card.data.name,  data: card.data.data }
+
+        actionCards.push(obj)
+        cardsById[card._id] = obj
+    })
+
+    redrawActionCards()
 })
 
 function redrawCardSystem(){
@@ -63,20 +85,49 @@ function redrawCardSystem(){
         tableHTML += '<tr style="margin-left:3px;">' + 
         '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' + 
         '</td>'
-        cardsByUser[member].forEach(function (card){
-            console.log('card', card)
-
+        cardsByUser[member].forEach(function (card, index){
             let message = card.data.message, type = card.data.type
-            let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : (type == 'bad' ? 'badCard.png' : 'actionPointCard.png'))
-            tableHTML += '<td style="vertical-align:top;padding-right:10px;"><img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard('+ "'" + card._id + "'" +')"></td>'
+            let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : 'badCard.png')
+            tableHTML += '<td style="vertical-align:top;padding-right:10px;"><img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard('+ "'" + card._id + "', " + (index + 1) +')"></td>'
         })
         tableHTML += '</tr>'
     })
-    $('#cardTable').html(tableHTML)
+    if(tableHTML)
+        $('#cardTable').html(tableHTML)
 }
 
-function openCard(cardId){
+function redrawActionCards(){
+    let tableHTML = null
+
+    actionCards.forEach(function(card){
+        let cardType = card.data.type
+        tableHTML += '<tr style="margin-left:20px;">' + 
+        '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard('+ "'" + card._id + "'" + ')"></td></tr>'
+    })
+    if(tableHTML)
+        $('#actionCards').html(tableHTML)
+}
+
+
+function openCard(cardId, index){
     $('#cardPopup').modal('show');
+
+    currentlySelectedCard = cardsById[cardId]
+
+    $('#modalTitle').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action for ' + currentlySelectedCard.data.cardId))
+    currentlySelectedCard.data.type == 'action' ? $('#carryOverCard').css('display', 'block') : null
+    $('#completeCard').html(currentlySelectedCard.completed ? '<i class="fas fa-check fa-lg"></i> Completed' : '<i class="fas fa-check fa-lg"></i> Complete')
+    $('#cardName').html('NAME: ' + currentlySelectedCard.user)
+    $('#cardMessage').html('MESSAGE: ' + currentlySelectedCard.data.message)
+
+}
+
+function completeCard(){
+    if(currentlySelectedCard){
+        currentlySelectedCard.completed = !currentlySelectedCard.completed
+        socket.emit('complete_card', { cardId: currentlySelectedCard._id })
+        $('#cardPopup').modal('hide');
+    }
 }
 
 
@@ -200,7 +251,9 @@ function nextSection(){
         $('#main').css('display', 'block')
         $('#start').css('display', 'none')
         socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'next' })
-        
+        cardsByUser = {}
+        actionCards = []
+        cardsById = {}
         currentState ++;
     }else if(currentState == 1){
         $('#end').css('display', 'block')
@@ -228,7 +281,9 @@ function prevSection(){
         $('#main').css('display', 'block')
         $('#end').css('display', 'none')
         socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'prev' })
-
+        cardsByUser = {}
+        actionCards = []
+        cardsById = {}
         currentState --;
     }
 }

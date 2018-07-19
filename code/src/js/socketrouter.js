@@ -79,12 +79,31 @@ function socketRouter(io) {
 		socket.on('ThreeWCard', (data) => {
 			let sessionId = data.sessionId
 			delete data.sessionId
-			console.log(data)
 			return boardDataHandler.saveCard(data, sessionId)
 			.then(card => {
-				console.log(card)
 				moderatorSocket._socket ? moderatorSocket._socket.emit('3w_card', { name: socket.name, _id: card._id, data: card.data }) : null
 			})
+		})
+
+		socket.on('ActionCard', (data) => {
+			let sessionId = data.sessionId
+			delete data.sessionId
+			return boardDataHandler.saveCard(data, sessionId)
+			.then(card => {
+				moderatorSocket._socket ? moderatorSocket._socket.emit('action_card', { name: socket.name, _id: card._id, data: card.data }) : null
+			})
+		})
+
+		socket.on('inactive_card', (data) => {
+			return boardDataHandler.inactiveCard(data.cardId)
+		})
+
+		socket.on('carryon_card', (data) => {
+			return boardDataHandler.carryonCard(data.cardId)
+		})
+
+		socket.on('complete_card', (data) => {
+			return boardDataHandler.completeCard(data.cardId)
 		})
 
 		socket.on('terminateRetrospective', (data) => {
@@ -114,25 +133,39 @@ function socketRouter(io) {
 			if(data.currentState == 0){
 				//check-in
 				if(data.dir =='next'){
-					return sessionHandler.changeState(1, data.sessionId)
-						.then(metadata => socket.emit('update_header', null))
+					return Promise.all([
+						sessionHandler.changeState(1, data.sessionId),
+						boardDataHandler.getAllCards(data.sessionId)
+					])
+					.then(([, cards]) => {
+						socket.emit('update_header', null)
+						socket.emit('3w_card', cards.nonA)
+						socket.emit('action_card', cards.A)
+					})	
 				}
 			}
 			else if(data.currentState == 1){
 				//main
 				if(data.dir == 'next'){
 					return sessionHandler.changeState(2, data.sessionId)
-						.then(metadata => socket.emit('update_header', null))
+					.then(metadata => socket.emit('update_header', null))
 				}else if(data.dir == 'prev'){
 					return sessionHandler.changeState(0, data.sessionId)
-						.then(metadata => socket.emit('update_header', null))
+					.then(metadata => socket.emit('update_header', null))
 				}
 			}
 			else if(data.currentState == 2){
 				//delta
 				if(data.dir =='prev'){
-					return sessionHandler.changeState(1, data.sessionId)
-						.then(metadata => socket.emit('update_header', null))
+					return Promise.all([
+						sessionHandler.changeState(1, data.sessionId),
+						boardDataHandler.getAllCards(data.sessionId)
+					])
+					.then(([, cards]) => {
+						socket.emit('update_header', null)
+						socket.emit('3w_card', cards.nonA)
+						socket.emit('action_card', cards.A)
+					})				
 				}
 			}
 		})

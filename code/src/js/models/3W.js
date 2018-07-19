@@ -9,6 +9,16 @@ let ThreeWSchema = new mongoose.Schema({
     },
     data: {
         type: Object
+    },
+    active: {
+    	type: Boolean,
+    	default: true
+    },
+    carryOver: {
+    	type: Boolean
+    },
+    completed: {
+        type: Boolean
     }
 });
 

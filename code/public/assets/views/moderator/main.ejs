@@ -9,35 +9,49 @@
 	<div style='min-height: 30px;'></div>
 	<div id='3W' style='text-align: center;width:100%'>
 		<div class='row' style='width:100%'>
-			<div class='w-70'>
+			<div class='w-85'>
 				<h1>Cards</h1>
 				<table id='cardTable' style='margin-left:20px;'></table>
 			</div>
-			<div class='w-30'>
+			<div class='w-15'>
 				<h1>Action Points</h1>
+				<table id='actionCards' style='margin-left:5px;'></table>
 			</div>
 		</div>
 
 		<div class="modal fade" id="cardPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">Working Title</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
+					<div class="modal-header" style='background-color:#66adff;padding:7px;'>
+						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
+							<h5 class="modal-title" id="modalTitle" style='padding-left:10px;'></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
 					</div>
-					<div class="modal-body">
-						...
+					<div class="modal-body" style='width:100%; padding: 0px;'>
+						<div class='row' style='width:100%'>
+							<div class='w-70' style='padding-left:25px; text-align:left;'>
+								<h3>Data Goes Here</h3>
+								<span id='cardName'></span>
+								<span id='cardMessage' style='display:block;'></span>
+							</div>
+							<div class='w-30' style='text-align:left;'>
+								<h3 style='text-align:center;'>Actions</h3>
+								<button id='deleteCard' type="button" class="btn" style='background: white; border-color:black;margin-bottom:2px;margin-left:50px;' onclick='inactiveCard()'><i class="fas fa-cross fa-lg"></i>Delete</button>
+								<button id='carryOverCard' type="button" class="btn" style='background: white; border-color:black;display:none;margin-left:50px;' onclick='carryoverCard()'><i class="fas fa-angle-double-right fa-lg"></i>Carry over</button>
+							</div>
+						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
+					<div class="modal-footer" style='background-color:#66adff;padding:5px;'>
+						<button id='completeCard' type="button" class="btn" style='background: white; border-color:black;' onclick='completeCard()'></button>
+						<button type="button" class="btn" data-dismiss="modal" style='background: white; border-color:black;'><i class="fas fa-cross fa-lg"></i>Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
-
+		<div style='min-height:60px'></div>
 	</div>
 	<script>
 		$(function () {

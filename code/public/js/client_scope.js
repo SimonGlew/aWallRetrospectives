@@ -139,16 +139,19 @@ function changeCardColor(col) {
         $('#good').css('border', '10px solid black')
         $('#bad').css('border', '0px solid black')
         $('#action').css('border', '0px solid black')
+        $('#actionPointId').css('display', 'none')
     }
     else if(col == 'bad'){
         $('#bad').css('border', '10px solid black')
         $('#good').css('border', '0px solid black')
         $('#action').css('border', '0px solid black')
+        $('#actionPointId').css('display', 'none')
     }
     else if(col == 'action'){
         $('#bad').css('border', '0px solid black')
         $('#good').css('border', '0px solid black')
         $('#action').css('border', '10px solid black')
+        $('#actionPointId').css('display', 'block')
     }
 } 
 
@@ -158,12 +161,18 @@ function addCard(){
     else{
         $('#cardErrorMessage').text('')
         let cardTextArea = $('#cardTextArea').val()
+        let cardId = $('#actionPointId').val()
 
-        socket.emit('ThreeWCard', { data: { type: cardColor, message: cardTextArea }, sessionId: sessionId, name: username })
+
+        if(cardColor != 'action') 
+            socket.emit('ThreeWCard', { data: { type: cardColor, message: cardTextArea }, sessionId: sessionId, name: username })
+        else
+            socket.emit('ActionCard', { data: { type: cardColor, message: cardTextArea, cardId: cardId }, sessionId: sessionId, name: username })
 
         $('#cardTextArea').val('')
         $('#bad').css('border', '0px solid black')  
         $('#good').css('border', '0px solid black')   
+        $('#action').css('border', '0px solid black')   
         cardColor = null 
 
         $('#cardMessageSuccess').css('display', 'block')
