@@ -165,9 +165,9 @@ function addCard(){
 
 
         if(cardColor != 'action') 
-            socket.emit('ThreeWCard', { data: { type: cardColor, message: cardTextArea }, sessionId: sessionId, name: username })
+            socket.emit('ThreeWCard', { data: { type: cardColor, message: cardTextArea, generated: new Date() }, sessionId: sessionId, name: username })
         else
-            socket.emit('ActionCard', { data: { type: cardColor, message: cardTextArea, cardId: cardId }, sessionId: sessionId, name: username })
+            socket.emit('ActionCard', { data: { type: cardColor, message: cardTextArea, cardId: cardId, generated: new Date() }, sessionId: sessionId, name: username })
 
         $('#cardTextArea').val('')
         $('#bad').css('border', '0px solid black')  

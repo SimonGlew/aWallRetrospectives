@@ -10,10 +10,6 @@ let ThreeWSchema = new mongoose.Schema({
     data: {
         type: Object
     },
-    generated: {
-        type: Date,
-        default: Date.now
-    },
     active: {
     	type: Boolean,
     	default: true

@@ -54,7 +54,7 @@ socket.on('3w_card', function (data) {
         if(!cardsByUser[user])
             cardsByUser[user] = []
 
-        let obj = { _id: card._id, user: user,  data: card.data.data, generated: card.timestamp }
+        let obj = { _id: card._id, user: user,  data: card.data.data }
 
         cardsByUser[user].push(obj)
         cardsById[card._id] = obj
@@ -67,7 +67,7 @@ socket.on('action_card', function (data){
         data = [data]
 
     data.forEach(function(card){
-        let obj = { _id: card._id, user: card.data.name,  data: card.data.data, generated: card.timestamp }
+        let obj = { _id: card._id, user: card.data.name,  data: card.data.data }
 
         actionCards.push(obj)
         cardsById[card._id] = obj
@@ -149,7 +149,7 @@ function openCard(cardId, index){
     $('#completeCard').html(currentlySelectedCard.completed ? '<i class="fas fa-check fa-lg"></i> Completed' : '<i class="fas fa-check fa-lg"></i> Complete')
     $('#cardName').html('NAME: ' + currentlySelectedCard.user)
     $('#cardMessage').html('MESSAGE: ' + currentlySelectedCard.data.message)
-    $('#cardGenerated').html('GENERATED: ' + currentlySelectedCard.generated)
+    $('#cardGenerated').html('GENERATED: ' + currentlySelectedCard.data.generated)
 
 }
 
