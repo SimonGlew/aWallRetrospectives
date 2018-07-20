@@ -163,3 +163,16 @@ function fields() {
         { index: .1, value: 0.50 }
     ];
 }
+
+function resetStateTime(){
+    timers[currentState].currentTime = 0
+    currentDate = new Date()
+}
+
+function resetOverallTime(){
+    for(let i = 0; i < 3; i ++){
+        timers[i].currentTime = 0
+    }
+    currentDate = new Date()
+    startTime = new Date()
+}

@@ -47,8 +47,6 @@ socket.on('3w_card', function (data) {
     if(!Array.isArray(data))
         data = [data]
 
-    console.log(data)
-
     data.forEach(function(card){
         let user = card.data.name
 
@@ -56,7 +54,7 @@ socket.on('3w_card', function (data) {
         if(!cardsByUser[user])
             cardsByUser[user] = []
 
-        let obj = { _id: card._id, user: user,  data: card.data.data }
+        let obj = { _id: card._id, user: user,  data: card.data.data, generated: card.timestamp }
 
         cardsByUser[user].push(obj)
         cardsById[card._id] = obj
@@ -69,7 +67,7 @@ socket.on('action_card', function (data){
         data = [data]
 
     data.forEach(function(card){
-        let obj = { _id: card._id, user: card.data.name,  data: card.data.data }
+        let obj = { _id: card._id, user: card.data.name,  data: card.data.data, generated: card.timestamp }
 
         actionCards.push(obj)
         cardsById[card._id] = obj
@@ -108,6 +106,34 @@ function redrawActionCards(){
         $('#actionCards').html(tableHTML)
 }
 
+function carryoverCard(){
+    if(currentlySelectedCard){
+        socket.emit('carryon_card', { cardId: currentlySelectedCard._id })
+    }
+}
+
+function inactiveCard(){
+    if(currentlySelectedCard){
+        if(currentlySelectedCard.data.type != 'action'){
+            let index = cardsByUser[currentlySelectedCard.user].map(function(c){ return c._id }).indexOf(currentlySelectedCard._id)
+            cardsByUser[currentlySelectedCard.user].splice(index, 1)
+            if(cardsByUser[currentlySelectedCard.user].length == 0)
+                delete cardsByUser[currentlySelectedCard.user]
+        }else{
+            let index = actionCards.map(function(c){ return c._id }).indexOf(currentlySelectedCard._id)
+            actionCards.splice(index, 1)
+        }
+        delete cardsById[currentlySelectedCard._id]
+        
+        socket.emit('inactive_card', { cardId: currentlySelectedCard._id })
+        currentlySelectedCard = null
+
+        $('#cardPopup').modal('hide');
+    }
+    redrawCardSystem()
+    redrawActionCards()
+}
+
 
 function openCard(cardId, index){
     $('#cardPopup').modal('show');
@@ -115,10 +141,11 @@ function openCard(cardId, index){
     currentlySelectedCard = cardsById[cardId]
 
     $('#modalTitle').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action for ' + currentlySelectedCard.data.cardId))
-    currentlySelectedCard.data.type == 'action' ? $('#carryOverCard').css('display', 'block') : null
+    currentlySelectedCard.data.type == 'action' ? $('#carryOverCard').css('display', 'initial') : null
     $('#completeCard').html(currentlySelectedCard.completed ? '<i class="fas fa-check fa-lg"></i> Completed' : '<i class="fas fa-check fa-lg"></i> Complete')
     $('#cardName').html('NAME: ' + currentlySelectedCard.user)
     $('#cardMessage').html('MESSAGE: ' + currentlySelectedCard.data.message)
+    $('#cardGenerated').html('GENERATED: ' + currentlySelectedCard.generated)
 
 }
 

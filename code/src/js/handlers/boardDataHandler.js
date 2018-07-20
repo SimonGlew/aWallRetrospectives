@@ -48,12 +48,11 @@ function getAllCards(sessionId){
 
         cards.forEach(card => {
             if(card.data.data.type != 'action'){
-                obj.nonA.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, carryon: card.carryOver, completed: card.completed })
+                obj.nonA.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, carryon: card.carryOver, completed: card.completed, timestamp: card.generated })
             }else{
-                obj.A.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, carryon: card.carryOver, completed: card.completed })
+                obj.A.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, carryon: card.carryOver, completed: card.completed, timestamp: card.generated })
             }
         })
-
         return obj
     })
 }
