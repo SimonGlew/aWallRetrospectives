@@ -92,6 +92,8 @@ function redrawCardSystem(){
     })
     if(tableHTML)
         $('#cardTable').html(tableHTML)
+    else
+        $('#cardTable').html('')
 }
 
 function redrawActionCards(){
@@ -104,6 +106,8 @@ function redrawActionCards(){
     })
     if(tableHTML)
         $('#actionCards').html(tableHTML)
+    else
+        $('#actionCards').html('')
 }
 
 function carryoverCard(){
