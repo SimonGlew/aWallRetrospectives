@@ -128,6 +128,23 @@ function socketRouter(io) {
 			})
 		})
 
+		socket.on('remove_members', (data) => {
+			return sessionHandler.removeAllMembers(data.sessionId)
+			.then(() => {
+				return Promise.all([
+					sessionHandler.getSprintFromId(data.sessionId),
+					sessionHandler.getCurrentMembers(data.sessionId),
+					sessionHandler.getSprintSessionsFromId(data.sessionId)
+				])
+				.then(([sprintInfo, members, sessionIds]) => {
+					return boardDataHandler.getCheckinData(sessionIds)
+					.then(data => {
+						socket.emit('members_mod', { members: members, sprint: sprintInfo })
+					})
+				})
+			})
+		})
+
 		socket.on('changeState', (data) => {
 			//sessionId, currentState, dir (next, prev)
 			if(data.currentState == 0){
@@ -136,7 +153,8 @@ function socketRouter(io) {
 					return Promise.all([
 						sessionHandler.changeState(1, data.sessionId),
 						boardDataHandler.getAllCards(data.sessionId)
-					])
+
+						])
 					.then(([, cards]) => {
 						socket.emit('update_header', null)
 						socket.emit('3w_card', cards.nonA)
@@ -160,7 +178,7 @@ function socketRouter(io) {
 					return Promise.all([
 						sessionHandler.changeState(1, data.sessionId),
 						boardDataHandler.getAllCards(data.sessionId)
-					])
+						])
 					.then(([, cards]) => {
 						socket.emit('update_header', null)
 						socket.emit('3w_card', cards.nonA)

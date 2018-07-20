@@ -69,6 +69,14 @@ function removeMember(sessionId, member) {
         })
 }
 
+function removeAllMembers(sessionId){
+    return Session.findOne({ _id: sessionId })
+        .then(session => {
+            session.members = []
+            return session.save()
+        })
+}
+
 function getMetadata(sessionId) {
     return Session.findOne({ _id: sessionId })
         .populate('retrospectiveType', 'name length')
@@ -143,5 +151,6 @@ module.exports = {
 
     changeState: changeState,
     addMember: addMember,
-    removeMember: removeMember
+    removeMember: removeMember,
+    removeAllMembers: removeAllMembers
 };

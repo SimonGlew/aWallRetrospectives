@@ -176,3 +176,8 @@ function resetOverallTime(){
     currentDate = new Date()
     startTime = new Date()
 }
+
+function removeAllMembers(){
+    console.log(sessionId)
+    socket.emit('remove_members', { sessionId: sessionId })
+}
