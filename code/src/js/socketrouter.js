@@ -31,7 +31,7 @@ function socketRouter(io) {
 				sessionHandler.getSprintSessionsFromId(data.sessionId)
 				])
 			.then(([metadata, sprintInfo, members, sessionIds]) => {
-				return boardDataHandler.getCheckinData(sessionIds)
+				return boardDataHandler.getCheckinData(sessionIds, data.sessionId)
 				.then(data => {
 					socket.emit('mod_instructions', metadata);
 					socket.emit('members_mod', { members: members, sprint: sprintInfo })
@@ -67,7 +67,7 @@ function socketRouter(io) {
 			.then(() => {
 				return sessionHandler.getSprintSessionsFromId(sessionId)
 				.then(sessionIds => {
-					return boardDataHandler.getCheckinData(sessionIds)
+					return boardDataHandler.getCheckinData(sessionIds, sessionId)
 					.then(data => {
 						moderatorSocket._socket ? moderatorSocket._socket.emit('checkin_data', data) : null
 					})
@@ -99,7 +99,7 @@ function socketRouter(io) {
 		})
 
 		socket.on('carryon_card', (data) => {
-			return boardDataHandler.carryonCard(data.cardId)
+			return boardDataHandler.carryonCard(data.cardId, data.sessionId)
 		})
 
 		socket.on('complete_card', (data) => {
@@ -137,7 +137,7 @@ function socketRouter(io) {
 					sessionHandler.getSprintSessionsFromId(data.sessionId)
 				])
 				.then(([sprintInfo, members, sessionIds]) => {
-					return boardDataHandler.getCheckinData(sessionIds)
+					return boardDataHandler.getCheckinData(sessionIds, data.sessionId)
 					.then(data => {
 						socket.emit('members_mod', { members: members, sprint: sprintInfo })
 					})
@@ -153,8 +153,7 @@ function socketRouter(io) {
 					return Promise.all([
 						sessionHandler.changeState(1, data.sessionId),
 						boardDataHandler.getAllCards(data.sessionId)
-
-						])
+					])
 					.then(([, cards]) => {
 						socket.emit('update_header', null)
 						socket.emit('3w_card', cards.nonA)

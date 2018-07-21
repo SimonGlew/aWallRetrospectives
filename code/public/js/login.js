@@ -1,4 +1,4 @@
-let joinSessionValues = ['sessionName', 'sprintNumber', 'username', 'password', 'joinConfirmBtn'],
+let joinSessionValues = ['sessionName', 'sprintNumber', 'username', 'moderator', 'password', 'joinConfirmBtn'],
     createSessionValues = ['sessionName', 'sprintNumber', 'boardInfo', 'boardName', 'retrospectiveType', 'password', 'createConfirmBtn'],
     retrospectiveTypes = [];
 
@@ -25,6 +25,9 @@ $('#joinSessionBtn').click(function () {
 
         $('#username').css('display', 'block')
         $('#username').hide('fast')
+
+        $('#moderator').css('display', 'block')
+        $('#moderator').hide('fast')
 
         $('#joinConfirmBtn').css('display', 'block')
         $('#joinConfirmBtn').hide('fast')
@@ -102,10 +105,11 @@ $('#joinConfirmBtn').click(function () {
     }
     else {
         $('#errLabel').text('');
+        let checked = $('#loginAsModerator').is(":checked")
         $.get('/api/session/join/', {
             projectName: $('#sessionNameValue').val(),
             sprintNumber: $('#sprintNumberValue').val(),
-            username: $('#usernameValue').val(),
+            username: (checked ? 'mod' : $('#usernameValue').val()),
             password: $('#passwordValue').val()
         }, function (data) {
             if (data.err) {
@@ -114,7 +118,7 @@ $('#joinConfirmBtn').click(function () {
             else {
                 localStorage.setItem('username', $('#usernameValue').val());
                 localStorage.setItem('sprint', $('#sprintNumberValue').val());
-                let endURL = $('#usernameValue').val() == 'mod' ? '/mod' : '/par'
+                let endURL = ($('#usernameValue').val() == 'mod' || checked) ? '/mod' : '/par'
                 window.location = 'session/' + data._id + "/type/" + data.retrospectiveType.name + endURL;
             }
         })

@@ -15,7 +15,8 @@ let ThreeWSchema = new mongoose.Schema({
     	default: true
     },
     carryOver: {
-    	type: Boolean
+        type: [mongoose.Schema.Types.ObjectId], 
+        ref: 'session',
     },
     completed: {
         type: Boolean

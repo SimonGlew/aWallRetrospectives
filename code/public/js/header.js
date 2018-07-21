@@ -1,15 +1,17 @@
-var width = $('#timer').width(),
-    height = $('#timer').height();
+var width = $('#timerPlay').width() || $('#timer').width(),
+height = $('#timerPlay').height() || $('#timer').height();
 
 var radius = height / 0.7,
-    spacing = .09;
+spacing = .09;
 
 var startTime = new Date()
 var currentDate = new Date();
 
 var currentState = 0,
-    prevState = 0,
-    prevTime = new Date()
+prevState = 0,
+prevTime = new Date()
+retrospectiveLength = 0,
+started = false
 
 var timers = []
 for (let i = 0; i < 3; i++) {
@@ -17,91 +19,107 @@ for (let i = 0; i < 3; i++) {
 }
 
 var color = d3.scale.linear()
-    .range(["hsl(-180,60%,50%)", "hsl(180,60%,50%)"])
-    .interpolate(function (a, b) { var i = d3.interpolateString(a, b); return function (t) { return d3.hsl(i(t)); }; });
+.range(["hsl(-180,60%,50%)", "hsl(180,60%,50%)"])
+.interpolate(function (a, b) { var i = d3.interpolateString(a, b); return function (t) { return d3.hsl(i(t)); }; });
 
 var arcBody = d3.svg.arc()
-    .startAngle(0)
-    .endAngle(function (d) { return d.value * 2 * Math.PI; })
-    .innerRadius(function (d) { return d.index * radius; })
-    .outerRadius(function (d) { return (d.index + spacing) * radius; })
-    .cornerRadius(6);
+.startAngle(0)
+.endAngle(function (d) { return d.value * 2 * Math.PI; })
+.innerRadius(function (d) { return d.index * radius; })
+.outerRadius(function (d) { return (d.index + spacing) * radius; })
+.cornerRadius(0);
 
 var arcCenter = d3.svg.arc()
-    .startAngle(0)
-    .endAngle(function (d) { return d.value * 2 * Math.PI; })
-    .innerRadius(function (d) { return (d.index + spacing / 2) * radius; })
-    .outerRadius(function (d) { return (d.index + spacing / 2) * radius; });
+.startAngle(0)
+.endAngle(function (d) { return d.value * 2 * Math.PI; })
+.innerRadius(function (d) { return (d.index + spacing / 2) * radius; })
+.outerRadius(function (d) { return (d.index + spacing / 2) * radius; });
 
 var svg = d3.select("#timer").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g")
-    .attr("transform", "translate(" + ((width / 2) - 30) + "," + ((height / 2) + 5) + ")");
+.attr("width", width)
+.attr("height", height)
+.append("g")
+.attr("transform", "translate(" + ((width / 2) - 30) + "," + ((height / 2) + 5) + ")");
 
 var field = svg.selectAll("g")
-    .data(fields)
-    .enter().append("g");
+.data(fields(0,0))
+.enter().append("g");
 
 field.append("path")
-    .attr("class", "arc-body");
+.attr("class", "arc-body");
 
 field.append("path")
-    .attr("id", function (d, i) { return "arc-center-" + i; })
-    .attr("class", "arc-center");
+.attr("id", function (d, i) { return "arc-center-" + i; })
+.attr("class", "arc-center");
 
 
 //d3.select(self.frameElement).style("height", height + "px");
 
+function start(){
+    $('#timerPlay').css('display', 'none')
+    $('#timer').css('display', 'block')
+
+    started = true
+
+    startTime = new Date()
+    currentDate = new Date()
+    prevTime = new Date()
+}
+
 function tick() {
-    //work out times for timers
-    let added = timers[currentState].currentTime
+    if(started){
+        //work out times for timers
+        let added = timers[currentState].currentTime
 
-    let nowTime = new Date().getTime()
+        let nowTime = new Date().getTime()
 
-    let currentTime = msToHMS(nowTime - currentDate.getTime() + added)
-    let overallTime = msToHMS(nowTime - startTime.getTime())
+        let currentTime = nowTime - currentDate.getTime() + added
+        let overallTime = nowTime - startTime.getTime()
 
+        $('#currentStateTime').html(msToHMS(currentTime));
+        $('#overallTime').html(msToHMS(overallTime));
 
-    $('#currentStateTime').html(currentTime);
-    $('#overallTime').html(overallTime);
+        let currentSeconds = msToSeconds(currentTime)
+        let overallSeconds = msToSeconds(overallTime)
 
-
-    if (!document.hidden) {
-        field
+        if (!document.hidden) {
+            field
             .each(function (d) { this._value = d.value; })
-            .data(fields)
+            .data(fields(currentSeconds, overallSeconds))
             .each(function (d) { d.previousValue = this._value; })
             .transition()
             .ease("elastic")
             .duration(500)
             .each(fieldTransition);
+        }
     }
-
     setTimeout(tick, 1000);
 }
 
 function updateData(init) {
     var sessionId = window.location.href.split('session/')[1].split('/')[0]
     $.get('/api/' + sessionId + '/getMetadata', {})
-        .then(data => {
-            if(!init) 
-                timers[prevState].currentTime += (new Date().getTime() - prevTime.getTime())
-            //sessionName: project: sprint
-            $('#sessionName').html("<b>Project Details: </b> Sprint: " + data.sprint + ", for Project: " + data.project);
-            //retrospectiveName name: retrospectiveType.name
-            $('#retrospectiveName').html("<b>Retrospective:</b> " + data.name + ", Type: " + data.retrospectiveType.name);
-            //members iterate through members
-            let tableRowOne = '<tr>', tableRowTwo = '<tr>'
-            data.members.forEach(function (member) {
-                member = member.length > 12 ? member.substring(0, 10) + '...' : member
-                tableRowOne += '<td><img src="/assets/pictures/noavatar.png" alt="" height="42" width="42"></td>'
-                tableRowTwo += '<td style="text-align:center;">' + member + '</td>'
-            })
-            $('#members').html((tableRowOne + '</td>') + (tableRowTwo + '</td>'));
-            //currentState = currentState.name
-            $('#currentStateLabel').html("<b>Current State:</b> " + data.currentState.name);
+    .then(data => {
+        retrospectiveLength = data.currentState.length
+        if(!init){
+            timers[prevState].currentTime += (new Date().getTime() - prevTime.getTime()) 
+        } 
+        console.log('data', data)
+        //sessionName: project: sprint
+        $('#sessionName').html("<b>Project Details: </b> Sprint: " + data.sprint + ", for Project: " + data.project);
+        //retrospectiveName name: retrospectiveType.name
+        $('#retrospectiveName').html("<b>Retrospective:</b> " + data.name + ", Type: " + data.retrospectiveType.name);
+        //members iterate through members
+        let tableRowOne = '<tr>', tableRowTwo = '<tr>'
+        data.members.forEach(function (member) {
+            member = member.length > 6 ? member.substring(0, 5) + '...' : member
+            tableRowOne += '<td><img src="/assets/pictures/noavatar.png" alt="" height="42" width="42"></td>'
+            tableRowTwo += '<td style="text-align:center;">' + member + '</td>'
         })
+        $('#members').html((tableRowOne + '</td>') + (tableRowTwo + '</td>'));
+        //currentState = currentState.name
+        $('#currentStateLabel').html("<b>Current State:</b> " + data.currentState.name);
+    })
 }
 updateData(true)
 tick();
@@ -131,19 +149,27 @@ function msToHMS(ms) {
         if (hours == 0 && minutes == 0)
             dateString += ' seconds'
     } else {
-        dateString += '00';
+        if(hours == 0 && minutes == 0)
+            dateString += '00:00'
+        else
+            dateString += '00';
     }
     return dateString
 }
+
+function msToSeconds(ms){
+    return ms / 1000
+}
+
 function fieldTransition() {
     var field = d3.select(this).transition();
 
     field.select(".arc-body")
-        .attrTween("d", arcTween(arcBody))
-        .style("fill", function (d) { return color(d.value); });
+    .attrTween("d", arcTween(arcBody))
+    .style("fill", function (d) { return color(d.value); });
 
     field.select(".arc-center")
-        .attrTween("d", arcTween(arcCenter));
+    .attrTween("d", arcTween(arcCenter));
 }
 
 function arcTween(arc) {
@@ -151,16 +177,25 @@ function arcTween(arc) {
         var i = d3.interpolateNumber(d.previousValue, d.value);
         return function (t) {
             d.value = i(t);
+
             return arc(d);
         };
     };
 }
 
-function fields() {
-    let now = new Date();
+function fields(stateTime, overallTime) {
+
+    let stateTimer = retrospectiveLength ? (stateTime / retrospectiveLength) : 0
+
+    if(stateTimer >= 1)
+        stateTimer = 1
+    let overallTimer = overallTime / (45 * 60)
+    if(overallTimer >= 1)
+        overallTimer = 1
+
     return [
-        { index: .2, value: 0.75 },
-        { index: .1, value: 0.50 }
+    { index: .2, value: overallTimer },
+    { index: .1, value: stateTimer }
     ];
 }
 
@@ -178,6 +213,5 @@ function resetOverallTime(){
 }
 
 function removeAllMembers(){
-    console.log(sessionId)
     socket.emit('remove_members', { sessionId: sessionId })
 }
