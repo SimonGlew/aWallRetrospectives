@@ -8,6 +8,7 @@ var username = localStorage.getItem('username')
 var sprint = localStorage.getItem('sprint')
 
 var cardColor = null;
+var endType = null;
 
 function sendBaseMessage() {
     socket.emit('clientConnection', { name: username, sessionId: sessionId })
@@ -139,21 +140,50 @@ function changeCardColor(col) {
         $('#good').css('border', '10px solid black')
         $('#bad').css('border', '0px solid black')
         $('#action').css('border', '0px solid black')
-        $('#actionPointId').css('display', 'none')
     }
     else if(col == 'bad'){
         $('#bad').css('border', '10px solid black')
         $('#good').css('border', '0px solid black')
         $('#action').css('border', '0px solid black')
-        $('#actionPointId').css('display', 'none')
     }
     else if(col == 'action'){
         $('#bad').css('border', '0px solid black')
         $('#good').css('border', '0px solid black')
         $('#action').css('border', '10px solid black')
-        $('#actionPointId').css('display', 'block')
     }
 } 
+
+function changeEnd(col){
+    if(col == 'plus' || col == 'delta'){
+        endType = col
+    }
+    if(col == 'plus'){
+        $('#plus').css('background-color', '#99A3A4')
+        $('#delta').css('background-color', '#FFFFFF')
+    }else{
+        $('#plus').css('background-color', '#FFFFFF')
+        $('#delta').css('background-color', '#99A3A4')
+    }
+}
+
+function addEndData(){
+    if(!$('#endTextArea').val()) $('#endErrorMessage').text("Please enter a value in text area");
+    else if(!endType) $('#endErrorMessage').text("Please select a type for the card");
+    else{
+        $('#endErrorMessage').text('')
+        let endTextArea = $('#endTextArea').val()
+
+        socket.emit('endCard', { data: { type: endType, message: endTextArea, generated: new Date() }, sessionId: sessionId, name: username })
+        
+        $('#endTextArea').val('')
+        $('#plus').css('background-color', '#FFFFFF')  
+        $('#delta').css('background-color', '#FFFFFF')
+        endType = null 
+
+        $('#endMessageSuccess').css('display', 'block')
+        $('#endMessageSuccess').fadeOut(2500)
+    }
+}
 
 function addCard(){
     if(!$('#cardTextArea').val()) $('#cardErrorMessage').text("Please enter a value in text area");
@@ -161,13 +191,11 @@ function addCard(){
     else{
         $('#cardErrorMessage').text('')
         let cardTextArea = $('#cardTextArea').val()
-        let cardId = $('#actionPointId').val()
-
 
         if(cardColor != 'action') 
             socket.emit('ThreeWCard', { data: { type: cardColor, message: cardTextArea, generated: new Date() }, sessionId: sessionId, name: username })
         else
-            socket.emit('ActionCard', { data: { type: cardColor, message: cardTextArea, cardId: cardId, generated: new Date() }, sessionId: sessionId, name: username })
+            socket.emit('ActionCard', { data: { type: cardColor, message: cardTextArea, generated: new Date() }, sessionId: sessionId, name: username })
 
         $('#cardTextArea').val('')
         $('#bad').css('border', '0px solid black')  

@@ -2,7 +2,9 @@ const mongoose = require('mongoose')
 
 const CheckIn = require('../models/boardData_checkin'),
 ThreeW = require('../models/3W'),
-SessionHandler = require('../handlers/sessionHandler')
+EndCard = require('../models/endCard')
+
+const SessionHandler = require('../handlers/sessionHandler')
 
 function saveCheckin(data, sessionId) {
     return CheckIn.findOne({session: sessionId, 'data.name': data.name })
@@ -42,9 +44,9 @@ function getCheckinData(sessionIds, currentSessionId) {
             { $project: { sessionId: '$session', session: { projectName: '$sessionObj.project', sprint: '$sessionObj.sprint' }, data: '$data' } },
             { $group: { _id: '$sessionId', session: { $first: '$session' }, data: { $push:  { data: '$data' } } } }
             ])
-            .then(allSessionData => {
-                return { sprintData: sessionData, allData: allSessionData }
-            })
+        .then(allSessionData => {
+            return { sprintData: sessionData, allData: allSessionData }
+        })
     })
     
 }
@@ -68,7 +70,7 @@ function getAllCards(sessionId){
                 }
             })
             carryOver.forEach(card => {
-                obj.A.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, completed: card.completed, carryOver: true })
+                obj.A.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, completed: card.completed, carryOver: card.carryOver })
             })
             return obj
         })
@@ -111,11 +113,21 @@ function completeCard(cardId){
     })
 }
 
+function saveEndCard(data, sessionId){
+    return new EndCard({
+        session: sessionId,
+        data: data
+    }).save()
+}
+
 module.exports = {
     saveCheckin: saveCheckin,
     saveCard: saveCard,
+    saveEndCard: saveEndCard,
+
     getCheckinData: getCheckinData,
     getAllCards: getAllCards,
+
     inactiveCard: inactiveCard,
     carryonCard: carryonCard,
     completeCard: completeCard

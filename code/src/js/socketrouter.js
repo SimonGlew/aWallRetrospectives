@@ -145,6 +145,15 @@ function socketRouter(io) {
 			})
 		})
 
+		socket.on('endCard', (data) => {
+			let sessionId = data.sessionId
+			delete data.sessionId
+			return boardDataHandler.saveEndCard(data, sessionId)
+				.then(data => {
+					moderatorSocket._socket ? moderatorSocket._socket.emit('end_card', data) : null
+				})
+		})
+
 		socket.on('changeState', (data) => {
 			//sessionId, currentState, dir (next, prev)
 			if(data.currentState == 0){

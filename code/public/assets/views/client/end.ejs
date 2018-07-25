@@ -9,8 +9,29 @@
 <body>
     <div style='min-height: 30px;'></div>
     <div class="container" style='text-align: center;'>
-        <h1>END</h1>
-        <div class='row'></div>
+        <div style='text-align: center;'>
+            <h1 id='titleEnd' style='font-size:400%'></h1>
+        </div>
+        <div style='min-height:30px;'></div>
+        <div class='row h-100'>
+            <div class='w-10'></div>
+            <div id='plus' class='w-35 bradius10' style='background-color: white;border: 10px solid black;' onclick="changeEnd('plus')">
+                <span style='font-size:400%'>Plus</span>
+            </div>
+            <div class='w-10'></div>
+            <div id='delta' class='w-35 bradius10' style='background-color: white;border: 10px solid black;' onclick="changeEnd('delta')">
+                <span style='font-size:400%'>Delta</span>
+            </div>
+            <div class='w-10'></div>
+        </div>
+        <div style='min-height:50px;'></div>
+        <div class="form-group" style='min-height: 550px;'>
+            <textarea class="form-control" id="endTextArea" rows="3" style='font-size: 400%;display: block;height: 550px;border-radius: 10px; border: 1px solid black;'></textarea>
+        </div>
+        <div style='min-height:50px;'></div>
+        <input id='cardButton' type="button" value="Add to board" style='font-size: 400%;' onclick="addEndData()">
+        <p class="text-danger" id="endErrorMessage" style='font-size:250%'></p>
+        <p class="text-success" id="endMessageSuccess" style='font-size:250%;display:none;'>Card sent to board</p>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"></script>

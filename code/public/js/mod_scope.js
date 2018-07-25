@@ -12,6 +12,7 @@ var cardsByUser = {}
 var actionCards = []
 var cardsById = {}
 var currentlySelectedCard = null
+var endCardsForPlusDelta = { plus: [], delta: [] }
 
 var colorScale = d3.scale.linear()
     .domain([1, 5, 10])
@@ -82,6 +83,10 @@ socket.on('action_card', function (data){
     redrawActionCards()
 })
 
+socket.on('end_card', function (data){
+    //endCardsForPlusDelta is obj with 2 arrays, plus and delta
+})
+
 function redrawCardSystem(){
     let tableHTML = null
 
@@ -150,7 +155,7 @@ function openCard(cardId, index){
 
     currentlySelectedCard = cardsById[cardId]
 
-    $('#modalTitle').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action for ' + currentlySelectedCard.data.cardId + (currentlySelectedCard.carryOver ? '(Carried from last sprint)': '')))
+    $('#modalTitle').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action' + (currentlySelectedCard.carryOver ? ' (Carried from last sprint)': '')))
     currentlySelectedCard.data.type == 'action' ? $('#carryOverCard').css('display', 'initial') : null
     $('#completeCard').html(currentlySelectedCard.completed ? '<i class="fas fa-check fa-lg"></i> Completed' : '<i class="fas fa-check fa-lg"></i> Complete')
     $('#cardName').html('NAME: ' + currentlySelectedCard.user)
