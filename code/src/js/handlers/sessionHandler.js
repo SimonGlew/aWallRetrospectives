@@ -78,10 +78,22 @@ function removeAllMembers(sessionId){
 }
 
 function getMetadata(sessionId) {
-    return Session.findOne({ _id: sessionId })
-    .populate('retrospectiveType', 'name length')
-    .populate('currentState', 'name length')
-    .lean();
+    return Promise.all([
+        RetrospectiveType.findOne({startRetro : true}, 'length').lean(),
+        RetrospectiveType.findOne({endRetro: true}, 'length').lean()
+        ])
+    .then(([start, end]) => {
+        return Session.findOne({ _id: sessionId })
+        .populate('retrospectiveType', 'name length')
+        .populate('currentState', 'name length')
+        .lean()
+        .then(data => {
+            data.totalTime = start.length + end.length + data.retrospectiveType.length
+            return data
+        })
+    })
+    
+    
 }
 
 function getSprintSessionsFromId(sessionId) {
@@ -115,7 +127,7 @@ function getCurrentMembers(sessionId){
 function getSprintFromId(sessionId){
     return Session.findOne({ _id: sessionId }, 'sprint')
     .lean()
-    .then(project => project ? project.sprint : null)
+    .then(project => (project ? project.sprint : null))
 }
 
 function disactiveSession(sessionId){

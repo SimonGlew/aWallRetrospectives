@@ -8,10 +8,13 @@
 
 <body>
     <div style='min-height: 30px;'></div>
+    <div style='text-align: center;display: inline-block;width:100%'>
+        <img src="/assets/pictures/back.png" alt="" height="100px" width="auto"  style='float:left;margin-left:5px;margin-right:5px;' onclick='back()'>    
+        <img src="/assets/pictures/next.png" alt="" height="100px" width="auto"  style='float:right;margin-left:5px;margin-right:5px;' onclick='next()'>                            
+        <h1 id='titleMain' style='font-size:400%'></h1>
+    </div>
     <div class="container" style='text-align: center;'>
-        <div style='text-align: center;'>
-            <h1 id='titleMain' style='font-size:400%'></h1>
-        </div>
+
         <div style='min-height:30px;'></div>
         <div id='3W' style='display:none;'>
             <div class='row h-100'>
@@ -33,6 +36,7 @@
             <p class="text-success" id="cardMessageSuccess" style='font-size:250%;display:none;'>Card sent to board</p>
         </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"></script>
     <script src="/lib/bootstrap/bootstrap.min.js"></script>

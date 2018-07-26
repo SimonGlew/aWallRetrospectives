@@ -11,6 +11,7 @@ var currentState = 0,
 prevState = 0,
 prevTime = new Date()
 retrospectiveLength = 0,
+totalLength = 300,
 started = false
 
 var timers = []
@@ -101,10 +102,10 @@ function updateData(init) {
     $.get('/api/' + sessionId + '/getMetadata', {})
     .then(data => {
         retrospectiveLength = data.currentState.length
+        totalLength = data.totalTime
         if(!init){
             timers[prevState].currentTime += (new Date().getTime() - prevTime.getTime()) 
         } 
-        console.log('data', data)
         //sessionName: project: sprint
         $('#sessionName').html("<b>Project Details: </b> Sprint: " + data.sprint + ", for Project: " + data.project);
         //retrospectiveName name: retrospectiveType.name
@@ -184,12 +185,12 @@ function arcTween(arc) {
 }
 
 function fields(stateTime, overallTime) {
-
+    console.log('totalLength', totalLength)
     let stateTimer = retrospectiveLength ? (stateTime / retrospectiveLength) : 0
 
     if(stateTimer >= 1)
         stateTimer = 1
-    let overallTimer = overallTime / (45 * 60)
+    let overallTimer = overallTime / totalLength
     if(overallTimer >= 1)
         overallTimer = 1
 

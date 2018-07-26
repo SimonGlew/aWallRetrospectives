@@ -10,6 +10,8 @@ var sprint = localStorage.getItem('sprint')
 var cardColor = null;
 var endType = null;
 
+var currentState = 0;
+
 function sendBaseMessage() {
     socket.emit('clientConnection', { name: username, sessionId: sessionId })
 }
@@ -113,6 +115,7 @@ function drawVoter(width, height) {
 }
 
 function voteFinish(){
+    currentState = 1;
     $('#start').css('display', 'none')
     $('#main').css('display', 'block')
 }
@@ -205,5 +208,35 @@ function addCard(){
 
         $('#cardMessageSuccess').css('display', 'block')
         $('#cardMessageSuccess').fadeOut(2500)
+    }
+}
+
+function back(){
+    if(currentState != 0){
+        if(currentState == 1){
+            $('#start').css('display', 'block')
+            $('#main').css('display', 'none')
+            $('#end').css('display', 'none')
+        }else if(currentState == 2){
+            $('#start').css('display', 'none')
+            $('#main').css('display', 'block')
+            $('#end').css('display', 'none')
+        }
+        currentState --;
+    }
+}
+
+function next(){
+    if(currentState != 2){
+        if(currentState == 0){
+            $('#start').css('display', 'none')
+            $('#main').css('display', 'block')
+            $('#end').css('display', 'none')
+        }else if(currentState == 1){
+            $('#start').css('display', 'none')
+            $('#main').css('display', 'none')
+            $('#end').css('display', 'block')
+        }
+        currentState ++;
     }
 }

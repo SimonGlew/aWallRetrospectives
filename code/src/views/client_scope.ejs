@@ -11,7 +11,7 @@
     <div id='start' style='display:none;'></div>
     <div id='main' style='display:none;'></div>
     <div id='end' style='display:none;'></div>
-
+    
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
@@ -26,16 +26,16 @@
                         $('#title').html('<i class="fas fa-angle-double-right"></i>   Sprint <%=sessionData.sprint%>')
                         $('#titleMain').html('<i class="fas fa-angle-double-right"></i>   Sprint <%=sessionData.sprint%>')
                         $('#titleEnd').html('<i class="fas fa-angle-double-right"></i>   Sprint <%=sessionData.sprint%>')
-                        $('#end').css('display', 'block')
-                        // var width = isNaN(window.innerWidth) ? window.clientWidth : window.innerWidth;
-                        // var height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
+                        //$('#end').css('display', 'block')
+                        var width = isNaN(window.innerWidth) ? window.clientWidth : window.innerWidth;
+                        var height = isNaN(window.innerHeight) ? window.clientHeight : window.innerHeight;
 
-                        // $('#start').css('display', 'block')
-                        // $('#d3voter').css({ 'min-height': height * 0.75 })
+                        $('#start').css('display', 'block')
+                        $('#d3voter').css({ 'min-height': height * 0.75 })
 
-                        // sendBaseMessage()
+                        sendBaseMessage()
 
-                        // drawVoter(width, height * 0.75)
+                        drawVoter(width, height * 0.75)
                     });
                 });
             });

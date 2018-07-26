@@ -15,8 +15,8 @@ var currentlySelectedCard = null
 var endCardsForPlusDelta = { plus: [], delta: [] }
 
 var colorScale = d3.scale.linear()
-    .domain([1, 5, 10])
-    .range(['#fb590e', '#ffff73', '#6aae35']);
+.domain([1, 5, 10])
+.range(['#fb590e', '#ffff73', '#6aae35']);
 
 function sendBaseMessage() {
     socket.emit('moderatorConnection', { name: username, sessionId: sessionId })
@@ -76,7 +76,9 @@ socket.on('action_card', function (data){
     data.forEach(function(card){
         let obj = { _id: card._id, user: card.data.name, carryOver: card.carryOver, data: card.data.data }
 
-        actionCards.push(obj)
+        let index = actionCards.map(function(c){ return c._id }).indexOf(obj._id)
+        if(index == -1) 
+            actionCards.push(obj)
         cardsById[card._id] = obj
     })
 
@@ -84,8 +86,35 @@ socket.on('action_card', function (data){
 })
 
 socket.on('end_card', function (data){
-    //endCardsForPlusDelta is obj with 2 arrays, plus and delta
+    let card = data.data
+    if(card.data.type == 'plus'){
+        if(!endCardsForPlusDelta.plus) 
+            endCardsForPlusDelta.plus = []
+        endCardsForPlusDelta.plus.push({ name: card.name, message: card.data.message, generated: card.data.generated, id: data._id })
+    }else{
+        if(!endCardsForPlusDelta.delta) 
+            endCardsForPlusDelta.delta = []
+        endCardsForPlusDelta.delta.push({ name: card.name, message: card.data.message, generated: card.data.generated, id: data._id })
+    }
+    drawDelta()
 })
+
+function drawDelta(){
+    let tableHTML = null
+    endCardsForPlusDelta.plus.forEach(function(data) {
+        tableHTML += '<tr style="margin-left:3px;">' + 
+        '<td style="padding:0 10px 0 10px;"><div style="font-size:120%;margin-left:100px;">' + data.name + ':' + data.message + '</div>' + 
+        '</td></tr>'
+    })
+    tableHTML ? $('#endPlus').html(tableHTML) : $('#endPlus').html('')
+    tableHTML = null
+    endCardsForPlusDelta.delta.forEach(function(data) {
+        tableHTML += '<tr style="margin-left:3px;">' + 
+        '<td style="padding:0 10px 0 10px;"><div>' + data.name + ':' + data.message + '</div>' + 
+        '</td></tr>'
+    })
+    tableHTML ? $('#endDelta').html(tableHTML) : $('#endDelta').html('')
+}
 
 function redrawCardSystem(){
     let tableHTML = null
@@ -179,7 +208,6 @@ function redrawVotingScreen(){
     sprintCheckin_data.forEach(function(mem){ if(mem.data.name && allMembers.indexOf(mem.data.name) == -1) allMembers.push(mem.data.name) })
     let tableRowOne = '<tr style="margin-left:3px;max-width:70px;">', tableRowTwo = '<tr style="margin-left:3px;max-width:70px;">', tableRowThree = '<tr style="margin-left:3px;max-width:70px;">'
     tableRowFour = '<tr style="margin-left:3px;min-height:500px;height:500px;width:70px; padding-left:5px; padding-right:5px;max-width:70px;">'
-    console.log('member array', allMembers)
     allMembers.forEach(function (member) {
         member = member.length > 8 ? member.substring(0, 7) + '...' : member
         tableRowOne += '<td style="padding:0 3px 0 3px;"><img src="/assets/pictures/noavatar.png" alt="" height="60" width="60"></td>'
@@ -236,6 +264,8 @@ function redrawGraphScreen() {
 
         if(chartPoints.length >= 2){
             var ctx = document.getElementById('myChart').getContext('2d');
+            if(!ctx) 
+                return;
             var myLineChart = new Chart(ctx, {
                 type: 'line',
                 data: {

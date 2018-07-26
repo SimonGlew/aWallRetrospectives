@@ -49,9 +49,9 @@ function socketRouter(io) {
 			})
 			outputToLog('CLIENT_CONNECTION WITH NAME:' + data.name, data.name)
 			clientSockets.push({ _id: socket.id, _socket: socket, name: data.name, sessionId: data.sessionId })
-			sessionHandler.addMember(data.sessionId, data.name)
+			return sessionHandler.addMember(data.sessionId, data.name)
 			.then(mem => {
-				sessionHandler.getSprintFromId(data.sessionId)
+				return sessionHandler.getSprintFromId(data.sessionId)
 				.then(sprint => {
 					moderatorSocket._socket ? moderatorSocket._socket.emit('members_mod', { members: mem, sprint: sprint }) : null
 				})

@@ -11,6 +11,12 @@ let retrospectiveTypeSchema = new mongoose.Schema({
     },
     mainRetro: {
         type: Boolean
+    },
+    startRetro: {
+        type: Boolean
+    },
+    endRetro: {
+        type: Boolean
     }
 });
 
