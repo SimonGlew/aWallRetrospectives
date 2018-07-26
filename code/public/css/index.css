@@ -91,3 +91,66 @@ p.floatLeft {
     margin-bottom:0px;
     font-size:16px;
 }
+
+.checkbox {
+    margin: 0px auto;
+    margin-left:15px;
+    position: relative;
+    display: block;
+    width: 100px;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    opacity: 0.00000001;
+    position: absolute;
+    left: 0;
+    margin-left: -20px;
+}
+.helper {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    cursor: pointer;
+    display: block;
+    font-size: 16px;
+    user-select: none;
+    color: #e7e7e7;
+}
+.helper:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 4px;
+    width: 30px;
+    height: 30px;
+    transition: transform 0.28s ease;
+    border-radius: 3px;
+    border: 1px solid #bbb;
+}
+.helper:after {
+  content: '';
+    display: block;
+    width: 20px;
+    height: 10px;
+    border-bottom: 2px solid #000000;
+    border-left: 2px solid #000000;
+    -webkit-transform: rotate(-45deg) scale(0);
+    -moz-transform: rotate(-45deg) scale(0);
+    -ms-transform: rotate(-45deg) scale(0);
+    transform: rotate(-45deg) scale(0);
+    position: absolute;
+    top: 12px;
+    left: 10px;
+}
+input[type="checkbox"]:checked ~ .helper::before {
+    color: #000000;
+}
+
+input[type="checkbox"]:checked ~ .helper::after {
+    -webkit-transform: rotate(-45deg) scale(1);
+    -moz-transform: rotate(-45deg) scale(1);
+    -ms-transform: rotate(-45deg) scale(1);
+    transform: rotate(-45deg) scale(1);
+}
