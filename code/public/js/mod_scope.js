@@ -3,6 +3,7 @@ var socket = io()
 const PORT = 52724
 
 var sessionId = window.location.href.split('session/')[1].split('/')[0]
+var sessionType = window.location.href.split('type/')[1].split('/')[0]
 var username = localStorage.getItem('username')
 var members = []
 var allCheckin_data = []
@@ -332,6 +333,8 @@ function nextSection(){
             actionCards = []
             cardsById = {}
             currentState ++;
+            if(sessionType == 'Timeline')
+                drawTimeline()
         }else if(currentState == 1){
             $('#end').css('display', 'block')
             $('#main').css('display', 'none')  
@@ -363,6 +366,8 @@ function prevSection(){
             actionCards = []
             cardsById = {}
             currentState --;
+            if(sessionType == 'Timeline')
+                drawTimeline()
         }
     }  
 }
@@ -379,6 +384,87 @@ function terminateRetrospective(){
     if(started){
         socket.emit('terminateRetrospective', { sessionId: sessionId })
         window.location.href = window.location.href.split(PORT + '/')[0] + PORT;     
+    }
+}
+
+function drawTimeline() {
+    if(!$('#timeline').find('svg').length){
+        let width = $('#timeline').width()
+        $('#timeline').css('min-height', width * 0.4)
+
+        height = $('#timeline').height()
+        width = $('#timeline').width()
+
+
+        var svg = d3.select("#timeline").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+
+        var draw = svg.append('svg')
+        .attr('width', width - 120)
+        .attr('height', height)
+        .attr('x', 70)
+
+        draw.append('rect')
+        .attr('width', width - 120)
+        .attr('height', height - 30)
+        .attr('fill', '#FFF')
+        .style('pointer-events', 'all')
+
+        // var xAxis = d3.scale.linear()
+        //     .domain([])
+        //     .range([])
+
+        var values = [{ num: 1, label: 'a' }, { num: 2, label: 'b' }, { num: 3, label: 'c' }, { num: 4, label: 'd' }, { num: 5, label: 'e' }]
+
+        var yScale = d3.scale.linear()
+        .domain([1, 5])
+        .range([0, height - 30])
+
+        var yAxis = d3.svg.axis()
+        .orient("left")
+        .scale(yScale)
+        .tickValues(values.map(d => d.num))
+        .tickFormat((d, i) => values[i].label);
+
+        var y = svg.append('g')
+        .call(yAxis)
+        .attr("transform", "translate(" + 70 + "," + 15 + ")")
+
+        var activeLine;
+
+        var renderPath = d3.svg.line()
+        .x(function(d) { return d[0]; })
+        .y(function(d) { return d[1]; })
+        .tension(0)
+        .interpolate("cardinal");
+
+
+        draw.call(d3.behavior.drag()
+          .on("dragstart", dragstarted)
+          .on("drag", dragged)
+          .on("dragend", dragended));
+
+        function dragstarted() {
+            activeLine = draw.append("path")
+            .datum([])
+            .attr("fill", "none")
+            .attr("stroke", "#000")
+            .attr("stroke-width", "3px")
+            //.attr("stroke-linejoin", "round")
+            //.attr("stroke-linecap", "round")
+
+            activeLine.datum().push(d3.mouse(this));
+        }
+
+        function dragged() {
+            activeLine.datum().push(d3.mouse(this));
+            activeLine.attr("d", renderPath);
+        }
+
+        function dragended() {
+            activeLine = null;
+        }
     }
 }
 

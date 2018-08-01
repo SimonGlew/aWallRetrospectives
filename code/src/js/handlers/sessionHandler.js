@@ -135,14 +135,24 @@ function disactiveSession(sessionId){
 }
 
 function closeSession(sessionId){
-    return Promise.resolve(true);
-    //write output
+    return Promise.all([
+        RetrospectiveType.findOne({ startRetro: true }, '_id').lean(),
+        Session.findOne({ _id: sessionId })
+        ])
+    .then(([retroType, session]) => {
+        session.currentState = retroType._id
+        return session.save()
+        .then(() => {
+            //write output
+            return Promise.resolve(true);
+        })
+    })
 }
 
 function changeState(toState, sessionId){
     return Promise.all([
-        RetrospectiveType.findOne({ name: 'Check-in' }, '_id').lean(),
-        RetrospectiveType.findOne({ name: 'Delta' }, '_id').lean(),
+        RetrospectiveType.findOne({ startRetro: true }, '_id').lean(),
+        RetrospectiveType.findOne({ endRetro: true }, '_id').lean(),
         Session.findOne({ _id: sessionId })
         ])
     .then(([checkin, delta, session]) => {

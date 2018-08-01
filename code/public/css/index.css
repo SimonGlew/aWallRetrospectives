@@ -130,12 +130,12 @@ input[type="checkbox"] {
     border: 1px solid #bbb;
 }
 .helper:after {
-  content: '';
+    content: '';
     display: block;
     width: 20px;
     height: 10px;
-    border-bottom: 2px solid #000000;
-    border-left: 2px solid #000000;
+    border-bottom: 4px solid #000000;
+    border-left: 4px solid #000000;
     -webkit-transform: rotate(-45deg) scale(0);
     -moz-transform: rotate(-45deg) scale(0);
     -ms-transform: rotate(-45deg) scale(0);

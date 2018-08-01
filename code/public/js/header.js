@@ -20,7 +20,7 @@ for (let i = 0; i < 3; i++) {
 }
 
 var color = d3.scale.linear()
-.range(["hsl(-180,60%,50%)", "hsl(180,60%,50%)"])
+.range(["hsl(100,100%,50%)", "hsl(360,100%,50%)"])
 .interpolate(function (a, b) { var i = d3.interpolateString(a, b); return function (t) { return d3.hsl(i(t)); }; });
 
 var arcBody = d3.svg.arc()
@@ -185,7 +185,6 @@ function arcTween(arc) {
 }
 
 function fields(stateTime, overallTime) {
-    console.log('totalLength', totalLength)
     let stateTimer = retrospectiveLength ? (stateTime / retrospectiveLength) : 0
 
     if(stateTimer >= 1)

@@ -7,7 +7,7 @@
 
 <body>
 	<div style='min-height: 30px;'></div>
-	<div id='3W' style='text-align: center;width:100%'>
+	<div id='3W' style='text-align: center;width:100%;display:none;'>
 		<div class='row' style='width:100%'>
 			<div class='w-85'>
 				<h1>Cards</h1>
@@ -51,11 +51,26 @@
 		</div>
 		<div style='min-height:60px'></div>
 	</div>
+	<div id='Timeline' style='text-align: center;width:100%;display:none;'>
+		<div class='row' style='width:100%'>
+			<div class='w-85' style='padding-left:20px'>
+				<h1>Timeline Thing</h1>
+				<div id='timeline' style='width:100%;height:100%;touch-action: none;'></div>
+			</div>
+			<div class='w-15'>
+				<h1>Action Points</h1>
+				<table id='actionCards' style='margin-left:5px;'></table>
+			</div>
+		</div>
+	</div>
 	<script>
 		$(function () {
 			let retrotype = window.location.href.split('type/')[1].split('/')[0]
 			if(retrotype == '3W')
 				$('#3W').css('display', 'block')
+			if(retrotype == 'Timeline'){
+				$('#Timeline').css('display', 'block')
+			}
 		});
 	</script>
 </body>

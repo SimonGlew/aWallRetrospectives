@@ -14,7 +14,6 @@
         <h1 id='titleMain' style='font-size:400%'></h1>
     </div>
     <div class="container" style='text-align: center;'>
-
         <div style='min-height:30px;'></div>
         <div id='3W' style='display:none;'>
             <div class='row h-100'>
@@ -35,6 +34,8 @@
             <p class="text-danger" id="cardErrorMessage" style='font-size:250%'></p>
             <p class="text-success" id="cardMessageSuccess" style='font-size:250%;display:none;'>Card sent to board</p>
         </div>
+        <div id='Timeline' style='display:none;'>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -45,6 +46,8 @@
             let retrotype = window.location.href.split('type/')[1].split('/')[0]
             if(retrotype == '3W')
                 $('#3W').css('display', 'block')
+            else if(retrotype == 'Timeline')
+                $('#Timeline').css('display', 'block')
         });
     </script>
 
