@@ -28,8 +28,9 @@ router.get('/session/:sessionId/type/:type/par', function (req, res) {
         })
 });
 
+
 router.get('/api/session/create', function(req, res){
-    sessionHandler.createSession(req.query.projectName, req.query.sprintNumber, req.query.boardName, req.query.password, req.query.retrospectiveType)
+    sessionHandler.createSession(req.query.projectName, req.query.sprintNumber, req.query.boardName, req.query.password, req.query.retrospectiveType, req.query.startDate, req.query.endDate)
         .then(result => {
             res.send(result)
         })
@@ -49,8 +50,15 @@ router.get('/api/retrospectivetypes', function(req, res){
         })
 })
 
-router.get('/api/:sessionId/getMetadata', function(req, res){
+router.get('/api/session/:sessionId/getMetadata', function(req, res){
     sessionHandler.getMetadata(req.params.sessionId)
+        .then(result => {
+            res.send(result)
+        })
+})
+
+router.get('/api/session/:sessionId/getTimelineDates', function(req, res){
+    sessionHandler.getTimelineDates(req.params.sessionId)
         .then(result => {
             res.send(result)
         })

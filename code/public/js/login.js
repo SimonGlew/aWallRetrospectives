@@ -1,5 +1,5 @@
 let joinSessionValues = ['sessionName', 'sprintNumber', 'username', 'moderator', 'password', 'joinConfirmBtn'],
-    createSessionValues = ['sessionName', 'sprintNumber', 'boardInfo', 'boardName', 'retrospectiveType', 'password', 'createConfirmBtn'],
+    createSessionValues = ['sessionName', 'sprintNumber', 'boardInfo', 'boardName', 'retrospectiveType', 'password', 'datepicker', 'createConfirmBtn'],
     retrospectiveTypes = [];
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -8,6 +8,10 @@ if(isMobile) {
     $('#mobile').css('display', 'block')
     $('#nonMobile').css('display', 'none')
 }
+
+$(document).ready(function() {
+    $('#datepicker').datepicker();
+});
 
 let currentState = 'j',
     currentRetrospectiveMethod = null;
@@ -22,6 +26,9 @@ $('#joinSessionBtn').click(function () {
 
         $('#createConfirmBtn').css('display', 'none')
         $('#createConfirmBtn').hide('fast')
+
+        $('#datepicker').css('display', 'none')
+        $('#datepicker').hide('fast')
 
         $('#username').css('display', 'block')
         $('#username').hide('fast')
@@ -74,16 +81,24 @@ $('.dropdown-menu').on('click', 'button', function (e) {
 
 
 $('#createConfirmBtn').click(function () {
+
+    console.log($('#start').val(), $('#end').val())
+
     if (!$('#sessionNameValue').val() || !$('#sprintNumberValue').val() || !$('#boardNameValue').val() || !$('#passwordValue').val() || !currentRetrospectiveMethod) {
         $('#errLabel').text("Please enter all fields correctly");
     }
     else {
+        let startDate = new Date($('#start').val()), endDate = new Date($('#end').val())
+        console.log(startDate, endDate)
+
         $('#errLabel').text('');
         $.get('/api/session/create/', {
             projectName: $('#sessionNameValue').val(),
             sprintNumber: $('#sprintNumberValue').val(),
             boardName: $('#boardNameValue').val(),
             password: $('#passwordValue').val(),
+            startDate: startDate,
+            endDate: endDate,
             username: 'moderator',
             retrospectiveType: currentRetrospectiveMethod
         }, function (data) {
@@ -100,12 +115,13 @@ $('#createConfirmBtn').click(function () {
 })
 
 $('#joinConfirmBtn').click(function () {
-    if (!$('#sessionNameValue').val() || !$('#sprintNumberValue').val() || !$('#usernameValue').val() || !$('#passwordValue').val()) {
+    let checked = $('#loginAsModerator').is(":checked")
+
+    if (!$('#sessionNameValue').val() || !$('#sprintNumberValue').val() || (!$('#usernameValue').val() && !checked)  || !$('#passwordValue').val()) {
         $('#errLabel').text("Please enter all fields correctly");
     }
     else {
         $('#errLabel').text('');
-        let checked = $('#loginAsModerator').is(":checked")
         $.get('/api/session/join/', {
             projectName: $('#sessionNameValue').val(),
             sprintNumber: $('#sprintNumberValue').val(),
@@ -162,6 +178,9 @@ function createSessionBtnClick() {
 
     $('#boardInfo').css('display', '')
     $('#boardInfo').hide('fast')
+
+    $('#datepicker').css('display', '')
+    $('#datepicker').hide('fast')
 
     $('#createConfirmBtn').css('display', 'block')
     $('#createConfirmBtn').hide('fast')

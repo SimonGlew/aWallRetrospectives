@@ -21,6 +21,14 @@ let sessionSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    startDate: {
+        type: Date,
+        default: Date.now()
+    },
+    endDate: {
+        type: Date,
+        default: Date.now()
+    },
     retrospectiveType: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'retrospectiveType',

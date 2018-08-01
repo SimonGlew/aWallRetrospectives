@@ -99,7 +99,7 @@ function tick() {
 
 function updateData(init) {
     var sessionId = window.location.href.split('session/')[1].split('/')[0]
-    $.get('/api/' + sessionId + '/getMetadata', {})
+    $.get('/api/session/' + sessionId + '/getMetadata', {})
     .then(data => {
         retrospectiveLength = data.currentState.length
         totalLength = data.totalTime

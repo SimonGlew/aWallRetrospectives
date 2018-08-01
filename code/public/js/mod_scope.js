@@ -16,8 +16,8 @@ var currentlySelectedCard = null
 var endCardsForPlusDelta = { plus: [], delta: [] }
 
 var colorScale = d3.scale.linear()
-.domain([1, 5, 10])
-.range(['#fb590e', '#ffff73', '#6aae35']);
+    .domain([1, 5, 10])
+    .range(['#fb590e', '#ffff73', '#6aae35']);
 
 function sendBaseMessage() {
     socket.emit('moderatorConnection', { name: username, sessionId: sessionId })
@@ -32,8 +32,8 @@ socket.on('members_mod', function (data) {
     !init ? updateData(true) : updateData()
     init = true
     members = data.members
-    if(parseInt(data.sprint) != -1){
-        if(data.sprint)
+    if (parseInt(data.sprint) != -1) {
+        if (data.sprint)
             sprint = data.sprint
         redrawVotingScreen()
     }
@@ -52,17 +52,17 @@ socket.on('checkin_data', function (data) {
 })
 
 socket.on('3w_card', function (data) {
-    if(!Array.isArray(data))
+    if (!Array.isArray(data))
         data = [data]
 
-    data.forEach(function(card){
+    data.forEach(function (card) {
         let user = card.data.name
 
         //cards is a map
-        if(!cardsByUser[user])
+        if (!cardsByUser[user])
             cardsByUser[user] = []
 
-        let obj = { _id: card._id, user: user,  data: card.data.data }
+        let obj = { _id: card._id, user: user, data: card.data.data }
 
         cardsByUser[user].push(obj)
         cardsById[card._id] = obj
@@ -70,15 +70,15 @@ socket.on('3w_card', function (data) {
     redrawCardSystem()
 })
 
-socket.on('action_card', function (data){
-    if(!Array.isArray(data))
+socket.on('action_card', function (data) {
+    if (!Array.isArray(data))
         data = [data]
 
-    data.forEach(function(card){
+    data.forEach(function (card) {
         let obj = { _id: card._id, user: card.data.name, carryOver: card.carryOver, data: card.data.data }
 
-        let index = actionCards.map(function(c){ return c._id }).indexOf(obj._id)
-        if(index == -1) 
+        let index = actionCards.map(function (c) { return c._id }).indexOf(obj._id)
+        if (index == -1)
             actionCards.push(obj)
         cardsById[card._id] = obj
     })
@@ -86,90 +86,90 @@ socket.on('action_card', function (data){
     redrawActionCards()
 })
 
-socket.on('end_card', function (data){
+socket.on('end_card', function (data) {
     let card = data.data
-    if(card.data.type == 'plus'){
-        if(!endCardsForPlusDelta.plus) 
+    if (card.data.type == 'plus') {
+        if (!endCardsForPlusDelta.plus)
             endCardsForPlusDelta.plus = []
         endCardsForPlusDelta.plus.push({ name: card.name, message: card.data.message, generated: card.data.generated, id: data._id })
-    }else{
-        if(!endCardsForPlusDelta.delta) 
+    } else {
+        if (!endCardsForPlusDelta.delta)
             endCardsForPlusDelta.delta = []
         endCardsForPlusDelta.delta.push({ name: card.name, message: card.data.message, generated: card.data.generated, id: data._id })
     }
     drawDelta()
 })
 
-function drawDelta(){
+function drawDelta() {
     let tableHTML = null
-    endCardsForPlusDelta.plus.forEach(function(data) {
-        tableHTML += '<tr style="margin-left:3px;">' + 
-        '<td style="padding:0 10px 0 10px;"><div style="font-size:120%;margin-left:100px;">' + data.name + ':' + data.message + '</div>' + 
-        '</td></tr>'
+    endCardsForPlusDelta.plus.forEach(function (data) {
+        tableHTML += '<tr style="margin-left:3px;">' +
+            '<td style="padding:0 10px 0 10px;"><div style="font-size:120%;margin-left:100px;">' + data.name + ':' + data.message + '</div>' +
+            '</td></tr>'
     })
     tableHTML ? $('#endPlus').html(tableHTML) : $('#endPlus').html('')
     tableHTML = null
-    endCardsForPlusDelta.delta.forEach(function(data) {
-        tableHTML += '<tr style="margin-left:3px;">' + 
-        '<td style="padding:0 10px 0 10px;"><div>' + data.name + ':' + data.message + '</div>' + 
-        '</td></tr>'
+    endCardsForPlusDelta.delta.forEach(function (data) {
+        tableHTML += '<tr style="margin-left:3px;">' +
+            '<td style="padding:0 10px 0 10px;"><div>' + data.name + ':' + data.message + '</div>' +
+            '</td></tr>'
     })
     tableHTML ? $('#endDelta').html(tableHTML) : $('#endDelta').html('')
 }
 
-function redrawCardSystem(){
+function redrawCardSystem() {
     let tableHTML = null
 
-    Object.keys(cardsByUser).forEach(function (member){
-        tableHTML += '<tr style="margin-left:3px;">' + 
-        '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' + 
-        '</td>'
-        cardsByUser[member].forEach(function (card, index){
+    Object.keys(cardsByUser).forEach(function (member) {
+        tableHTML += '<tr style="margin-left:3px;">' +
+            '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' +
+            '</td>'
+        cardsByUser[member].forEach(function (card, index) {
             let message = card.data.message, type = card.data.type
             let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : 'badCard.png')
-            tableHTML += '<td style="vertical-align:top;padding-right:10px;"><img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard('+ "'" + card._id + "', " + (index + 1) +')"></td>'
+            tableHTML += '<td style="vertical-align:top;padding-right:10px;"><img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')"></td>'
         })
         tableHTML += '</tr>'
     })
-    if(tableHTML)
+    if (tableHTML)
         $('#cardTable').html(tableHTML)
     else
         $('#cardTable').html('')
 }
 
-function redrawActionCards(){
+function redrawActionCards() {
     let tableHTML = null
 
-    actionCards.forEach(function(card){
+    actionCards.forEach(function (card) {
         let cardType = card.data.type
-        tableHTML += '<tr style="margin-left:20px;">' + 
-        '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard('+ "'" + card._id + "'" + ')"></td></tr>'
+        tableHTML += '<tr style="margin-left:20px;">' +
+            '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "'" + ')"></td></tr>'
     })
-    if(tableHTML)
+    if (tableHTML)
         $('#actionCards').html(tableHTML)
     else
         $('#actionCards').html('')
 }
 
-function carryoverCard(){
-    if(currentlySelectedCard){
+function carryoverCard() {
+    if (currentlySelectedCard) {
         socket.emit('carryon_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
     }
 }
 
-function inactiveCard(){
-    if(currentlySelectedCard){
-        if(currentlySelectedCard.data.type != 'action'){
-            let index = cardsByUser[currentlySelectedCard.user].map(function(c){ return c._id }).indexOf(currentlySelectedCard._id)
+function inactiveCard() {
+    if (currentlySelectedCard) {
+        if (currentlySelectedCard.data.type != 'action') {
+            let index = cardsByUser[currentlySelectedCard.user].map(function (c) { return c._id }).indexOf(currentlySelectedCard._id)
             cardsByUser[currentlySelectedCard.user].splice(index, 1)
-            if(cardsByUser[currentlySelectedCard.user].length == 0)
+            if (cardsByUser[currentlySelectedCard.user].length == 0)
                 delete cardsByUser[currentlySelectedCard.user]
-        }else{
-            let index = actionCards.map(function(c){ return c._id }).indexOf(currentlySelectedCard._id)
+        } else {
+            let index = actionCards.map(function (c) { return c._id }).indexOf(currentlySelectedCard._id)
             actionCards.splice(index, 1)
         }
         delete cardsById[currentlySelectedCard._id]
-        
+
         socket.emit('inactive_card', { cardId: currentlySelectedCard._id })
         currentlySelectedCard = null
 
@@ -180,12 +180,12 @@ function inactiveCard(){
 }
 
 
-function openCard(cardId, index){
+function openCard(cardId, index) {
     $('#cardPopup').modal('show');
 
     currentlySelectedCard = cardsById[cardId]
 
-    $('#modalTitle').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action' + (currentlySelectedCard.carryOver ? ' (Carried from last sprint)': '')))
+    $('#modalTitle').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action' + (currentlySelectedCard.carryOver ? ' (Carried from last sprint)' : '')))
     currentlySelectedCard.data.type == 'action' ? $('#carryOverCard').css('display', 'initial') : null
     $('#completeCard').html(currentlySelectedCard.completed ? '<i class="fas fa-check fa-lg"></i> Completed' : '<i class="fas fa-check fa-lg"></i> Complete')
     $('#cardName').html('NAME: ' + currentlySelectedCard.user)
@@ -194,8 +194,8 @@ function openCard(cardId, index){
 
 }
 
-function completeCard(){
-    if(currentlySelectedCard){
+function completeCard() {
+    if (currentlySelectedCard) {
         currentlySelectedCard.completed = !currentlySelectedCard.completed
         socket.emit('complete_card', { cardId: currentlySelectedCard._id })
         $('#cardPopup').modal('hide');
@@ -203,10 +203,10 @@ function completeCard(){
 }
 
 
-function redrawVotingScreen(){
+function redrawVotingScreen() {
     let allMembers = []
-    members.forEach(function(mem){ if(mem && allMembers.indexOf(mem) == -1) allMembers.push(mem) })
-    sprintCheckin_data.forEach(function(mem){ if(mem.data.name && allMembers.indexOf(mem.data.name) == -1) allMembers.push(mem.data.name) })
+    members.forEach(function (mem) { if (mem && allMembers.indexOf(mem) == -1) allMembers.push(mem) })
+    sprintCheckin_data.forEach(function (mem) { if (mem.data.name && allMembers.indexOf(mem.data.name) == -1) allMembers.push(mem.data.name) })
     let tableRowOne = '<tr style="margin-left:3px;max-width:70px;">', tableRowTwo = '<tr style="margin-left:3px;max-width:70px;">', tableRowThree = '<tr style="margin-left:3px;max-width:70px;">'
     tableRowFour = '<tr style="margin-left:3px;min-height:500px;height:500px;width:70px; padding-left:5px; padding-right:5px;max-width:70px;">'
     allMembers.forEach(function (member) {
@@ -235,12 +235,12 @@ function redrawVotingScreen(){
                         '</td>')
                     found = true
                 }
-                
+
             })
-            if (!found){
+            if (!found) {
                 tableRowThree += '<td style="padding:0 3x 0 3px;"><i class="fas fa-exclamation fa-lg"></i></td>'
                 tableRowFour += ('<td style="padding:0 3x 0 3px;">' + '<div style="min-height: 500px; height: 500px"> </div>')
-            } 
+            }
         })
     }
     $('#memberGraphic').html((tableRowOne + '</td>') + (tableRowTwo + '</td>') + (tableRowThree + '</td>') + (tableRowFour + '</td>'));
@@ -256,16 +256,16 @@ function redrawGraphScreen() {
                 y += node.data.data
             })
             if (d.data.length) y = y / d.data.length
-                chartPoints.push({ x: x, y: y })
+            chartPoints.push({ x: x, y: y })
             maxSprint = Math.max(maxSprint, x)
             minSprint = Math.min(minSprint, x)
         })
 
-        chartPoints.sort(function(a,b) { return a.x - b.x })
+        chartPoints.sort(function (a, b) { return a.x - b.x })
 
-        if(chartPoints.length >= 2){
+        if (chartPoints.length >= 2) {
             var ctx = document.getElementById('myChart').getContext('2d');
-            if(!ctx) 
+            if (!ctx)
                 return;
             var myLineChart = new Chart(ctx, {
                 type: 'line',
@@ -318,153 +318,176 @@ function drawInstruction(data) {
     $('#instructionsPassword').html('Password: <b>' + data.password + '</b>')
 }
 
-function nextSection(){
-    if(started){
-        if(currentState != 2){
+function nextSection() {
+    if (started) {
+        if (currentState != 2) {
             prevTime = currentDate
             currentDate = new Date()
-            prevState = currentState 
+            prevState = currentState
         }
-        if(currentState == 0){
+        if (currentState == 0) {
             $('#main').css('display', 'block')
             $('#start').css('display', 'none')
             socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'next' })
             cardsByUser = {}
             actionCards = []
             cardsById = {}
-            currentState ++;
-            if(sessionType == 'Timeline')
+            currentState++;
+            if (sessionType == 'Timeline')
                 drawTimeline()
-        }else if(currentState == 1){
+        } else if (currentState == 1) {
             $('#end').css('display', 'block')
-            $('#main').css('display', 'none')  
+            $('#main').css('display', 'none')
             socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'next' })
 
-            currentState ++;
+            currentState++;
         }
     }
 }
 
-function prevSection(){
-    if(started){
-        if(currentState != 0){
+function prevSection() {
+    if (started) {
+        if (currentState != 0) {
             prevTime = currentDate
             currentDate = new Date()
-            prevState = currentState 
+            prevState = currentState
         }
-        if(currentState == 1){
+        if (currentState == 1) {
             $('#start').css('display', 'block')
             $('#main').css('display', 'none')
             socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'prev' })
 
-            currentState --;
-        }else if(currentState == 2){
+            currentState--;
+        } else if (currentState == 2) {
             $('#main').css('display', 'block')
             $('#end').css('display', 'none')
             socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'prev' })
             cardsByUser = {}
             actionCards = []
             cardsById = {}
-            currentState --;
-            if(sessionType == 'Timeline')
+            currentState--;
+            if (sessionType == 'Timeline')
                 drawTimeline()
         }
-    }  
-}
-
-function closeRetrospective(){
-    if(started){
-        //write out some form of report, probably json
-        socket.emit('closeRetrospective', { sessionId: sessionId })
-        window.location.href = window.location.href.split(PORT + '/')[0] + PORT; 
     }
 }
 
-function terminateRetrospective(){
-    if(started){
+function closeRetrospective() {
+    if (started) {
+        //write out some form of report, probably json
+        socket.emit('closeRetrospective', { sessionId: sessionId })
+        window.location.href = window.location.href.split(PORT + '/')[0] + PORT;
+    }
+}
+
+function terminateRetrospective() {
+    if (started) {
         socket.emit('terminateRetrospective', { sessionId: sessionId })
-        window.location.href = window.location.href.split(PORT + '/')[0] + PORT;     
+        window.location.href = window.location.href.split(PORT + '/')[0] + PORT;
     }
 }
 
 function drawTimeline() {
-    if(!$('#timeline').find('svg').length){
-        let width = $('#timeline').width()
-        $('#timeline').css('min-height', width * 0.4)
+    if (!$('#timeline').find('svg').length) {
+        $.get('/api/session/' + sessionId + "/getTimelineDates", {},
+            function (data) {
+                console.log(data.startDate, data.endDate)
 
-        height = $('#timeline').height()
-        width = $('#timeline').width()
+                let width = $('#timeline').width()
+                $('#timeline').css('min-height', width * 0.4)
+
+                height = $('#timeline').height()
+                width = $('#timeline').width()
+
+                var svg = d3.select("#timeline").append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+
+                var draw = svg.append('svg')
+                    .attr('width', width - 20)
+                    .attr('height', height)
+                    .attr('x', 70)
+
+                draw.append('rect')
+                    .attr('width', width - 20)
+                    .attr('height', height - 30)
+                    .attr('fill', '#FFF')
+                    .style('pointer-events', 'all')
+
+                var xScale = d3.time.scale()
+                    .domain([new Date(data.startDate), new Date(data.endDate)])
+                    .range([0, width])
+
+                var values = [{ num: 1, label: 'a' }, { num: 2, label: 'b' }, { num: 3, label: 'c' }, { num: 4, label: 'd' }, { num: 5, label: 'e' }]
+
+                var yScale = d3.scale.linear()
+                    .domain([1, 5])
+                    .range([0, height - 45])
+
+                var yAxis = d3.svg.axis()
+                    .orient("left")
+                    .scale(yScale)
+                    .tickValues(values.map(d => d.num))
+                    .tickFormat((d, i) => values[i].label);
+
+                var xAxis = d3.svg.axis()
+                    .orient("bottom")
+                    .scale(xScale)
+
+                var y = svg.append('g')
+                    .call(yAxis)
+                    .attr("shape-rendering", "crispEdges")
+                    .attr("transform", "translate(" + 70 + "," + 15 + ")")
+
+                var x = svg.append('g')
+                    .call(xAxis)
+                    .attr("shape-rendering", "crispEdges")
+                    .attr("transform", "translate(" + 70 + "," + (height - 30) + ")")
+
+                y.selectAll('path')
+                    .attr("fill", "none")
+                    .attr("stroke", "#000")
+
+                x.selectAll('path')
+                    .attr("fill", "none")
+                    .attr("stroke", "#000")
 
 
-        var svg = d3.select("#timeline").append("svg")
-        .attr("width", width)
-        .attr("height", height)
+                var activeLine;
 
-        var draw = svg.append('svg')
-        .attr('width', width - 120)
-        .attr('height', height)
-        .attr('x', 70)
-
-        draw.append('rect')
-        .attr('width', width - 120)
-        .attr('height', height - 30)
-        .attr('fill', '#FFF')
-        .style('pointer-events', 'all')
-
-        // var xAxis = d3.scale.linear()
-        //     .domain([])
-        //     .range([])
-
-        var values = [{ num: 1, label: 'a' }, { num: 2, label: 'b' }, { num: 3, label: 'c' }, { num: 4, label: 'd' }, { num: 5, label: 'e' }]
-
-        var yScale = d3.scale.linear()
-        .domain([1, 5])
-        .range([0, height - 30])
-
-        var yAxis = d3.svg.axis()
-        .orient("left")
-        .scale(yScale)
-        .tickValues(values.map(d => d.num))
-        .tickFormat((d, i) => values[i].label);
-
-        var y = svg.append('g')
-        .call(yAxis)
-        .attr("transform", "translate(" + 70 + "," + 15 + ")")
-
-        var activeLine;
-
-        var renderPath = d3.svg.line()
-        .x(function(d) { return d[0]; })
-        .y(function(d) { return d[1]; })
-        .tension(0)
-        .interpolate("cardinal");
+                var renderPath = d3.svg.line()
+                    .x(function (d) { return d[0]; })
+                    .y(function (d) { return d[1]; })
+                    .tension(0)
+                    .interpolate("cardinal");
 
 
-        draw.call(d3.behavior.drag()
-          .on("dragstart", dragstarted)
-          .on("drag", dragged)
-          .on("dragend", dragended));
+                draw.call(d3.behavior.drag()
+                    .on("dragstart", dragstarted)
+                    .on("drag", dragged)
+                    .on("dragend", dragended));
 
-        function dragstarted() {
-            activeLine = draw.append("path")
-            .datum([])
-            .attr("fill", "none")
-            .attr("stroke", "#000")
-            .attr("stroke-width", "3px")
-            //.attr("stroke-linejoin", "round")
-            //.attr("stroke-linecap", "round")
+                function dragstarted() {
+                    activeLine = draw.append("path")
+                        .datum([])
+                        .attr("fill", "none")
+                        .attr("stroke", "#000")
+                        .attr("stroke-width", "2px")
+                        .attr("stroke-linejoin", "round")
+                        .attr("stroke-linecap", "round")
 
-            activeLine.datum().push(d3.mouse(this));
-        }
+                    activeLine.datum().push(d3.mouse(this));
+                }
 
-        function dragged() {
-            activeLine.datum().push(d3.mouse(this));
-            activeLine.attr("d", renderPath);
-        }
+                function dragged() {
+                    activeLine.datum().push(d3.mouse(this));
+                    activeLine.attr("d", renderPath);
+                }
 
-        function dragended() {
-            activeLine = null;
-        }
+                function dragended() {
+                    activeLine = null;
+                }
+            })
     }
 }
 
