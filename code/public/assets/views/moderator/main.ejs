@@ -54,12 +54,76 @@
 	<div id='Timeline' style='text-align: center;width:100%;display:none;'>
 		<div class='row' style='width:100%'>
 			<div class='w-85' style='padding-left:20px'>
-				<h1>Timeline Thing</h1>
-				<div id='timeline' style='width:100%;height:100%;touch-action: none;'></div>
+				<div class='row' style='width:100%'>
+					<h1 style='width:60%'>Timeline Thing</h1>
+					<div class='row' style='width:40%;'>
+						<div style='width:30%'>
+							<button id='timelinePopupButton' style='width:100%;height:100%;font-size:150%' onclick='timelinePopupOpen()'>Change Person</button>
+						</div>
+						<div style='padding-left:5%;width:70%'>
+							<div class='row' style='width:100%'>
+								<div style='width: 40%;'>
+									<span style='padding-right:5%;'>Currently Selected Person: </span>
+									<span id='personName' style='padding-right:5%;font-weight:bold'>None</span>
+								</div>
+								<div style='width:60%;'>
+									<div style='height:50%;'>
+										<span>Color Selected:</span> 
+									</div>
+									<div id='timelineColor' style='width:90px;height:50%;background-color: white; border: 2px solid black;margin: 0 auto;'></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id='timeline' style='width:100%;height:100%;touch-action: none;'></div>
+				</div>
 			</div>
-			<div class='w-15'>
+			<div class='w-15' style='width:14%;'>
 				<h1>Action Points</h1>
 				<table id='actionCards' style='margin-left:5px;'></table>
+			</div>
+		</div>
+
+		<div class="modal fade" id="timelinePopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header" style='background-color:#66adff;padding:7px;'>
+						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
+							<h5 class="modal-title" style='padding-left:10px;'> Change Person </h5>
+						</div>
+					</div>
+					<div class="modal-body" style='width:100%; padding: 0px;'>
+						<div class='row' style='width:100%'>
+							<div class='w-50' style='padding-left:25px; text-align:left;'>
+								<h3>Person</h3>
+								<table id='timelinePersonTable' style='max-height:170px;width:170px;overflow-y: scroll;'/>
+							</div>
+							<div class='w-50'>
+								<h3>Color</h3>
+								<table style='border-spacing: 5px;border-collapse: separate;float:right'>
+									<tr style='height:50px;'>
+										<td id='e6194b' style='width:50px;padding:1px;border:1px solid #e6194b; border-radius:5px; background-color:#e6194b' onclick="setCurrentColorTimeline('e6194b')"/>
+										<td id='3cb44b' style='width:50px;padding:1px;border:1px solid #3cb44b; border-radius:5px;background-color:#3cb44b' onclick="setCurrentColorTimeline('3cb44b')"/>
+										<td id='ffe119' style='width:50px;padding:1px;border:1px solid #ffe119; border-radius:5px;background-color:#ffe119' onclick="setCurrentColorTimeline('ffe119')"/>
+									</tr>
+									<tr style='height:50px;'>
+										<td id='0082c8' style='width:50px;padding:1px;border:1px solid #0082c8; border-radius:5px;background-color:#0082c8' onclick="setCurrentColorTimeline('0082c8')"/>
+										<td id='f58231' style='width:50px;padding:1px;border:1px solid #f58231; border-radius:5px;background-color:#f58231' onclick="setCurrentColorTimeline('f58231')"/>
+										<td id='911eb4' style='width:50px;padding:1px;border:1px solid #911eb4; border-radius:5px;background-color:#911eb4' onclick="setCurrentColorTimeline('911eb4')"/>
+									</tr>
+									<tr style='height:50px;'>
+										<td id='46f0f0' style='width:50px;padding:1px;border:1px solid #46f0f0; border-radius:5px;background-color:#46f0f0' onclick="setCurrentColorTimeline('46f0f0')"/>
+										<td id='f032e6' style='width:50px;padding:1px;border:1px solid #f032e6; border-radius:5px;background-color:#f032e6' onclick="setCurrentColorTimeline('f032e6')"/>
+										<td id='aa6e28' style='width:50px;padding:1px;border:1px solid #aa6e28; border-radius:5px;background-color:#aa6e28' onclick="setCurrentColorTimeline('aa6e28')"/>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer" style='background-color:#66adff;padding:5px;'>
+						<button id='closeTimelinePopup' type="button" class="btn" style='background: white; border-color:black;' onclick='closeTimelinePopup()'>Update Preferences</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

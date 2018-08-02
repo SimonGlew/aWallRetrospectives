@@ -53,6 +53,7 @@ function socketRouter(io) {
 				.then(mem => {
 					return sessionHandler.getSprintFromId(data.sessionId)
 						.then(sprint => {
+							moderatorSocket._socket ? moderatorSocket._socket.emit('member_join', data.name) : null
 							moderatorSocket._socket ? moderatorSocket._socket.emit('members_mod', { members: mem, sprint: sprint }) : null
 						})
 				})

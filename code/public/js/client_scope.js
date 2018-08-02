@@ -215,6 +215,7 @@ function back(){
     if(currentState != 0){
         if(currentState == 1){
             $('#start').css('display', 'block')
+            cancelVote()
             $('#main').css('display', 'none')
             $('#end').css('display', 'none')
         }else if(currentState == 2){

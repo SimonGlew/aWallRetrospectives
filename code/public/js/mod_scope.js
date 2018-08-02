@@ -6,6 +6,7 @@ var sessionId = window.location.href.split('session/')[1].split('/')[0]
 var sessionType = window.location.href.split('type/')[1].split('/')[0]
 var username = localStorage.getItem('username')
 var members = []
+var allMembers = []
 var allCheckin_data = []
 var sprintCheckin_data = []
 var sprint = -1
@@ -15,9 +16,12 @@ var cardsById = {}
 var currentlySelectedCard = null
 var endCardsForPlusDelta = { plus: [], delta: [] }
 
+var userToColor = {}
+var currentlySelectedTimeline = { person: 'None', color: '#FFF' }
+
 var colorScale = d3.scale.linear()
-    .domain([1, 5, 10])
-    .range(['#fb590e', '#ffff73', '#6aae35']);
+.domain([1, 5, 10])
+.range(['#fb590e', '#ffff73', '#6aae35']);
 
 function sendBaseMessage() {
     socket.emit('moderatorConnection', { name: username, sessionId: sessionId })
@@ -37,6 +41,11 @@ socket.on('members_mod', function (data) {
             sprint = data.sprint
         redrawVotingScreen()
     }
+})
+
+socket.on('member_join', function (data){
+    if(allMembers.indexOf(data) == -1)
+        allMembers.push(data)
 })
 
 socket.on('update_header', function (data) {
@@ -104,15 +113,15 @@ function drawDelta() {
     let tableHTML = null
     endCardsForPlusDelta.plus.forEach(function (data) {
         tableHTML += '<tr style="margin-left:3px;">' +
-            '<td style="padding:0 10px 0 10px;"><div style="font-size:120%;margin-left:100px;">' + data.name + ':' + data.message + '</div>' +
-            '</td></tr>'
+        '<td style="padding:0 10px 0 10px;"><div style="font-size:120%;margin-left:100px;">' + data.name + ':' + data.message + '</div>' +
+        '</td></tr>'
     })
     tableHTML ? $('#endPlus').html(tableHTML) : $('#endPlus').html('')
     tableHTML = null
     endCardsForPlusDelta.delta.forEach(function (data) {
         tableHTML += '<tr style="margin-left:3px;">' +
-            '<td style="padding:0 10px 0 10px;"><div>' + data.name + ':' + data.message + '</div>' +
-            '</td></tr>'
+        '<td style="padding:0 10px 0 10px;"><div>' + data.name + ':' + data.message + '</div>' +
+        '</td></tr>'
     })
     tableHTML ? $('#endDelta').html(tableHTML) : $('#endDelta').html('')
 }
@@ -122,8 +131,8 @@ function redrawCardSystem() {
 
     Object.keys(cardsByUser).forEach(function (member) {
         tableHTML += '<tr style="margin-left:3px;">' +
-            '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' +
-            '</td>'
+        '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' +
+        '</td>'
         cardsByUser[member].forEach(function (card, index) {
             let message = card.data.message, type = card.data.type
             let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : 'badCard.png')
@@ -143,7 +152,7 @@ function redrawActionCards() {
     actionCards.forEach(function (card) {
         let cardType = card.data.type
         tableHTML += '<tr style="margin-left:20px;">' +
-            '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "'" + ')"></td></tr>'
+        '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "'" + ')"></td></tr>'
     })
     if (tableHTML)
         $('#actionCards').html(tableHTML)
@@ -256,7 +265,7 @@ function redrawGraphScreen() {
                 y += node.data.data
             })
             if (d.data.length) y = y / d.data.length
-            chartPoints.push({ x: x, y: y })
+                chartPoints.push({ x: x, y: y })
             maxSprint = Math.max(maxSprint, x)
             minSprint = Math.min(minSprint, x)
         })
@@ -387,6 +396,40 @@ function terminateRetrospective() {
     }
 }
 
+function timelinePopupOpen() {
+    $('#timelinePopup').modal('show');
+    let tableHTML = ''
+    allMembers.forEach(function(member){
+        tableHTML += '<tr><td><div id="' + member + '" onclick="setCurrentPersonTimeline(' + "'" + member + "'" + ')">' + member + '</span></td></tr>'
+    })
+    $('#timelinePersonTable').html(tableHTML)
+}
+
+function closeTimelinePopup(){
+    $('#timelinePopup').modal('hide');
+    
+    $('#timelineColor').css('background-color', currentlySelectedTimeline.color)
+    $('#personName').html(currentlySelectedTimeline.person)
+}
+
+function setCurrentPersonTimeline(person){
+    if(currentlySelectedTimeline.person)
+        $('#'+currentlySelectedTimeline.person).html('')
+
+    currentlySelectedTimeline.person = person
+
+    $('#'+currentlySelectedTimeline.person).css('border', '1px solid black')
+}
+
+function setCurrentColorTimeline(color){
+    if(currentlySelectedTimeline.color)
+        $(currentlySelectedTimeline.color).html('')
+    currentlySelectedTimeline.color = ('#' + color)
+
+    $('#'+color).html('<i class="fas fa-check fa-lg" style="color:white;font-size:22px"/>')
+}
+
+
 function drawTimeline() {
     if (!$('#timeline').find('svg').length) {
         $.get('/api/session/' + sessionId + "/getTimelineDates", {},
@@ -400,66 +443,66 @@ function drawTimeline() {
                 width = $('#timeline').width()
 
                 var svg = d3.select("#timeline").append("svg")
-                    .attr("width", width)
-                    .attr("height", height)
+                .attr("width", width)
+                .attr("height", height)
 
                 var draw = svg.append('svg')
-                    .attr('width', width - 20)
-                    .attr('height', height)
-                    .attr('x', 70)
+                .attr('width', width - 40)
+                .attr('height', height - 30)
+                .attr('x', 70)
 
                 draw.append('rect')
-                    .attr('width', width - 20)
-                    .attr('height', height - 30)
-                    .attr('fill', '#FFF')
-                    .style('pointer-events', 'all')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('fill', '#FFF')
+                .style('pointer-events', 'all')
 
                 var xScale = d3.time.scale()
-                    .domain([new Date(data.startDate), new Date(data.endDate)])
-                    .range([0, width])
+                .domain([new Date(data.startDate), new Date(data.endDate)])
+                .range([0, width])
 
-                var values = [{ num: 1, label: 'a' }, { num: 2, label: 'b' }, { num: 3, label: 'c' }, { num: 4, label: 'd' }, { num: 5, label: 'e' }]
+                var values = [{ num: 1, label: 'Happy' }, { num: 2, label: '' }, { num: 3, label: 'Okay' }, { num: 4, label: '' }, { num: 5, label: 'Sad' }]
 
                 var yScale = d3.scale.linear()
-                    .domain([1, 5])
-                    .range([0, height - 45])
+                .domain([1, 5])
+                .range([0, height - 45])
 
                 var yAxis = d3.svg.axis()
-                    .orient("left")
-                    .scale(yScale)
-                    .tickValues(values.map(d => d.num))
-                    .tickFormat((d, i) => values[i].label);
+                .orient("left")
+                .scale(yScale)
+                .tickValues(values.map(d => d.num))
+                .tickFormat((d, i) => values[i].label);
 
                 var xAxis = d3.svg.axis()
-                    .orient("bottom")
-                    .scale(xScale)
+                .orient("bottom")
+                .scale(xScale)
 
                 var y = svg.append('g')
-                    .call(yAxis)
-                    .attr("shape-rendering", "crispEdges")
-                    .attr("transform", "translate(" + 70 + "," + 15 + ")")
+                .call(yAxis)
+                .attr("shape-rendering", "crispEdges")
+                .attr("transform", "translate(" + 70 + "," + 15 + ")")
 
                 var x = svg.append('g')
-                    .call(xAxis)
-                    .attr("shape-rendering", "crispEdges")
-                    .attr("transform", "translate(" + 70 + "," + (height - 30) + ")")
+                .call(xAxis)
+                .attr("shape-rendering", "crispEdges")
+                .attr("transform", "translate(" + 70 + "," + (height - 30) + ")")
 
                 y.selectAll('path')
-                    .attr("fill", "none")
-                    .attr("stroke", "#000")
+                .attr("fill", "none")
+                .attr("stroke", "#000")
 
                 x.selectAll('path')
-                    .attr("fill", "none")
-                    .attr("stroke", "#000")
+                .attr("fill", "none")
+                .attr("stroke", "#000")
 
 
                 var activeLine;
 
                 var renderPath = d3.svg.line()
-                    .x(function (d) { return d[0]; })
-                    .y(function (d) { return d[1]; })
-                    .tension(0)
-                    .interpolate("cardinal");
+                .x(function (d) { return d[0]; })
+                .y(function (d) { return d[1]; })
+                .tension(0)
+                .interpolate("cardinal");
 
 
                 draw.call(d3.behavior.drag()
@@ -469,12 +512,12 @@ function drawTimeline() {
 
                 function dragstarted() {
                     activeLine = draw.append("path")
-                        .datum([])
-                        .attr("fill", "none")
-                        .attr("stroke", "#000")
-                        .attr("stroke-width", "2px")
-                        .attr("stroke-linejoin", "round")
-                        .attr("stroke-linecap", "round")
+                    .datum([])
+                    .attr("fill", "none")
+                    .attr("stroke", currentlySelectedTimeline.color)
+                    .attr("stroke-width", "4px")
+                    .attr("stroke-linejoin", "round")
+                    .attr("stroke-linecap", "round")
 
                     activeLine.datum().push(d3.mouse(this));
                 }
