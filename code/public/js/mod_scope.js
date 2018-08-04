@@ -400,9 +400,13 @@ function timelinePopupOpen() {
     $('#timelinePopup').modal('show');
     let tableHTML = ''
     allMembers.forEach(function(member){
-        tableHTML += '<tr><td><div id="' + member + '" onclick="setCurrentPersonTimeline(' + "'" + member + "'" + ')">' + member + '</span></td></tr>'
+        tableHTML += '<tr style="height:40px;padding-left:5px;"><td><div id="' + member + '" onclick="setCurrentPersonTimeline(' + "'" + member + "'" + ')">' + member + '</div></td></tr>'
     })
     $('#timelinePersonTable').html(tableHTML)
+
+    if(currentlySelectedTimeline.person && userToColor[currentlySelectedTimeline.person])
+        $('#'+userToColor[currentlySelectedTimeline.person].substring(1)).html('<i class="fas fa-check fa-lg" style="color:white;font-size:22px"/>')
+
 }
 
 function closeTimelinePopup(){
@@ -410,6 +414,10 @@ function closeTimelinePopup(){
     
     $('#timelineColor').css('background-color', currentlySelectedTimeline.color)
     $('#personName').html(currentlySelectedTimeline.person)
+
+    userToColor[currentlySelectedTimeline.person] = currentlySelectedTimeline.color
+
+    socket.emit('timeline_metadata', { sessionId: sessionId, map: userToColor })
 }
 
 function setCurrentPersonTimeline(person){
@@ -461,7 +469,7 @@ function drawTimeline() {
                 .domain([new Date(data.startDate), new Date(data.endDate)])
                 .range([0, width])
 
-                var values = [{ num: 1, label: 'Happy' }, { num: 2, label: '' }, { num: 3, label: 'Okay' }, { num: 4, label: '' }, { num: 5, label: 'Sad' }]
+                var values = [{ num: 1, label: 'Happy' }, { num: 3, label: 'Okay' }, { num: 5, label: 'Sad' }]
 
                 var yScale = d3.scale.linear()
                 .domain([1, 5])
@@ -470,12 +478,14 @@ function drawTimeline() {
                 var yAxis = d3.svg.axis()
                 .orient("left")
                 .scale(yScale)
+                .ticks(3)
                 .tickValues(values.map(d => d.num))
                 .tickFormat((d, i) => values[i].label);
 
                 var xAxis = d3.svg.axis()
                 .orient("bottom")
                 .scale(xScale)
+                .ticks(10)
 
                 var y = svg.append('g')
                 .call(yAxis)

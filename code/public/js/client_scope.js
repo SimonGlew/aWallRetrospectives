@@ -134,7 +134,7 @@ function cancelVote(){
 }
 
 
-function changeCardColor(col) {
+function changeCardColor(col, timeline) {
     if (col == 'good' || col == 'bad' || col =='action') {
         cardColor = col
     }
@@ -153,6 +153,10 @@ function changeCardColor(col) {
         $('#bad').css('border', '0px solid black')
         $('#good').css('border', '0px solid black')
         $('#action').css('border', '10px solid black')
+
+        if(timeline){
+            $('#actionTimeline').css('border', '10px solid black')
+        }
     }
 } 
 
@@ -189,11 +193,12 @@ function addEndData(){
 }
 
 function addCard(){
-    if(!$('#cardTextArea').val()) $('#cardErrorMessage').text("Please enter a value in text area");
+    if($('#cardTextArea').val().trim() == '') $('#cardErrorMessage').text("Please enter a value in text area");
     else if(!cardColor) $('#cardErrorMessage').text("Please select a color for the card");
     else{
         $('#cardErrorMessage').text('')
-        let cardTextArea = $('#cardTextArea').val()
+        let cardTextArea = $('#cardTextArea').val().trim()
+
 
         if(cardColor != 'action') 
             socket.emit('ThreeWCard', { data: { type: cardColor, message: cardTextArea, generated: new Date() }, sessionId: sessionId, name: username })
@@ -208,6 +213,24 @@ function addCard(){
 
         $('#cardMessageSuccess').css('display', 'block')
         $('#cardMessageSuccess').fadeOut(2500)
+    }
+}
+
+function addCardTimeline(){
+    if(!$('#cardTextAreaTimeline').val().trim()) $('#cardErrorMessageTimeline').text("Please enter a value in text area");
+    else if(!cardColor) $('#cardErrorMessageTimeline').text("Please select a color for the card");
+    else{
+        $('#cardErrorMessageTimeline').text('')
+        let cardTextArea = $('#cardTextAreaTimeline').val().trim()
+
+        socket.emit('ActionCard', { data: { type: cardColor, message: cardTextArea, generated: new Date() }, sessionId: sessionId, name: username })
+
+        $('#cardTextAreaTimeline').val('')
+        $('#actionTimeline').css('border', '0px solid black')   
+        cardColor = null 
+
+        $('#cardErrorMessageTimeline').css('display', 'block')
+        $('#cardErrorMessageTimeline').fadeOut(2500)
     }
 }
 

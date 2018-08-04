@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 
 const CheckIn = require('../models/boardData_checkin'),
 ThreeW = require('../models/3W'),
-EndCard = require('../models/endCard')
+EndCard = require('../models/endCard'),
+TimelineMetadata = require('../models/timelineMetadata')
 
 const SessionHandler = require('../handlers/sessionHandler')
 
@@ -120,6 +121,21 @@ function saveEndCard(data, sessionId){
     }).save()
 }
 
+function setTimelineMetadata(sessionId, map){
+    return TimelineMetadata.findOne({ session: sessionId })
+    .lean()
+    .then(res => {
+        if(!res){
+            return new TimelineMetadata({
+                session: sessionId,
+                map: map
+            }).save()
+        }else{
+            return TimelineMetadata.update({ _id: res._id }, { $set: { 'map': map } })
+        }
+    })
+}
+
 module.exports = {
     saveCheckin: saveCheckin,
     saveCard: saveCard,
@@ -130,5 +146,7 @@ module.exports = {
 
     inactiveCard: inactiveCard,
     carryonCard: carryonCard,
-    completeCard: completeCard
+    completeCard: completeCard,
+
+    setTimelineMetadata: setTimelineMetadata
 }

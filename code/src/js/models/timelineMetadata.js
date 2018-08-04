@@ -1,15 +1,15 @@
 var mongoose = require('mongoose');
 
-let checkInSchema = new mongoose.Schema({
+let timelineSchema = new mongoose.Schema({
     session: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'session',
         required: true,
         index: true
     },
-    data: {
+    map: {
         type: Object
     }
 });
 
-module.exports = mongoose.model('boardData_checkin', checkInSchema); 
+module.exports = mongoose.model('timeline_metadata', timelineSchema); 

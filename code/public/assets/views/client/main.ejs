@@ -35,7 +35,18 @@
             <p class="text-success" id="cardMessageSuccess" style='font-size:250%;display:none;'>Card sent to board</p>
         </div>
         <div id='Timeline' style='display:none;'>
-
+            <div class='row h-100'>
+                <div id='actionTimeline' class='w-100 bradius10' style='background-color: blue;' onclick="changeCardColor('action', true)"></div>
+            </div>
+            <div style='min-height:50px;'></div>
+            <div class="form-group" style='min-height: 550px;'>
+                <textarea class="form-control" id="cardTextAreaTimeline" rows="3" style='font-size: 400%;display: block;height: 550px;border-radius: 10px; border: 1px solid black;'></textarea>
+            </div>
+            <div style='min-height:50px;'></div>
+            <input id='cardButtonTimeline' type="button" value="Add Card." style='font-size: 400%;' onclick="addCardTimeline()">
+            <p class="text-danger" id="cardErrorMessageTimeline" style='font-size:250%'></p>
+            <p class="text-success" id="cardMessageSuccessTimeline" style='font-size:250%;display:none;'>Card sent to board</p>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

@@ -107,6 +107,10 @@ function socketRouter(io) {
 			return boardDataHandler.completeCard(data.cardId)
 		})
 
+		socket.on('timeline_metadata', (data) => {
+			return boardDataHandler.setTimelineMetadata(data.sessionId, data.map)
+		})
+
 		socket.on('terminateRetrospective', (data) => {
 			let sessionId = data.sessionId
 			return sessionHandler.disactiveSession(sessionId)
