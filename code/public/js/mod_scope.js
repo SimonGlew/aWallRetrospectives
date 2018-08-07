@@ -71,7 +71,7 @@ socket.on('3w_card', function (data) {
         if (!cardsByUser[user])
             cardsByUser[user] = []
 
-        let obj = { _id: card._id, user: user, data: card.data.data }
+        let obj = { _id: card._id, user: user, data: card.data.data, completed: card.completed }
 
         cardsByUser[user].push(obj)
         cardsById[card._id] = obj
@@ -84,7 +84,7 @@ socket.on('action_card', function (data) {
         data = [data]
 
     data.forEach(function (card) {
-        let obj = { _id: card._id, user: card.data.name, carryOver: card.carryOver, data: card.data.data }
+        let obj = { _id: card._id, user: card.data.name, carryOver: card.carryOver, data: card.data.data, completed: card.completed, carriedOver: card.carriedOver }
 
         let index = actionCards.map(function (c) { return c._id }).indexOf(obj._id)
         if (index == -1)
@@ -113,14 +113,18 @@ function drawDelta() {
     let tableHTML = null
     endCardsForPlusDelta.plus.forEach(function (data) {
         tableHTML += '<tr style="margin-left:3px;">' +
-        '<td style="padding:0 10px 0 10px;"><div style="font-size:120%;margin-left:100px;">' + data.name + ':' + data.message + '</div>' +
+        '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' + 
+        '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
+        '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
         '</td></tr>'
     })
     tableHTML ? $('#endPlus').html(tableHTML) : $('#endPlus').html('')
     tableHTML = null
     endCardsForPlusDelta.delta.forEach(function (data) {
         tableHTML += '<tr style="margin-left:3px;">' +
-        '<td style="padding:0 10px 0 10px;"><div>' + data.name + ':' + data.message + '</div>' +
+        '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' + 
+        '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
+        '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
         '</td></tr>'
     })
     tableHTML ? $('#endDelta').html(tableHTML) : $('#endDelta').html('')
@@ -136,7 +140,8 @@ function redrawCardSystem() {
         cardsByUser[member].forEach(function (card, index) {
             let message = card.data.message, type = card.data.type
             let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : 'badCard.png')
-            tableHTML += '<td style="vertical-align:top;padding-right:10px;"><img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')"></td>'
+            let completed = card.completed ? '<img src="/assets/pictures/finish_sprint.png" height="30" width="auto" style="margin-left:-30px;margin-top:20px;" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')">' : ''
+            tableHTML += '<td style="vertical-align:top;padding-right:10px;"><img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')">' + completed + '</td>'
         })
         tableHTML += '</tr>'
     })
@@ -150,9 +155,13 @@ function redrawActionCards() {
     let tableHTML = null
 
     actionCards.forEach(function (card) {
+        let carryBool = card.carryOver && card.carryOver.indexOf(sessionId) != -1
         let cardType = card.data.type
+        let completed = card.completed ? '<img src="/assets/pictures/finish_sprint.png" height="30" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
+        let carryOver = carryBool ? '<img src="/assets/pictures/next.png" height="30" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
+        let div = completed.length || carryOver.length ? '<div style="margin-top:-30px;margin-right:-60px;">' +  completed + carryOver + '</div>' : ''
         tableHTML += '<tr style="margin-left:20px;">' +
-        '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "'" + ')"></td></tr>'
+        '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' + div + '</td></tr>'
     })
     if (tableHTML)
         $('#actionCards').html(tableHTML)
@@ -163,7 +172,17 @@ function redrawActionCards() {
 function carryoverCard() {
     if (currentlySelectedCard) {
         socket.emit('carryon_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
+
+        let index = actionCards.map(function (c) { return c._id }).indexOf(currentlySelectedCard._id)
+        if(index != -1){
+            if(!actionCards[index].carryOver || !actionCards[index].carryOver.length) 
+                actionCards[index].carryOver = []
+
+            actionCards[index].carryOver.indexOf(sessionId) == -1 ? actionCards[index].carryOver.push(sessionId) : null
+        }
     }
+    $('#cardPopup').modal('hide');
+    redrawActionCards()
 }
 
 function inactiveCard() {
@@ -189,17 +208,24 @@ function inactiveCard() {
 }
 
 
-function openCard(cardId, index) {
+function openCard(cardId, index, carryOver) {
     $('#cardPopup').modal('show');
+
+    let colorMap = { 'good': '#00A51D', 'bad': '#FF5656', 'action': '#0094FF' }
 
     currentlySelectedCard = cardsById[cardId]
 
-    $('#modalTitle').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action' + (currentlySelectedCard.carryOver ? ' (Carried from last sprint)' : '')))
-    currentlySelectedCard.data.type == 'action' ? $('#carryOverCard').css('display', 'initial') : null
+    $('#headerCardModal').css('background-color', colorMap[currentlySelectedCard.data.type])
+    $('#footerCardModal').css('background-color', colorMap[currentlySelectedCard.data.type])
+
+
+    $('#modalTitle').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action' + (currentlySelectedCard.carriedOver ? ' (Carried from last sprint)' : '')))
+    currentlySelectedCard.data.type == 'action' && carryOver == false ? $('#carryOverCard').css('display', 'initial') : $('#carryOverCard').css('display', 'none')
     $('#completeCard').html(currentlySelectedCard.completed ? '<i class="fas fa-check fa-lg"></i> Completed' : '<i class="fas fa-check fa-lg"></i> Complete')
-    $('#cardName').html('NAME: ' + currentlySelectedCard.user)
-    $('#cardMessage').html('MESSAGE: ' + currentlySelectedCard.data.message)
-    $('#cardGenerated').html('GENERATED: ' + currentlySelectedCard.data.generated)
+    $('#cardName').html(currentlySelectedCard.user)
+    $('#cardType').html(capitalizeFirstLetter(currentlySelectedCard.data.type))
+    $('#cardMessage').html(currentlySelectedCard.data.message)
+    $('#cardGenerated').html(formatDate(currentlySelectedCard.data.generated))
 
 }
 
@@ -209,6 +235,8 @@ function completeCard() {
         socket.emit('complete_card', { cardId: currentlySelectedCard._id })
         $('#cardPopup').modal('hide');
     }
+    redrawCardSystem()
+    redrawActionCards()
 }
 
 
@@ -327,6 +355,14 @@ function drawInstruction(data) {
     $('#instructionsPassword').html('Password: <b>' + data.password + '</b>')
 }
 
+function makeTableOutlineDelta(){
+    let length = ($('#footer').offset().top - $('#endTables').offset().top) - 30
+    
+    $('#endTables').css('min-height', length)
+    drawDelta()
+}
+
+
 function nextSection() {
     if (started) {
         if (currentState != 2) {
@@ -348,8 +384,8 @@ function nextSection() {
             $('#end').css('display', 'block')
             $('#main').css('display', 'none')
             socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'next' })
-
             currentState++;
+            makeTableOutlineDelta()
         }
     }
 }
@@ -422,11 +458,12 @@ function closeTimelinePopup(){
 
 function setCurrentPersonTimeline(person){
     if(currentlySelectedTimeline.person)
-        $('#'+currentlySelectedTimeline.person).html('')
+        $('#'+currentlySelectedTimeline.person).css('border', '')
 
     currentlySelectedTimeline.person = person
 
     $('#'+currentlySelectedTimeline.person).css('border', '1px solid black')
+    $('#personName').html(currentlySelectedTimeline.person)
 }
 
 function setCurrentColorTimeline(color){
@@ -435,6 +472,7 @@ function setCurrentColorTimeline(color){
     currentlySelectedTimeline.color = ('#' + color)
 
     $('#'+color).html('<i class="fas fa-check fa-lg" style="color:white;font-size:22px"/>')
+    $('#timelineColor').css('background-color', currentlySelectedTimeline.color)
 }
 
 
@@ -442,7 +480,7 @@ function drawTimeline() {
     if (!$('#timeline').find('svg').length) {
         $.get('/api/session/' + sessionId + "/getTimelineDates", {},
             function (data) {
-                console.log(data.startDate, data.endDate)
+                userToColor = data.map
 
                 let width = $('#timeline').width()
                 $('#timeline').css('min-height', width * 0.4)
@@ -542,6 +580,14 @@ function drawTimeline() {
                 }
             })
     }
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function formatDate(oldDate){
+    return moment(oldDate).format("ddd Do MMM YYYY")
 }
 
 redrawVotingScreen() 

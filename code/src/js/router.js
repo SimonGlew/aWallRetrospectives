@@ -58,7 +58,7 @@ router.get('/api/session/:sessionId/getMetadata', function(req, res){
 })
 
 router.get('/api/session/:sessionId/getTimelineDates', function(req, res){
-    sessionHandler.getTimelineDates(req.params.sessionId)
+    sessionHandler.getTimelineDatesAndMap(req.params.sessionId)
         .then(result => {
             res.send(result)
         })

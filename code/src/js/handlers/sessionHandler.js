@@ -1,5 +1,6 @@
 const Session = require('../models/session'),
-    RetrospectiveType = require('../models/retrospectiveType')
+    RetrospectiveType = require('../models/retrospectiveType'),
+    TimelineMetadata = require('../models/timelineMetadata')
 
 function createSession(projectName, sprintNumber, boardName, password, rType, startDate, endDate) {
     return Session.count({ project: projectName, sprint: sprintNumber })
@@ -173,11 +174,15 @@ function changeState(toState, sessionId) {
         })
 }
 
-function getTimelineDates(sessionId) {
+function getTimelineDatesAndMap(sessionId) {
     return Session.findOne({ _id: sessionId }, 'startDate endDate')
         .lean()
         .then(session => {
-            return { startDate: session.startDate, endDate: session.endDate }
+            return TimelineMetadata.findOne({ session: sessionId }, 'map')
+                .lean()
+                .then(metadata => {
+                    return { map: (metadata || {}) startDate: session.startDate, endDate: session.endDate }
+                })
         })
 }
 
@@ -186,7 +191,7 @@ module.exports = {
     createSession: createSession,
     joinSession: joinSession,
     getMetadata: getMetadata,
-    getTimelineDates: getTimelineDates,
+    getTimelineDatesAndMap: getTimelineDatesAndMap,
     getCurrentMembers: getCurrentMembers,
     getSprintSessionsFromId: getSprintSessionsFromId,
     getSprintFromId: getSprintFromId,

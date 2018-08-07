@@ -67,11 +67,11 @@ function getAllCards(sessionId){
                 if(card.data.data.type != 'action'){
                     obj.nonA.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, completed: card.completed })
                 }else{
-                    obj.A.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, completed: card.completed })
+                    obj.A.push({ _id: card._id, name: card.data.name, data: card.data, carryOver: card.carryOver, active: card.active, completed: card.completed })
                 }
             })
             carryOver.forEach(card => {
-                obj.A.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, completed: card.completed, carryOver: card.carryOver })
+                obj.A.push({ _id: card._id, name: card.data.name, data: card.data, active: card.active, completed: card.completed, carryOver: card.carryOver, carriedOver: true })
             })
             return obj
         })
@@ -93,7 +93,8 @@ function carryonCard(cardId, sessionId){
     return ThreeW.findOne({ _id: cardId })
     .then(card => {
         if(card){
-            if(card.carryOver.indexOf(sessionId) == -1){
+            console.log('card', card)
+            if(card.carryOver.map(r => String(r)).indexOf(String(sessionId)) == -1){
                 card.carryOver.push(sessionId)
                 console.log('carry over array', card.carryOver)
                 return card.save()
@@ -107,7 +108,6 @@ function completeCard(cardId){
     return ThreeW.findOne({ _id: cardId })
     .then(card => {
         if(card){
-            outputToLog('completeCard: ' + cardId, null)
             card.completed = !card.completed
             return card.save()
         }
