@@ -181,7 +181,7 @@ function getTimelineDatesAndMap(sessionId) {
             return TimelineMetadata.findOne({ session: sessionId }, 'map')
                 .lean()
                 .then(metadata => {
-                    return { map: (metadata || {}) startDate: session.startDate, endDate: session.endDate }
+                    return { map: (metadata || {}), startDate: session.startDate, endDate: session.endDate }
                 })
         })
 }
