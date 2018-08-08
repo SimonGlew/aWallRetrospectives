@@ -20,8 +20,8 @@ var userToColor = {}
 var currentlySelectedTimeline = { person: 'None', color: '#FFF' }
 
 var colorScale = d3.scale.linear()
-.domain([1, 5, 10])
-.range(['#fb590e', '#ffff73', '#6aae35']);
+    .domain([1, 5, 10])
+    .range(['#fb590e', '#ffff73', '#6aae35']);
 
 function sendBaseMessage() {
     socket.emit('moderatorConnection', { name: username, sessionId: sessionId })
@@ -43,15 +43,14 @@ socket.on('members_mod', function (data) {
     }
 })
 
-socket.on('member_join', function (data){
-    if(allMembers.indexOf(data) == -1)
+socket.on('member_join', function (data) {
+    if (allMembers.indexOf(data) == -1)
         allMembers.push(data)
 })
 
 socket.on('update_header', function (data) {
     updateData()
 })
-
 
 socket.on('checkin_data', function (data) {
     sprintCheckin_data = data.sprintData || []
@@ -96,16 +95,21 @@ socket.on('action_card', function (data) {
 })
 
 socket.on('end_card', function (data) {
-    let card = data.data
-    if (card.data.type == 'plus') {
-        if (!endCardsForPlusDelta.plus)
-            endCardsForPlusDelta.plus = []
-        endCardsForPlusDelta.plus.push({ name: card.name, message: card.data.message, generated: card.data.generated, id: data._id })
-    } else {
-        if (!endCardsForPlusDelta.delta)
-            endCardsForPlusDelta.delta = []
-        endCardsForPlusDelta.delta.push({ name: card.name, message: card.data.message, generated: card.data.generated, id: data._id })
-    }
+    if (!Array.isArray(data))
+        data = [data]
+
+    data.forEach(function (d) {
+        let card = d.data
+        if (card.data.type == 'plus') {
+            if (!endCardsForPlusDelta.plus)
+                endCardsForPlusDelta.plus = []
+            endCardsForPlusDelta.plus.push({ name: card.name, message: card.data.message, generated: card.data.generated, id: data._id })
+        } else {
+            if (!endCardsForPlusDelta.delta)
+                endCardsForPlusDelta.delta = []
+            endCardsForPlusDelta.delta.push({ name: card.name, message: card.data.message, generated: card.data.generated, id: data._id })
+        }
+    })
     drawDelta()
 })
 
@@ -113,19 +117,19 @@ function drawDelta() {
     let tableHTML = null
     endCardsForPlusDelta.plus.forEach(function (data) {
         tableHTML += '<tr style="margin-left:3px;">' +
-        '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' + 
-        '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
-        '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
-        '</td></tr>'
+            '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' +
+            '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
+            '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
+            '</td></tr>'
     })
     tableHTML ? $('#endPlus').html(tableHTML) : $('#endPlus').html('')
     tableHTML = null
     endCardsForPlusDelta.delta.forEach(function (data) {
         tableHTML += '<tr style="margin-left:3px;">' +
-        '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' + 
-        '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
-        '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
-        '</td></tr>'
+            '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' +
+            '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
+            '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
+            '</td></tr>'
     })
     tableHTML ? $('#endDelta').html(tableHTML) : $('#endDelta').html('')
 }
@@ -135,8 +139,8 @@ function redrawCardSystem() {
 
     Object.keys(cardsByUser).forEach(function (member) {
         tableHTML += '<tr style="margin-left:3px;">' +
-        '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' +
-        '</td>'
+            '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' +
+            '</td>'
         cardsByUser[member].forEach(function (card, index) {
             let message = card.data.message, type = card.data.type
             let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : 'badCard.png')
@@ -159,9 +163,9 @@ function redrawActionCards() {
         let cardType = card.data.type
         let completed = card.completed ? '<img src="/assets/pictures/finish_sprint.png" height="30" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
         let carryOver = carryBool ? '<img src="/assets/pictures/next.png" height="30" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
-        let div = completed.length || carryOver.length ? '<div style="margin-top:-30px;margin-right:-60px;">' +  completed + carryOver + '</div>' : ''
+        let div = completed.length || carryOver.length ? '<div style="margin-top:-30px;margin-right:-60px;">' + completed + carryOver + '</div>' : ''
         tableHTML += '<tr style="margin-left:20px;">' +
-        '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' + div + '</td></tr>'
+            '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' + div + '</td></tr>'
     })
     if (tableHTML)
         $('#actionCards').html(tableHTML)
@@ -174,8 +178,8 @@ function carryoverCard() {
         socket.emit('carryon_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
 
         let index = actionCards.map(function (c) { return c._id }).indexOf(currentlySelectedCard._id)
-        if(index != -1){
-            if(!actionCards[index].carryOver || !actionCards[index].carryOver.length) 
+        if (index != -1) {
+            if (!actionCards[index].carryOver || !actionCards[index].carryOver.length)
                 actionCards[index].carryOver = []
 
             actionCards[index].carryOver.indexOf(sessionId) == -1 ? actionCards[index].carryOver.push(sessionId) : null
@@ -293,7 +297,7 @@ function redrawGraphScreen() {
                 y += node.data.data
             })
             if (d.data.length) y = y / d.data.length
-                chartPoints.push({ x: x, y: y })
+            chartPoints.push({ x: x, y: y })
             maxSprint = Math.max(maxSprint, x)
             minSprint = Math.min(minSprint, x)
         })
@@ -355,10 +359,11 @@ function drawInstruction(data) {
     $('#instructionsPassword').html('Password: <b>' + data.password + '</b>')
 }
 
-function makeTableOutlineDelta(){
+function makeTableOutlineDelta() {
     let length = ($('#footer').offset().top - $('#endTables').offset().top) - 30
-    
+
     $('#endTables').css('min-height', length)
+    socket.emit('getEndCards', { sessionId: sessionId })
     drawDelta()
 }
 
@@ -435,19 +440,19 @@ function terminateRetrospective() {
 function timelinePopupOpen() {
     $('#timelinePopup').modal('show');
     let tableHTML = ''
-    allMembers.forEach(function(member){
+    allMembers.forEach(function (member) {
         tableHTML += '<tr style="height:40px;padding-left:5px;"><td><div id="' + member + '" onclick="setCurrentPersonTimeline(' + "'" + member + "'" + ')">' + member + '</div></td></tr>'
     })
     $('#timelinePersonTable').html(tableHTML)
 
-    if(currentlySelectedTimeline.person && userToColor[currentlySelectedTimeline.person])
-        $('#'+userToColor[currentlySelectedTimeline.person].substring(1)).html('<i class="fas fa-check fa-lg" style="color:white;font-size:22px"/>')
+    if (currentlySelectedTimeline.person && userToColor[currentlySelectedTimeline.person])
+        $('#' + userToColor[currentlySelectedTimeline.person].substring(1)).html('<i class="fas fa-check fa-lg" style="color:white;font-size:22px"/>')
 
 }
 
-function closeTimelinePopup(){
+function closeTimelinePopup() {
     $('#timelinePopup').modal('hide');
-    
+
     $('#timelineColor').css('background-color', currentlySelectedTimeline.color)
     $('#personName').html(currentlySelectedTimeline.person)
 
@@ -456,22 +461,22 @@ function closeTimelinePopup(){
     socket.emit('timeline_metadata', { sessionId: sessionId, map: userToColor })
 }
 
-function setCurrentPersonTimeline(person){
-    if(currentlySelectedTimeline.person)
-        $('#'+currentlySelectedTimeline.person).css('border', '')
+function setCurrentPersonTimeline(person) {
+    if (currentlySelectedTimeline.person)
+        $('#' + currentlySelectedTimeline.person).css('border', '')
 
     currentlySelectedTimeline.person = person
 
-    $('#'+currentlySelectedTimeline.person).css('border', '1px solid black')
+    $('#' + currentlySelectedTimeline.person).css('border', '1px solid black')
     $('#personName').html(currentlySelectedTimeline.person)
 }
 
-function setCurrentColorTimeline(color){
-    if(currentlySelectedTimeline.color)
+function setCurrentColorTimeline(color) {
+    if (currentlySelectedTimeline.color)
         $(currentlySelectedTimeline.color).html('')
     currentlySelectedTimeline.color = ('#' + color)
 
-    $('#'+color).html('<i class="fas fa-check fa-lg" style="color:white;font-size:22px"/>')
+    $('#' + color).html('<i class="fas fa-check fa-lg" style="color:white;font-size:22px"/>')
     $('#timelineColor').css('background-color', currentlySelectedTimeline.color)
 }
 
@@ -489,68 +494,68 @@ function drawTimeline() {
                 width = $('#timeline').width()
 
                 var svg = d3.select("#timeline").append("svg")
-                .attr("width", width)
-                .attr("height", height)
+                    .attr("width", width)
+                    .attr("height", height)
 
                 var draw = svg.append('svg')
-                .attr('width', width - 40)
-                .attr('height', height - 30)
-                .attr('x', 70)
+                    .attr('width', width - 40)
+                    .attr('height', height - 30)
+                    .attr('x', 70)
 
                 draw.append('rect')
-                .attr('width', width)
-                .attr('height', height)
-                .attr('fill', '#FFF')
-                .style('pointer-events', 'all')
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr('fill', '#FFF')
+                    .style('pointer-events', 'all')
 
                 var xScale = d3.time.scale()
-                .domain([new Date(data.startDate), new Date(data.endDate)])
-                .range([0, width])
+                    .domain([new Date(data.startDate), new Date(data.endDate)])
+                    .range([0, width])
 
                 var values = [{ num: 1, label: 'Happy' }, { num: 3, label: 'Okay' }, { num: 5, label: 'Sad' }]
 
                 var yScale = d3.scale.linear()
-                .domain([1, 5])
-                .range([0, height - 45])
+                    .domain([1, 5])
+                    .range([0, height - 45])
 
                 var yAxis = d3.svg.axis()
-                .orient("left")
-                .scale(yScale)
-                .ticks(3)
-                .tickValues(values.map(d => d.num))
-                .tickFormat((d, i) => values[i].label);
+                    .orient("left")
+                    .scale(yScale)
+                    .ticks(3)
+                    .tickValues(values.map(d => d.num))
+                    .tickFormat((d, i) => values[i].label);
 
                 var xAxis = d3.svg.axis()
-                .orient("bottom")
-                .scale(xScale)
-                .ticks(10)
+                    .orient("bottom")
+                    .scale(xScale)
+                    .ticks(10)
 
                 var y = svg.append('g')
-                .call(yAxis)
-                .attr("shape-rendering", "crispEdges")
-                .attr("transform", "translate(" + 70 + "," + 15 + ")")
+                    .call(yAxis)
+                    .attr("shape-rendering", "crispEdges")
+                    .attr("transform", "translate(" + 70 + "," + 15 + ")")
 
                 var x = svg.append('g')
-                .call(xAxis)
-                .attr("shape-rendering", "crispEdges")
-                .attr("transform", "translate(" + 70 + "," + (height - 30) + ")")
+                    .call(xAxis)
+                    .attr("shape-rendering", "crispEdges")
+                    .attr("transform", "translate(" + 70 + "," + (height - 30) + ")")
 
                 y.selectAll('path')
-                .attr("fill", "none")
-                .attr("stroke", "#000")
+                    .attr("fill", "none")
+                    .attr("stroke", "#000")
 
                 x.selectAll('path')
-                .attr("fill", "none")
-                .attr("stroke", "#000")
+                    .attr("fill", "none")
+                    .attr("stroke", "#000")
 
 
                 var activeLine;
 
                 var renderPath = d3.svg.line()
-                .x(function (d) { return d[0]; })
-                .y(function (d) { return d[1]; })
-                .tension(0)
-                .interpolate("cardinal");
+                    .x(function (d) { return d[0]; })
+                    .y(function (d) { return d[1]; })
+                    .tension(0)
+                    .interpolate("cardinal");
 
 
                 draw.call(d3.behavior.drag()
@@ -560,12 +565,12 @@ function drawTimeline() {
 
                 function dragstarted() {
                     activeLine = draw.append("path")
-                    .datum([])
-                    .attr("fill", "none")
-                    .attr("stroke", currentlySelectedTimeline.color)
-                    .attr("stroke-width", "4px")
-                    .attr("stroke-linejoin", "round")
-                    .attr("stroke-linecap", "round")
+                        .datum([])
+                        .attr("fill", "none")
+                        .attr("stroke", currentlySelectedTimeline.color)
+                        .attr("stroke-width", "4px")
+                        .attr("stroke-linejoin", "round")
+                        .attr("stroke-linecap", "round")
 
                     activeLine.datum().push(d3.mouse(this));
                 }
@@ -586,7 +591,7 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function formatDate(oldDate){
+function formatDate(oldDate) {
     return moment(oldDate).format("ddd Do MMM YYYY")
 }
 

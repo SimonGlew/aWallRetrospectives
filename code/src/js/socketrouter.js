@@ -111,6 +111,13 @@ function socketRouter(io) {
 			return boardDataHandler.setTimelineMetadata(data.sessionId, data.map)
 		})
 
+		socket.on('getEndCards', (data) => {
+			return boardDataHandler.getEndCards(data.sessionId)
+				.then(cards => {
+					moderatorSocket._socket ? moderatorSocket._socket.emit('end_card',  cards) : null
+				})	
+		})
+
 		socket.on('terminateRetrospective', (data) => {
 			let sessionId = data.sessionId
 			return sessionHandler.disactiveSession(sessionId)

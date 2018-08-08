@@ -136,6 +136,11 @@ function setTimelineMetadata(sessionId, map){
     })
 }
 
+function getEndCards(sessionId){
+    return EndCard.find({ _id: sessionId }).lean()
+        .then(data => data)
+}
+
 module.exports = {
     saveCheckin: saveCheckin,
     saveCard: saveCard,
@@ -143,6 +148,7 @@ module.exports = {
 
     getCheckinData: getCheckinData,
     getAllCards: getAllCards,
+    getEndCards: getEndCards,
 
     inactiveCard: inactiveCard,
     carryonCard: carryonCard,
