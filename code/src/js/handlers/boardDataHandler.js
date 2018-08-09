@@ -137,7 +137,7 @@ function setTimelineMetadata(sessionId, map){
 }
 
 function getEndCards(sessionId){
-    return EndCard.find({ _id: sessionId }).lean()
+    return EndCard.find({ session: sessionId }).lean()
         .then(data => data)
 }
 

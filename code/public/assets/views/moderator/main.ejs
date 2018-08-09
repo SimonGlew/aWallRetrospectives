@@ -63,13 +63,50 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal fade" id="3WInstructions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header" style='padding:7px;'>
+						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
+							<h3 class="modal-title" style='padding-left:10px;'><b>3W: Instructions</b></h3>
+						</div>
+					</div>
+					<div class="modal-body" style='width:100%;'>
+						<div class='row' style='width:100%;padding-left:5px;'>
+							<p class='floatLeft'>
+								3W is used to understand how the group felt during the sprint. There are two different colours to label a card,
+								<b>Good</b> (green) or <b>Bad</b> (red). Cards are then discussed and <b>Action Points</b> (blue) are created for future retrospectives
+							</p>
+							<div style='min-height:15px;height:15px;width:100%'/>
+							<h5><b>How it works</b></h5>
+							<div>
+								<img src="/assets/pictures/instructions_phone.png" alt="" height="193px" width="auto" style='padding-right:10px'>
+								<img src="/assets/pictures/instructions_phone2.png" alt="" height="193px" width="auto" style='padding-left:10px'>
+								<div style='min-height:15px;height:15px;width:100%'/>
+								<p class='floatLeft'> 
+									Please select a feeling (top bar of colours) and write about why you felt that way in the provided space below,
+									and send it off to the board. After 5 minutes the group will come together and discuss each card and if necessary
+									action points (blue) will be created.
+								</p> 
+								<p class='floatLeft' style='padding-top:5px;display:block;'>
+									<b>Estimated Time: </b> 30 minutes
+								</p> 
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer" style='padding:5px;'>
+						<button type="button" class="btn" style='background: white; border-color:black;' onclick='closePopup("#3WInstructions")'>Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div style='min-height:60px'></div>
 	</div>
 	<div id='Timeline' style='text-align: center;width:100%;display:none;'>
 		<div class='row' style='width:100%'>
 			<div class='w-85' style='padding-left:20px'>
 				<div class='row' style='width:100%'>
-					<h1 style='width:60%'>Timeline Thing</h1>
+					<h1 style='width:60%'>Timeline</h1>
 					<div class='row' style='width:40%;'>
 						<div style='width:30%'>
 							<button id='timelinePopupButton' style='width:100%;height:100%;font-size:150%' onclick='timelinePopupOpen()'>Change Person</button>
@@ -136,6 +173,46 @@
 					</div>
 					<div class="modal-footer" style='background-color:#66adff;padding:5px;'>
 						<button id='closeTimelinePopup' type="button" class="btn" style='background: white; border-color:black;' onclick='closeTimelinePopup()'>Update Preferences</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="timelineInstructions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header" style='padding:7px;'>
+						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
+							<h3 class="modal-title" style='padding-left:10px;'><b>Timeline: Instructions</b></h3>
+						</div>
+					</div>
+					<div class="modal-body" style='width:100%;'>
+						<div class='row' style='width:100%;padding-left:5px;'>
+							<p class='floatLeft'>
+								Timeline is used to understand the groups feelings over the sprint, and how they changed during the sprint
+								Timeline is then discussed and <b>Action Points</b> (blue) are created for future retrospectives
+							</p>
+							<div style='min-height:15px;height:15px;width:100%'/>
+							<h5><b>How it works</b></h5>
+							<div>
+								<img src="/assets/pictures/instructions_phone.png" alt="" height="193px" width="auto" style='padding-right:10px'>
+								<img src="/assets/pictures/instructions_phone.png" alt="" height="193px" width="auto" style='padding-right:10px'>
+
+								<div style='min-height:15px;height:15px;width:100%'/>
+								<p class='floatLeft'> 
+									Please select yourself and a colour and draw a line on how you felt during the sprint, you may also include different
+									crunch points on the line to signal events such like finishing a block of work.
+
+									In discussion, <b>Action Cards</b> (blue) can be created to help with issues to be resolved during the following sprint.
+								</p> 
+								<p class='floatLeft' style='padding-top:5px;display:block;'>
+									<b>Estimated Time: </b> 30 minutes
+								</p> 
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer" style='padding:5px;'>
+						<button type="button" class="btn" style='background: white; border-color:black;' onclick='closePopup("#timelineInstructions")'>Close</button>
 					</div>
 				</div>
 			</div>

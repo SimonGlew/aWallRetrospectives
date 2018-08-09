@@ -19,9 +19,11 @@ var endCardsForPlusDelta = { plus: [], delta: [] }
 var userToColor = {}
 var currentlySelectedTimeline = { person: 'None', color: '#FFF' }
 
+var popupShown = [false, false, false]
+
 var colorScale = d3.scale.linear()
-    .domain([1, 5, 10])
-    .range(['#fb590e', '#ffff73', '#6aae35']);
+.domain([1, 5, 10])
+.range(['#fb590e', '#ffff73', '#6aae35']);
 
 function sendBaseMessage() {
     socket.emit('moderatorConnection', { name: username, sessionId: sessionId })
@@ -117,19 +119,19 @@ function drawDelta() {
     let tableHTML = null
     endCardsForPlusDelta.plus.forEach(function (data) {
         tableHTML += '<tr style="margin-left:3px;">' +
-            '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' +
-            '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
-            '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
-            '</td></tr>'
+        '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' +
+        '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
+        '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
+        '</td></tr>'
     })
     tableHTML ? $('#endPlus').html(tableHTML) : $('#endPlus').html('')
     tableHTML = null
     endCardsForPlusDelta.delta.forEach(function (data) {
         tableHTML += '<tr style="margin-left:3px;">' +
-            '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' +
-            '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
-            '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
-            '</td></tr>'
+        '<td style="padding:3px 10px 0px 10px;"><div style="border: 1.5px solid black;font-size:110%;margin-left:30px;margin-right:30px;">' +
+        '<textarea rows="2" style="display:block; padding-left:10px; padding-top: 10px; min-height: 20px;width:100%;border-width:0px !important;" readonly="true">' + data.message + '</textarea>' +
+        '<div><span style="font-weight:bold;width:50%;padding-bottom:10px; padding-left:10px;">' + data.name + '</span><span style="font-weight:bold;float:right;padding-bottom:10px; padding-right:10px;">' + formatDate(data.generated) + '</span></div></div>' +
+        '</td></tr>'
     })
     tableHTML ? $('#endDelta').html(tableHTML) : $('#endDelta').html('')
 }
@@ -139,8 +141,8 @@ function redrawCardSystem() {
 
     Object.keys(cardsByUser).forEach(function (member) {
         tableHTML += '<tr style="margin-left:3px;">' +
-            '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' +
-            '</td>'
+        '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div>' +
+        '</td>'
         cardsByUser[member].forEach(function (card, index) {
             let message = card.data.message, type = card.data.type
             let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : 'badCard.png')
@@ -165,7 +167,7 @@ function redrawActionCards() {
         let carryOver = carryBool ? '<img src="/assets/pictures/next.png" height="30" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
         let div = completed.length || carryOver.length ? '<div style="margin-top:-30px;margin-right:-60px;">' + completed + carryOver + '</div>' : ''
         tableHTML += '<tr style="margin-left:20px;">' +
-            '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' + div + '</td></tr>'
+        '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' + div + '</td></tr>'
     })
     if (tableHTML)
         $('#actionCards').html(tableHTML)
@@ -297,7 +299,7 @@ function redrawGraphScreen() {
                 y += node.data.data
             })
             if (d.data.length) y = y / d.data.length
-            chartPoints.push({ x: x, y: y })
+                chartPoints.push({ x: x, y: y })
             maxSprint = Math.max(maxSprint, x)
             minSprint = Math.min(minSprint, x)
         })
@@ -357,6 +359,11 @@ function drawInstruction(data) {
     $('#instructionsProjectName').html('Project Name: <b>' + data.project + '</b>')
     $('#instructionsSprintNumber').html('Sprint Number: <b>' + data.sprint + '</b>')
     $('#instructionsPassword').html('Password: <b>' + data.password + '</b>')
+
+    if(!popupShown[0]){
+        popupShown[0] = true
+        $('#CheckinInstructions').modal('show');
+    }
 }
 
 function makeTableOutlineDelta() {
@@ -383,13 +390,27 @@ function nextSection() {
             actionCards = []
             cardsById = {}
             currentState++;
-            if (sessionType == 'Timeline')
+            if (sessionType == 'Timeline'){
+                if(!popupShown[1]){
+                    popupShown[1] = true
+                    $('#timelineInstructions').modal('show');
+                }
                 drawTimeline()
+            }else{
+                if(!popupShown[1]){
+                    popupShown[1] = true
+                    $('#3WInstructions').modal('show');
+                }
+            }
         } else if (currentState == 1) {
             $('#end').css('display', 'block')
             $('#main').css('display', 'none')
             socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'next' })
             currentState++;
+            if(!popupShown[2]){
+                popupShown[2] = true
+                $('#DeltaInstructions').modal('show');
+            }
             makeTableOutlineDelta()
         }
     }
@@ -406,7 +427,10 @@ function prevSection() {
             $('#start').css('display', 'block')
             $('#main').css('display', 'none')
             socket.emit('changeState', { sessionId: sessionId, currentState: currentState, dir: 'prev' })
-
+            if(!popupShown[0]){
+                popupShown[0] = true
+                $('#CheckinInstructions').modal('show');
+            }
             currentState--;
         } else if (currentState == 2) {
             $('#main').css('display', 'block')
@@ -416,8 +440,18 @@ function prevSection() {
             actionCards = []
             cardsById = {}
             currentState--;
-            if (sessionType == 'Timeline')
+            if (sessionType == 'Timeline'){
+                if(!popupShown[1]){
+                    popupShown[1] = true
+                    $('#timelineInstructions').modal('show');
+                }
                 drawTimeline()
+            }else{
+                if(!popupShown[1]){
+                    popupShown[1] = true
+                    $('#3WInstructions').modal('show');
+                }
+            }
         }
     }
 }
@@ -494,68 +528,68 @@ function drawTimeline() {
                 width = $('#timeline').width()
 
                 var svg = d3.select("#timeline").append("svg")
-                    .attr("width", width)
-                    .attr("height", height)
+                .attr("width", width)
+                .attr("height", height)
 
                 var draw = svg.append('svg')
-                    .attr('width', width - 40)
-                    .attr('height', height - 30)
-                    .attr('x', 70)
+                .attr('width', width - 40)
+                .attr('height', height - 30)
+                .attr('x', 70)
 
                 draw.append('rect')
-                    .attr('width', width)
-                    .attr('height', height)
-                    .attr('fill', '#FFF')
-                    .style('pointer-events', 'all')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('fill', '#FFF')
+                .style('pointer-events', 'all')
 
                 var xScale = d3.time.scale()
-                    .domain([new Date(data.startDate), new Date(data.endDate)])
-                    .range([0, width])
+                .domain([new Date(data.startDate), new Date(data.endDate)])
+                .range([0, width])
 
                 var values = [{ num: 1, label: 'Happy' }, { num: 3, label: 'Okay' }, { num: 5, label: 'Sad' }]
 
                 var yScale = d3.scale.linear()
-                    .domain([1, 5])
-                    .range([0, height - 45])
+                .domain([1, 5])
+                .range([0, height - 45])
 
                 var yAxis = d3.svg.axis()
-                    .orient("left")
-                    .scale(yScale)
-                    .ticks(3)
-                    .tickValues(values.map(d => d.num))
-                    .tickFormat((d, i) => values[i].label);
+                .orient("left")
+                .scale(yScale)
+                .ticks(3)
+                .tickValues(values.map(d => d.num))
+                .tickFormat((d, i) => values[i].label);
 
                 var xAxis = d3.svg.axis()
-                    .orient("bottom")
-                    .scale(xScale)
-                    .ticks(10)
+                .orient("bottom")
+                .scale(xScale)
+                .ticks(10)
 
                 var y = svg.append('g')
-                    .call(yAxis)
-                    .attr("shape-rendering", "crispEdges")
-                    .attr("transform", "translate(" + 70 + "," + 15 + ")")
+                .call(yAxis)
+                .attr("shape-rendering", "crispEdges")
+                .attr("transform", "translate(" + 70 + "," + 15 + ")")
 
                 var x = svg.append('g')
-                    .call(xAxis)
-                    .attr("shape-rendering", "crispEdges")
-                    .attr("transform", "translate(" + 70 + "," + (height - 30) + ")")
+                .call(xAxis)
+                .attr("shape-rendering", "crispEdges")
+                .attr("transform", "translate(" + 70 + "," + (height - 30) + ")")
 
                 y.selectAll('path')
-                    .attr("fill", "none")
-                    .attr("stroke", "#000")
+                .attr("fill", "none")
+                .attr("stroke", "#000")
 
                 x.selectAll('path')
-                    .attr("fill", "none")
-                    .attr("stroke", "#000")
+                .attr("fill", "none")
+                .attr("stroke", "#000")
 
 
                 var activeLine;
 
                 var renderPath = d3.svg.line()
-                    .x(function (d) { return d[0]; })
-                    .y(function (d) { return d[1]; })
-                    .tension(0)
-                    .interpolate("cardinal");
+                .x(function (d) { return d[0]; })
+                .y(function (d) { return d[1]; })
+                .tension(0)
+                .interpolate("cardinal");
 
 
                 draw.call(d3.behavior.drag()
@@ -565,12 +599,12 @@ function drawTimeline() {
 
                 function dragstarted() {
                     activeLine = draw.append("path")
-                        .datum([])
-                        .attr("fill", "none")
-                        .attr("stroke", currentlySelectedTimeline.color)
-                        .attr("stroke-width", "4px")
-                        .attr("stroke-linejoin", "round")
-                        .attr("stroke-linecap", "round")
+                    .datum([])
+                    .attr("fill", "none")
+                    .attr("stroke", currentlySelectedTimeline.color)
+                    .attr("stroke-width", "4px")
+                    .attr("stroke-linejoin", "round")
+                    .attr("stroke-linecap", "round")
 
                     activeLine.datum().push(d3.mouse(this));
                 }
@@ -593,6 +627,10 @@ function capitalizeFirstLetter(string) {
 
 function formatDate(oldDate) {
     return moment(oldDate).format("ddd Do MMM YYYY")
+}
+
+function closePopup(id){
+    $(id).modal('hide')
 }
 
 redrawVotingScreen() 

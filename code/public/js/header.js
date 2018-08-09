@@ -112,9 +112,10 @@ function updateData(init) {
         $('#retrospectiveName').html("<b>Retrospective:</b> " + data.name + ", Type: " + data.retrospectiveType.name);
         //members iterate through members
         let tableRowOne = '<tr>', tableRowTwo = '<tr>'
-        data.members.forEach(function (member) {
+        allMembers.forEach(function (member) {
+            let borderColor = (data.members.indexOf(member) != -1) ? "darkgreen" : "red"
             member = member.length > 6 ? member.substring(0, 5) + '...' : member
-            tableRowOne += '<td><img src="/assets/pictures/noavatar.png" alt="" height="42" width="42"></td>'
+            tableRowOne += '<td><img src="/assets/pictures/noavatar.png" alt="" height="42" width="42" style="border:2px solid ' + borderColor + ';"></td>'
             tableRowTwo += '<td style="text-align:center;">' + member + '</td>'
         })
         $('#members').html((tableRowOne + '</td>') + (tableRowTwo + '</td>'));

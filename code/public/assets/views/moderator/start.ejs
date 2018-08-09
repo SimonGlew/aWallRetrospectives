@@ -6,9 +6,9 @@
     <div class="container" style='text-align: center;padding:0;margin:0; min-width:98%'>
         <div class='row'>
             <div style='padding-left:2%;width:18%;'>
-                <h1><b>Instructions</b></h1>
+                <div style='min-height:44px'/>
+                <h1>Logging In</h1>
                 <p>
-                    <h3>Logging In</h3>
                     <p class='floatLeft'> 
                         Join the session with the parameters: 
                     </p>
@@ -23,16 +23,9 @@
                     </p>      
                     <br>
                     <p class='floatLeft'> 
-                        Putting in all these values, please also pick a name which will be used to display your information during 
-                        this retrospective
+                        Entering all these values within the login screen will allow you to connect the session, during this time
+                        please also pick a name which will be used to display/save all information entered during this retrospective
                     </p> 
-                    <h3>Voting</h3>
-                    <img src="/assets/pictures/instructions_phone.png" alt="" height="auto" width="38%" style='padding-right:10px'>
-                    <img src="/assets/pictures/instructions_phone2.png" alt="" height="auto" width="38%" style='padding-left:10px'>
-                    <p class='floatLeft'> 
-                            Please select a number between 1-10 shown on the screen. This value is how you felt in the sprint,
-                            remember to answer truthfully as this helps during the retrospective.
-                    </p>  
                 </p>
             </div>
             <div style='width:40%;text-align:center;'>
@@ -45,8 +38,42 @@
                 <div style="min-height:40px"></div>
                 <canvas id="myChart"></canvas>
             </div>
+            <div class="modal fade" id="CheckinInstructions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header" style='padding:7px;'>
+                            <div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
+                                <h3 class="modal-title" style='padding-left:10px;'><b>Check-in: Instructions</b></h3>
+                            </div>
+                        </div>
+                        <div class="modal-body" style='width:100%;'>
+                            <div class='row' style='width:100%;padding-left:5px;'>
+                                <p class='floatLeft'>
+                                    Check-in is used to gauge how the sprint went for the group, by voting on a scale of 1-10.
+                                </p>
+                                <div style='min-height:15px;height:15px;width:100%'/>
+                                <h5 style='display:block;'><b>How it works</b></h5>
+                                <div>
+                                    <img src="/assets/pictures/instructions_phone.png" alt="" height="193px" width="auto" style='padding-right:10px'>
+                                    <img src="/assets/pictures/instructions_phone2.png" alt="" height="193px" width="auto" style='padding-left:10px'>
+                                    <div style='min-height:15px;height:15px;width:100%'/>
+                                    <p class='floatLeft' style='display:block;'>
+                                        Please select a number between 1-10 as shown on the screen. This value is how you felt in the sprint,
+                                        remember to answer truthfully as this helps during the retrospective.
+                                    </p>  
+                                    <p class='floatLeft' style='padding-top:5px;display:block;'>
+                                        <b>Estimated Time: </b> 10 minutes
+                                    </p> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style='padding:5px;'>
+                            <button type="button" class="btn" style='background: white; border-color:black;' onclick='closePopup("#CheckinInstructions")'>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 </body>
 
