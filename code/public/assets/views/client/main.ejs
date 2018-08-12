@@ -47,6 +47,43 @@
             <p class="text-danger" id="cardErrorMessageTimeline" style='font-size:250%'></p>
             <p class="text-success" id="cardMessageSuccessTimeline" style='font-size:250%;display:none;'>Card sent to board</p>
         </div>
+        <div id='LikeToLike' style='display:none;'>
+            <div id='LikeToLikeCards'>
+                <div class='row h-100'>
+                    <div class='w-6'></div>
+                    <div id='LTLGood' class='w-25 bradius10' style='background-color: green;' onclick="changeLTLColor('good')"></div>
+                    <div class='w-6'></div>
+                    <div id='LTLBad' class='w-25 bradius10' style='background-color: red;' onclick="changeLTLColor('bad')"></div>
+                    <div class='w-6'></div>
+                    <div id='LTLAction' class='w-25 bradius10' style='background-color: blue;' onclick="changeLTLColor('action')"></div>
+                    <div class='w-6'></div>
+                </div>
+                <div style='min-height:50px;'></div>
+                <div class="form-group" style='min-height: 550px;'>
+                    <textarea class="form-control" id="cardTextAreaLTL" rows="3" style='font-size: 400%;display: block;height: 550px;border-radius: 10px; border: 1px solid black;'></textarea>
+                </div>
+                <div style='min-height:50px;'></div>
+                <input id='cardButton' type="button" value="Add Card." style='font-size: 400%;' onclick="addCardLTL()">
+                <p class="text-danger" id="cardErrorMessageLTL" style='font-size:250%'></p>
+                <p class="text-success" id="cardMessageSuccessLTL" style='font-size:250%;display:none;'>Card sent to board</p>
+            </div>
+            <div id='LikeToLikePicking' style='display:none;'>
+                <table id='LTLCards' style='margin-left:5px;width:100%'></table>
+            </div>
+            <div id='LikeToLikeAction' style='display:none;'>
+                <div class='row h-100'>
+                    <div id='actionLTL' class='w-100 bradius10' style='background-color: blue;' onclick="changeCardColor('action', false, true)"></div>
+                </div>
+                <div style='min-height:50px;'></div>
+                <div class="form-group" style='min-height: 550px;'>
+                    <textarea class="form-control" id="cardTextAreaActionLTL" rows="3" style='font-size: 400%;display: block;height: 550px;border-radius: 10px; border: 1px solid black;'></textarea>
+                </div>
+                <div style='min-height:50px;'></div>
+                <input id='cardButtonActionLTL' type="button" value="Add Card." style='font-size: 400%;' onclick="addCardActionLTL()">
+                <p class="text-danger" id="cardErrorMessageActionLTL" style='font-size:250%'></p>
+                <p class="text-success" id="cardMessageSuccessActionLTL" style='font-size:250%;display:none;'>Card sent to board</p>
+            </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -59,6 +96,8 @@
                 $('#3W').css('display', 'block')
             else if(retrotype == 'Timeline')
                 $('#Timeline').css('display', 'block')
+            else if(retrotype == 'LiketoLike')
+                $('#LikeToLike').css('display', 'block')
         });
     </script>
 

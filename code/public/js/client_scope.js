@@ -12,6 +12,10 @@ var endType = null;
 
 var currentState = 0;
 
+var LTLCards = { 'good': [], 'bad': [], 'action': [] }
+var LTLIndex = 0
+var LTIState = 0
+
 function sendBaseMessage() {
     socket.emit('clientConnection', { name: username, sessionId: sessionId })
 }
@@ -26,6 +30,29 @@ socket.on('closeRetrospective', function (data) {
 
 socket.on('terminateRetrospective', function (data) {
     window.location.href = window.location.href.split(PORT + '/')[0] + PORT;
+})
+
+socket.on('updateLTLState', function (data) {
+    if(data.update || LTIState != data.state){
+        if(data.state == 0){
+            $('#LikeToLikeCards').css('display', 'block')
+            $('#LikeToLikePicking').css('display', 'none')
+            $('#LikeToLikeAction').css('display', 'none')
+        }
+        if(data.state == 1){
+            $('#LikeToLikeCards').css('display', 'none')
+            $('#LikeToLikePicking').css('display', 'block')
+            $('#LikeToLikeAction').css('display', 'none')
+
+            drawCardLTL()
+        }
+        if(data.state == 2){
+            $('#LikeToLikeCards').css('display', 'none')
+            $('#LikeToLikePicking').css('display', 'none')
+            $('#LikeToLikeAction').css('display', 'block')
+        }
+        LTIState = data.state
+    }
 })
 
 var g, circleG
@@ -134,7 +161,7 @@ function cancelVote(){
 }
 
 
-function changeCardColor(col, timeline) {
+function changeCardColor(col, timeline, ltl) {
     if (col == 'good' || col == 'bad' || col =='action') {
         cardColor = col
     }
@@ -157,6 +184,31 @@ function changeCardColor(col, timeline) {
         if(timeline){
             $('#actionTimeline').css('border', '10px solid black')
         }
+        if(ltl){
+            $('#actionLTL').css('border', '10px solid black')
+        }
+    }
+} 
+
+function changeLTLColor(col) {
+    if (col == 'good' || col == 'bad' || col =='action') {
+        cardColor = col
+    }
+
+    if(col == 'good'){
+        $('#LTLGood').css('border', '10px solid black')
+        $('#LTLBad').css('border', '0px solid black')
+        $('#LTLAction').css('border', '0px solid black')
+    }
+    else if(col == 'bad'){
+        $('#LTLBad').css('border', '10px solid black')
+        $('#LTLGood').css('border', '0px solid black')
+        $('#LTLAction').css('border', '0px solid black')
+    }
+    else if(col == 'action'){
+        $('#LTLBad').css('border', '0px solid black')
+        $('#LTLGood').css('border', '0px solid black')
+        $('#LTLAction').css('border', '10px solid black')
     }
 } 
 
@@ -233,6 +285,87 @@ function addCardTimeline(){
         $('#cardErrorMessageTimeline').fadeOut(2500)
     }
 }
+
+function addCardActionLTL(){
+    if(!$('#cardTextAreaActionLTL').val().trim()) $('#cardErrorMessageActionLTL').text("Please enter a value in text area");
+    else if(!cardColor) $('#cardErrorMessageActionLTL').text("Please select a color for the card");
+    else{
+        $('#cardErrorMessageActionLTL').text('')
+        let cardTextArea = $('#cardTextAreaActionLTL').val().trim()
+
+        socket.emit('ActionCard', { data: { type: cardColor, message: cardTextArea, generated: new Date() }, sessionId: sessionId, name: username })
+
+        $('#cardTextAreaActionLTL').val('')
+        $('#actionActionLTL').css('border', '0px solid black')   
+        cardColor = null 
+
+        $('#cardErrorMessageActionLTL').css('display', 'block')
+        $('#cardErrorMessageActionLTL').fadeOut(2500)
+    }
+}
+
+
+function addCardLTL(){
+    if(!$('#cardTextAreaLTL').val().trim()) $('#cardErrorMessageLTL').text("Please enter a value in text area");
+    else if(!cardColor) $('#cardErrorMessageLTL').text("Please select a color for the card");
+    else{
+        $('#cardErrorMessageLTL').text('')
+        let cardTextArea = $('#cardTextAreaLTL').val().trim()
+        let id = username + '$' + (LTLIndex++)
+        LTLCards[cardColor].push({ id: id, message: cardTextArea, generated: new Date(), used: false })
+
+        socket.emit('LTLCard', { generatedId: id, sessionId: sessionId, name: username, generated: new Date(), type: cardColor, message: cardTextArea })
+
+        $('#cardTextAreaLTL').val('')
+        $('#LTLBad').css('border', '0px solid black')
+        $('#LTLGood').css('border', '0px solid black')
+        $('#LTLAction').css('border', '0px solid black')
+        cardColor = null 
+
+        $('#cardMessageSuccessLTL').css('display', 'block')
+        $('#cardMessageSuccessLTL').fadeOut(2500)
+    }
+}
+
+function drawCardLTL(){
+    let tableHTML = ''
+    cardToTable = function(list, type, html){
+        list.forEach(r => {
+            if(!r.used){
+                html += '<tr><td style="padding-bottom:5px;text-align:left;"><div style="font-size:250%;padding-left:10px;border:5px solid black;" onclick="selectLTLCard(' + "'" + r.id + "', " + type + ')">' + r.message + '</div></td></tr>'
+            }
+        })
+        return html
+    }
+
+    if(LTLCards['good'].length){
+        tableHTML += "<tr><td><div style='font-size:400%;text-align:center;'> Keep Doing </div></td></tr>"
+        tableHTML = cardToTable(LTLCards['good'], 'good', tableHTML)
+    }
+    if(LTLCards['bad'].length){
+        tableHTML += "<tr><td><div style='font-size:400%;text-align:center;'> Stop Doing </div></td></tr>"
+        tableHTML = cardToTable(LTLCards['bad'], 'bad', tableHTML)
+
+    }
+    if(LTLCards['action'].length){
+        tableHTML += "<tr><td><div style='font-size:400%;text-align:center;'> Start Doing </div></td></tr>"
+        tableHTML = cardToTable(LTLCards['action'], 'action', tableHTML)
+    }
+
+    $('#LTLCards').html(tableHTML)
+}
+
+function selectLTLCard(id, type){
+    let arr = LTLCards[type]
+    let index = arr.map(function(r){ return r.id }).indexOf(id)
+
+    arr[index].used = true
+
+    //send to screen
+    socket.emit('Picked_LTLCard' , { generatedId: id, sessionId: sessionId })
+    drawCardLTL()
+}
+
 
 function back(){
     if(currentState != 0){

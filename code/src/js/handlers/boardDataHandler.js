@@ -3,7 +3,9 @@ const mongoose = require('mongoose')
 const CheckIn = require('../models/boardData_checkin'),
 ThreeW = require('../models/3W'),
 EndCard = require('../models/endCard'),
-TimelineMetadata = require('../models/timelineMetadata')
+TimelineMetadata = require('../models/timelineMetadata'),
+LTL = require('../models/boardData_ltl'),
+LTLRound = require('../models/boardData_ltlRound')
 
 const SessionHandler = require('../handlers/sessionHandler')
 
@@ -141,18 +143,45 @@ function getEndCards(sessionId){
         .then(data => data)
 }
 
+function saveLTL(data, sessionId){
+    return new LTL({
+        generatedId: data.generatedId,
+        session: sessionId,
+        name: data.name,
+        generated: data.generated,
+        type: data.type,
+        message: data.message
+    }).save()
+}
+
+function getLTLCard(generatedId, sessionId){
+    return LTL.findOne({ generatedId: generatedId, sessionId: sessionId })
+        .lean()
+}
+
+function saveLTLRound(sessionId, qualityCard, winnerCard, otherCards){
+    return new LTLRound({
+        session: sessionId,
+        qualityCard: qualityCard,
+        winnerCard: winnerCard,
+        otherCards: otherCards
+    }).save()
+}
+
 module.exports = {
     saveCheckin: saveCheckin,
     saveCard: saveCard,
     saveEndCard: saveEndCard,
+    setTimelineMetadata: setTimelineMetadata,
+    saveLTL: saveLTL,
+    saveLTLRound: saveLTLRound,
 
     getCheckinData: getCheckinData,
     getAllCards: getAllCards,
     getEndCards: getEndCards,
+    getLTLCard: getLTLCard,
 
     inactiveCard: inactiveCard,
     carryonCard: carryonCard,
-    completeCard: completeCard,
-
-    setTimelineMetadata: setTimelineMetadata
+    completeCard: completeCard
 }

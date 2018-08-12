@@ -8,26 +8,26 @@ var socket = require('socket.io')(server)
 require('./src/js/socketrouter')(socket)
 
 var router = require('./src/js/router'),
-    config = isProduction ? require('./configProd') : require('./configDev');
+config = isProduction ? require('./configProd') : require('./configDev');
 
 var mongoSetup = require('./src/js/mongosetup')
 
 global.Promise = require('bluebird')
 
 global.outputToLog = function(str, mem){
-    let date = new Date().toISOString()
+	let date = new Date().toISOString()
 
-    console.log("[",date,"] Member:", (mem ? mem : null), ": ", str)
+	console.log("[",date,"] Member:", (mem ? mem : null), ": ", str)
 }
 
 
 mongoSetup.connect(config.mongo)
-    .then(res => {
-        if (!res) throw "Mongo did not connect";
-    })
+.then(res => {
+	if (!res) throw "Mongo did not connect";
+})
 
 server.listen(config.port, function () {
-    console.log('Listening on port ' + config.port);
+	console.log('Listening on port ' + config.port);
 });
 
 app.set('view engine', 'ejs');

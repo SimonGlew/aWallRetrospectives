@@ -57,6 +57,11 @@ field.append("path")
 //d3.select(self.frameElement).style("height", height + "px");
 
 function start(){
+    timers = []
+    for (let i = 0; i < 3; i++) {
+        timers.push({ currentTime: 0 })
+    }
+
     $('#timerPlay').css('display', 'none')
     $('#timer').css('display', 'block')
 

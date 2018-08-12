@@ -218,13 +218,84 @@
 			</div>
 		</div>
 	</div>
+	<div id='LikeToLike' style='text-align: center;width:100%;display:none;'>
+		<div class='row' style='width:100%'>
+			<div class='w-85'>
+				<div id='LTLMaking' style='padding-left:20px;display:block;'>
+					<table id='LTLAllCards' style='margin-left:20px;'></table>
+				</div>
+				<div id='LTLPicking' style='padding-left:20px;display:none;'>
+					<table id='LTLScoreboard' style='margin-left:20px;'></table>
+					<div class='row' id='qualityCard' style='width:100%;display:none;'>
+						<div style='width:35%;min-height:150px;height:150px;'/>
+						<div id='LTLQualityCardOuterDiv' style='width:30%;background-color:yellow;border:2px solid black;min-height:150px;height:150px;'>
+							<span id='qualityCardInfo' style='font-size:40px;'></span>
+						</div>
+						<div style='width:35%;min-height:150px;height:150px;'/>
+					</div>
+					<div id='LTLCards'>
+					</div>
+				</div>
+				<div id='LTLResults' style='padding-left:20px;display:none;'>
+					<!--<table id='LTLScoreboard' style='margin-left:20px;'></table>-->
+				</div>
+				<div id="LTLFooter" style='background-color: #66adff;position: fixed; bottom:60px; width:inherit;border-top: 1px solid black; border-right: 1px solid black;'>
+					<img src="/assets/pictures/next.png" alt="" height="50px" width="50px"  style='float:right;margin-left:5px;margin-right:5px;' onclick='nextSectionLTL()'>                
+					<img src="/assets/pictures/redo.png" alt="" height="50px" width="50px"  style='float:right;margin-left:5px;' onclick='refreshClients()'>  
+					<img src="/assets/pictures/drawCard.png" alt="" height="50px" width="50px"  style='float:right;margin-left:5px;' onclick='drawQualityCard()'>                              
+				</div>
+			</div>
+			<div class='w-15' style='width:14%;'>
+				<h1>Action Points</h1>
+				<table id='actionCards' style='margin-left:5px;'></table>
+			</div>
+		</div>
+		<div class="modal fade" id="LikeToLikeInstructions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header" style='padding:7px;'>
+						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
+							<h3 class="modal-title" style='padding-left:10px;'><b>Like to Like: Instructions</b></h3>
+						</div>
+					</div>
+					<div class="modal-body" style='width:100%;'>
+						<div class='row' style='width:100%;padding-left:5px;'>
+							<p class='floatLeft'>
+							</p>
+							<div style='min-height:15px;height:15px;width:100%'/>
+							<h5><b>How it works</b></h5>
+							<div>
+								<img src="/assets/pictures/instructions_3W1.png" alt="" height="193px" width="auto" style='padding-right:10px'>
+								<img src="/assets/pictures/instructions_3W2.png" alt="" height="193px" width="auto" style='padding-left:10px'>
+								<div style='min-height:15px;height:15px;width:100%'/>
+								<p class='floatLeft'> 
+
+								</p> 
+								<p class='floatLeft' style='padding-top:5px;display:block;'>
+									<b>Estimated Time: </b> 30 minutes
+								</p> 
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer" style='padding:5px;'>
+						<button type="button" class="btn" style='background: white; border-color:black;' onclick='closePopup("#LikeToLikeInstructions")'>Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style='min-height:60px'></div>
+	</div>
 	<script>
 		$(function () {
 			let retrotype = window.location.href.split('type/')[1].split('/')[0]
-			if(retrotype == '3W')
+			if(retrotype == '3W'){
 				$('#3W').css('display', 'block')
+			}
 			if(retrotype == 'Timeline'){
 				$('#Timeline').css('display', 'block')
+			}
+			if(retrotype == 'LiketoLike'){
+				$('#LikeToLike').css('display', 'block')
 			}
 		});
 	</script>

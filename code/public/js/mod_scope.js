@@ -21,16 +21,31 @@ var currentlySelectedTimeline = { person: 'None', color: '#FFF' }
 
 var popupShown = [false, false, false]
 
+
+var qualityCards = []
+var cardsUserMapLTL = {}
+var LTLState = 0
+var LTLScoring = {}
+var currentRoundCardsLTL = {}
+var currentQualityCard = null
+
+
 var colorScale = d3.scale.linear()
 .domain([1, 5, 10])
 .range(['#fb590e', '#ffff73', '#6aae35']);
 
 function sendBaseMessage() {
     socket.emit('moderatorConnection', { name: username, sessionId: sessionId })
+    if(sessionType == 'LiketoLike') 
+        socket.emit('getQualityCards', {})
 }
 
 socket.on('mod_instructions', function (data) {
     drawInstruction(data)
+})
+
+socket.on('qualityCards', function (data) {
+    qualityCards = data.cards
 })
 
 let init = false
@@ -59,6 +74,18 @@ socket.on('checkin_data', function (data) {
     allCheckin_data = data.allData || []
     redrawVotingScreen()
     redrawGraphScreen()
+})
+
+socket.on('LTL_RoundCard', function (data){
+    cardsUserMapLTL[data.name] = {
+        id: data._id
+        generatedId: data.generatedId,
+        type: data.type,
+        message: data.message
+        name: data.name,
+    }
+
+    drawLTLCards()
 })
 
 socket.on('3w_card', function (data) {
@@ -115,6 +142,26 @@ socket.on('end_card', function (data) {
     drawDelta()
 })
 
+socket.on('LTLMade', function (data){
+    if (!Array.isArray(data))
+        data = [data]
+
+    data.forEach(function (d){
+        let member = d.user, type = d.type
+
+        if(!cardsUserMapLTL[member] || !Array.isArray(cardsUserMapLTL[member]))
+            cardsUserMapLTL[member] = []
+
+        if(!LTLScoring[member])
+            LTLScoring[member] = 0
+
+        cardsUserMapLTL[member].push(type)
+    })
+    redrawLikeToLike()
+})
+
+
+
 function drawDelta() {
     let tableHTML = null
     endCardsForPlusDelta.plus.forEach(function (data) {
@@ -155,6 +202,71 @@ function redrawCardSystem() {
         $('#cardTable').html(tableHTML)
     else
         $('#cardTable').html('')
+}
+
+function drawQualityCard(){
+    if(LTLState == 1){
+        if(qualityCards.length){
+            let cardIndex = Math.floor(Math.random() * Math.floor(qualityCards.length));
+            currentQualityCard = qualityCards[cardIndex]
+
+            qualityCards.splice(cardIndex, 1)
+        }else{
+            currentQualityCard = 'Quality Card Deck Empty'
+            $('#LTLQualityCardOuterDiv').css('background-color', 'red')
+        }
+        $('#qualityCard').css('display', 'flex')
+        $('#qualityCardInfo').html(currentQualityCard)
+    }
+}
+
+function drawLTLCards(){
+    let tdWidth = ($('#LTLPicking').width() / allMembers.length) + 'px'
+    let rowOne = '<tr style="margin-left:3px;width:' + tdWidth + ';">', rowTwo = '<tr style="margin-left:3px;width:' + tdWidth + ';">'
+
+    Object.keys(cardsUserMapLTL).forEach(function(key) {
+        let card = cardsUserMapLTL[key]
+        let styleColor = 'style="width:100%;max-height:200px;height:200px;border: 1px solid ' + (card.type == 'good' ? 'green' : (card.type == 'bad' ? 'red' : 'blue')) + '"'
+        rowOne += '<td style="padding:0 10px 0 10px;"><div><span>' + card.name + '</span></div>'
+        rowTwo += '<td style="padding:0 10px 0 10px;"><div' + styleColor + '><span>' + card.name + '</span></div>'
+    })
+    rowOne += '</tr>'
+    rowTwo += '</tr>'
+
+    $('#LTLScoreboard').html(rowOne + rowTwo)
+}
+
+function drawLTLScoreboard(){
+    let tdWidth = ($('#LTLPicking').width() / allMembers.length) + 'px'
+    let rowOne = '<tr style="margin-left:3px;width:' + tdWidth + ';">', rowTwo = '<tr style="margin-left:3px;width:' + tdWidth + ';">', rowThree = '<tr style="margin-left:3px;width:' + tdWidth + ';">'
+    allMembers.forEach(function(member){
+        let memberString = member.length > 6 ? member.substring(0, 5) + '...' : member
+        rowOne += '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"></td>'
+        rowTwo += '<td style="padding:0 10px 0 10px;"><div><span>' + memberString + '</span></div>'
+        rowThree += '<td style="padding:0 10px 0 10px;"><div><span><b>Score: </b>' + LTLScoring[member] + '</span></div>'
+    })
+    rowOne += '</tr>'
+    rowTwo += '</tr>'
+    rowThree += '</tr>'
+
+    $('#LTLScoreboard').html(rowOne + rowTwo + rowThree)
+}
+
+function redrawLikeToLike(){
+    let tableHTML = ''
+
+    Object.keys(cardsUserMapLTL).forEach(function (member) {
+        tableHTML += '<tr style="margin-left:3px;">' +
+        '<td style="padding:0 10px 0 10px;"><img src="/assets/pictures/noavatar.png" alt="" height="50" width="auto"><div><span>' + member + '</span></div></td>'
+        cardsUserMapLTL[member].forEach(function (type, index) {
+            let style = index != 0 ? '"margin-left:-50px;"' : ''
+            let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : (type == 'bad' ? 'badCard.png' : 'actionPointCard.png'))
+            tableHTML += '<td style="vertical-align:top;padding-right:10px;"><img src="' + imageString + '" alt="" height="50" width="auto" style=' + style + '></td>'
+        })
+        tableHTML += '</tr>'
+    })
+
+    $('#LTLAllCards').html(tableHTML)
 }
 
 function redrawActionCards() {
@@ -247,21 +359,21 @@ function completeCard() {
 
 
 function redrawVotingScreen() {
-    let allMembers = []
-    members.forEach(function (mem) { if (mem && allMembers.indexOf(mem) == -1) allMembers.push(mem) })
-    sprintCheckin_data.forEach(function (mem) { if (mem.data.name && allMembers.indexOf(mem.data.name) == -1) allMembers.push(mem.data.name) })
+    let allMembers1 = []
+    members.forEach(function (mem) { if (mem && allMembers1.indexOf(mem) == -1) allMembers1.push(mem) })
+    sprintCheckin_data.forEach(function (mem) { if (mem.data.name && allMembers1.indexOf(mem.data.name) == -1) allMembers1.push(mem.data.name) })
     let tableRowOne = '<tr style="margin-left:3px;max-width:70px;">', tableRowTwo = '<tr style="margin-left:3px;max-width:70px;">', tableRowThree = '<tr style="margin-left:3px;max-width:70px;">'
     tableRowFour = '<tr style="margin-left:3px;min-height:500px;height:500px;width:70px; padding-left:5px; padding-right:5px;max-width:70px;">'
-    allMembers.forEach(function (member) {
+    allMembers1.forEach(function (member) {
         member = member.length > 8 ? member.substring(0, 7) + '...' : member
         tableRowOne += '<td style="padding:0 3px 0 3px;"><img src="/assets/pictures/noavatar.png" alt="" height="60" width="60"></td>'
         tableRowTwo += '<td style="text-align:center;padding:0 3px 0 3px;">' + member + '</td>'
     })
     var average = { total: 0, amount: 0 }
     if (!sprintCheckin_data.length) {
-        allMembers.forEach(function (member) { tableRowThree += '<td style="padding:0 3x 0 3px;"><i class="fas fa-exclamation fa-lg"></i></td>' })
+        allMembers1.forEach(function (member) { tableRowThree += '<td style="padding:0 3x 0 3px;"><i class="fas fa-exclamation fa-lg"></i></td>' })
     } else {
-        allMembers.forEach(function (member) {
+        allMembers1.forEach(function (member) {
             let found = false
             sprintCheckin_data.forEach(function (row) {
                 if (row.data.name == member && !found) {
@@ -399,7 +511,11 @@ function nextSection() {
             }else{
                 if(!popupShown[1]){
                     popupShown[1] = true
-                    $('#3WInstructions').modal('show');
+                    if (sessionType == '3W'){
+                        $('#3WInstructions').modal('show');
+                    }else{
+                        $('#LikeToLikeInstructions').modal('show');
+                    }
                 }
             }
         } else if (currentState == 1) {
@@ -449,7 +565,11 @@ function prevSection() {
             }else{
                 if(!popupShown[1]){
                     popupShown[1] = true
-                    $('#3WInstructions').modal('show');
+                    if (sessionType == '3W'){
+                        $('#3WInstructions').modal('show');
+                    }else{
+                        $('#LikeToLikeInstructions').modal('show');
+                    }                
                 }
             }
         }
@@ -514,6 +634,29 @@ function setCurrentColorTimeline(color) {
     $('#timelineColor').css('background-color', currentlySelectedTimeline.color)
 }
 
+function nextSectionLTL(){
+    socket.emit('nextSectionLTL', { state: ++LTLState, sessionId: sessionId, update: true })
+    if(LTLState == 0){
+        $('#LTLMaking').css('display', 'block')
+        $('#LTLPicking').css('display', 'none')
+        $('#LTLResults').css('display', 'none')
+    }
+    if(LTLState == 1){
+        drawLTLScoreboard()
+        $('#LTLMaking').css('display', 'none')
+        $('#LTLPicking').css('display', 'block')
+        $('#LTLResults').css('display', 'none')
+    }
+    if(LTLState == 2){
+        $('#LTLMaking').css('display', 'none')
+        $('#LTLMaking').css('display', 'none')
+        $('#LTLResults').css('display', 'block')
+    }
+}
+
+function refreshClients(){
+    socket.emit('nextSectionLTL', { state: LTLState, sessionId: sessionId, update: false })
+}
 
 function drawTimeline() {
     if (!$('#timeline').find('svg').length) {
