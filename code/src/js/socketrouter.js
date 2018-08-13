@@ -1,6 +1,6 @@
 const sessionHandler = require('./handlers/sessionHandler'),
-boardDataHandler = require('./handlers/boardDataHandler'),
-configHandler = require('./handlers/configHandler')
+	boardDataHandler = require('./handlers/boardDataHandler'),
+	configHandler = require('./handlers/configHandler')
 
 function socketRouter(io) {
 	let moderatorSocket = { _id: null, _socket: null, name: 'moderator' }
@@ -14,9 +14,9 @@ function socketRouter(io) {
 					outputToLog('SOCKET_DISCONNECTION', sock.name)
 					indexToRemove = index
 					sessionHandler.removeMember(sock.sessionId, sock.name)
-					.then(mem => {
-						moderatorSocket._socket ? moderatorSocket._socket.emit('members_mod', { members: mem, sprint: -1 }) : null
-					})
+						.then(mem => {
+							moderatorSocket._socket ? moderatorSocket._socket.emit('members_mod', { members: mem, sprint: -1 }) : null
+						})
 				}
 			})
 			if (indexToRemove != -1) clientSockets.splice(indexToRemove, 1)
@@ -30,16 +30,16 @@ function socketRouter(io) {
 				sessionHandler.getSprintFromId(data.sessionId),
 				sessionHandler.getCurrentMembers(data.sessionId),
 				sessionHandler.getSprintSessionsFromId(data.sessionId)
-				])
-			.then(([metadata, sprintInfo, members, sessionIds]) => {
-				return boardDataHandler.getCheckinData(sessionIds, data.sessionId)
-				.then(data => {
-					socket.emit('mod_instructions', metadata);
-					socket.emit('members_mod', { members: members, sprint: sprintInfo })
-					socket.emit('checkin_data', data)
-				})
+			])
+				.then(([metadata, sprintInfo, members, sessionIds]) => {
+					return boardDataHandler.getCheckinData(sessionIds, data.sessionId)
+						.then(data => {
+							socket.emit('mod_instructions', metadata);
+							socket.emit('members_mod', { members: members, sprint: sprintInfo })
+							socket.emit('checkin_data', data)
+						})
 
-			})
+				})
 		})
 
 		socket.on('clientConnection', (data) => {
@@ -51,13 +51,13 @@ function socketRouter(io) {
 			outputToLog('CLIENT_CONNECTION WITH NAME:' + data.name, data.name)
 			clientSockets.push({ _id: socket.id, _socket: socket, name: data.name, sessionId: data.sessionId })
 			return sessionHandler.addMember(data.sessionId, data.name)
-			.then(mem => {
-				return sessionHandler.getSprintFromId(data.sessionId)
-				.then(sprint => {
-					moderatorSocket._socket ? moderatorSocket._socket.emit('member_join', data.name) : null
-					moderatorSocket._socket ? moderatorSocket._socket.emit('members_mod', { members: mem, sprint: sprint }) : null
+				.then(mem => {
+					return sessionHandler.getSprintFromId(data.sessionId)
+						.then(sprint => {
+							moderatorSocket._socket ? moderatorSocket._socket.emit('member_join', data.name) : null
+							moderatorSocket._socket ? moderatorSocket._socket.emit('members_mod', { members: mem, sprint: sprint }) : null
+						})
 				})
-			})
 		})
 
 		socket.on('checkinVote', (data) => {
@@ -65,15 +65,15 @@ function socketRouter(io) {
 			delete data.sessionId
 
 			return boardDataHandler.saveCheckin(data, sessionId)
-			.then(() => {
-				return sessionHandler.getSprintSessionsFromId(sessionId)
-				.then(sessionIds => {
-					return boardDataHandler.getCheckinData(sessionIds, sessionId)
-					.then(data => {
-						moderatorSocket._socket ? moderatorSocket._socket.emit('checkin_data', data) : null
-					})
+				.then(() => {
+					return sessionHandler.getSprintSessionsFromId(sessionId)
+						.then(sessionIds => {
+							return boardDataHandler.getCheckinData(sessionIds, sessionId)
+								.then(data => {
+									moderatorSocket._socket ? moderatorSocket._socket.emit('checkin_data', data) : null
+								})
+						})
 				})
-			})
 
 		})
 
@@ -81,16 +81,16 @@ function socketRouter(io) {
 			let sessionId = data.sessionId
 			delete data.sessionId
 			return boardDataHandler.saveCard(data, sessionId)
-			.then(card => {
-				moderatorSocket._socket ? moderatorSocket._socket.emit('3w_card', { name: socket.name, _id: card._id, data: card.data }) : null
-			})
+				.then(card => {
+					moderatorSocket._socket ? moderatorSocket._socket.emit('3w_card', { name: socket.name, _id: card._id, data: card.data }) : null
+				})
 		})
 
 		socket.on('getQualityCards', (data) => {
 			return configHandler.getQualityCards()
-			.then(q => {
-				moderatorSocket._socket ? moderatorSocket._socket.emit('qualityCards', { cards: q }) : null
-			})
+				.then(q => {
+					moderatorSocket._socket ? moderatorSocket._socket.emit('qualityCards', { cards: q }) : null
+				})
 		})
 
 		socket.on('nextSectionLTL', (data) => {
@@ -105,29 +105,36 @@ function socketRouter(io) {
 			let sessionId = data.sessionId
 			delete data.sessionId
 			return boardDataHandler.saveLTL(data, sessionId)
-			.then(card => {
-				moderatorSocket._socket ? moderatorSocket._socket.emit('LTLMade', { user: card.name, type: card.type }) : null
-			})
+				.then(card => {
+					moderatorSocket._socket ? moderatorSocket._socket.emit('LTLMade', { user: card.name, type: card.type }) : null
+				})
 		})
 
 		socket.on('Picked_LTLCard', (data) => {
 			return boardDataHandler.getLTLCard(data.generatedId, data.sessionId)
-			.then(card => {
-				moderatorSocket._socket ? moderatorSocket._socket.emit('LTL_RoundCard', card) : null
-			})
+				.then(card => {
+					moderatorSocket._socket ? moderatorSocket._socket.emit('LTL_RoundCard', card) : null
+				})
 		})
 
 		socket.on('LTL_Round', (data) => {
-			return boardDataHandler.saveLTLRound(data.sessionId, data.qualityCard, data.winnerCard, data.otherCards)
+			return boardDataHandler.saveLTLRound(data.sessionId, data.qualityCard, data.winnerCard, data.otherCards, data.currentJudge)
+		})
+
+		socket.on('qualityCardDrawn', (data) => {
+			clientSockets.forEach(sock => {
+				if (String(sock.sessionId) == String(data.sessionId))
+					sock._socket.emit('showLTLCards', {})
+			})
 		})
 
 		socket.on('ActionCard', (data) => {
 			let sessionId = data.sessionId
 			delete data.sessionId
 			return boardDataHandler.saveCard(data, sessionId)
-			.then(card => {
-				moderatorSocket._socket ? moderatorSocket._socket.emit('action_card', { name: socket.name, _id: card._id, data: card.data }) : null
-			})
+				.then(card => {
+					moderatorSocket._socket ? moderatorSocket._socket.emit('action_card', { name: socket.name, _id: card._id, data: card.data }) : null
+				})
 		})
 
 		socket.on('inactive_card', (data) => {
@@ -148,57 +155,57 @@ function socketRouter(io) {
 
 		socket.on('getEndCards', (data) => {
 			return boardDataHandler.getEndCards(data.sessionId)
-			.then(cards => {
-				moderatorSocket._socket ? moderatorSocket._socket.emit('end_card',  cards) : null
-			})	
+				.then(cards => {
+					moderatorSocket._socket ? moderatorSocket._socket.emit('end_card', cards) : null
+				})
 		})
 
 		socket.on('terminateRetrospective', (data) => {
 			let sessionId = data.sessionId
 			return sessionHandler.disactiveSession(sessionId)
-			.then(() => {
-				clientSockets.forEach(sock => {
-					if (String(sock.sessionId) == String(sessionId))
-						sock._socket.emit('terminateRetrospective', {})
+				.then(() => {
+					clientSockets.forEach(sock => {
+						if (String(sock.sessionId) == String(sessionId))
+							sock._socket.emit('terminateRetrospective', {})
+					})
 				})
-			})
 		})
 
 		socket.on('closeRetrospective', (data) => {
 			let sessionId = data.sessionId
 			return sessionHandler.closeSession(sessionId)
-			.then(() => {
-				clientSockets.forEach(sock => {
-					if (String(sock.sessionId) == String(sessionId))
-						sock._socket.emit('closeRetrospective', {})
+				.then(() => {
+					clientSockets.forEach(sock => {
+						if (String(sock.sessionId) == String(sessionId))
+							sock._socket.emit('closeRetrospective', {})
+					})
 				})
-			})
 		})
 
 		socket.on('remove_members', (data) => {
 			return sessionHandler.removeAllMembers(data.sessionId)
-			.then(() => {
-				return Promise.all([
-					sessionHandler.getSprintFromId(data.sessionId),
-					sessionHandler.getCurrentMembers(data.sessionId),
-					sessionHandler.getSprintSessionsFromId(data.sessionId)
+				.then(() => {
+					return Promise.all([
+						sessionHandler.getSprintFromId(data.sessionId),
+						sessionHandler.getCurrentMembers(data.sessionId),
+						sessionHandler.getSprintSessionsFromId(data.sessionId)
 					])
-				.then(([sprintInfo, members, sessionIds]) => {
-					return boardDataHandler.getCheckinData(sessionIds, data.sessionId)
-					.then(data => {
-						socket.emit('members_mod', { members: members, sprint: sprintInfo })
-					})
+						.then(([sprintInfo, members, sessionIds]) => {
+							return boardDataHandler.getCheckinData(sessionIds, data.sessionId)
+								.then(data => {
+									socket.emit('members_mod', { members: members, sprint: sprintInfo })
+								})
+						})
 				})
-			})
 		})
 
 		socket.on('endCard', (data) => {
 			let sessionId = data.sessionId
 			delete data.sessionId
 			return boardDataHandler.saveEndCard(data, sessionId)
-			.then(data => {
-				moderatorSocket._socket ? moderatorSocket._socket.emit('end_card', data) : null
-			})
+				.then(data => {
+					moderatorSocket._socket ? moderatorSocket._socket.emit('end_card', data) : null
+				})
 		})
 
 		socket.on('changeState', (data) => {
@@ -209,22 +216,22 @@ function socketRouter(io) {
 					return Promise.all([
 						sessionHandler.changeState(1, data.sessionId),
 						boardDataHandler.getAllCards(data.sessionId)
-						])
-					.then(([, cards]) => {
-						socket.emit('update_header', null)
-						socket.emit('3w_card', cards.nonA)
-						socket.emit('action_card', cards.A)
-					})
+					])
+						.then(([, cards]) => {
+							socket.emit('update_header', null)
+							socket.emit('3w_card', cards.nonA)
+							socket.emit('action_card', cards.A)
+						})
 				}
 			}
 			else if (data.currentState == 1) {
 				//main
 				if (data.dir == 'next') {
 					return sessionHandler.changeState(2, data.sessionId)
-					.then(metadata => socket.emit('update_header', null))
+						.then(metadata => socket.emit('update_header', null))
 				} else if (data.dir == 'prev') {
 					return sessionHandler.changeState(0, data.sessionId)
-					.then(metadata => socket.emit('update_header', null))
+						.then(metadata => socket.emit('update_header', null))
 				}
 			}
 			else if (data.currentState == 2) {
@@ -233,12 +240,12 @@ function socketRouter(io) {
 					return Promise.all([
 						sessionHandler.changeState(1, data.sessionId),
 						boardDataHandler.getAllCards(data.sessionId)
-						])
-					.then(([, cards]) => {
-						socket.emit('update_header', null)
-						socket.emit('3w_card', cards.nonA)
-						socket.emit('action_card', cards.A)
-					})
+					])
+						.then(([, cards]) => {
+							socket.emit('update_header', null)
+							socket.emit('3w_card', cards.nonA)
+							socket.emit('action_card', cards.A)
+						})
 				}
 			}
 		})

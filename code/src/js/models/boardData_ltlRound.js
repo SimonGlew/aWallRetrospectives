@@ -18,6 +18,9 @@ let LikeToLikeRoundSchema = new mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'boardData_ltl',
     },
+    judge: {
+        type: String
+    }
 });
 
 module.exports = mongoose.model('boardData_ltlRound', LikeToLikeRoundSchema); 

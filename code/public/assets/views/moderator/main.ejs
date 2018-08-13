@@ -15,16 +15,16 @@
 			</div>
 			<div class='w-15'>
 				<h1>Action Points</h1>
-				<table id='actionCards' style='margin-left:5px;'></table>
+				<table id='actionCards3W' style='margin-left:5px;'></table>
 			</div>
 		</div>
 
-		<div class="modal fade" id="cardPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal fade" id="cardPopup3W" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
-					<div id='headerCardModal' class="modal-header" style='background-color:#66adff;padding:7px;'>
+					<div id='headerCardModal3W' class="modal-header" style='background-color:#66adff;padding:7px;'>
 						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
-							<h5 class="modal-title" id="modalTitle" style='padding-left:10px;'></h5>
+							<h5 class="modal-title" id="modalTitle3W" style='padding-left:10px;'></h5>
 						</div>
 					</div>
 					<div class="modal-body" style='width:100%; padding: 0px;'>
@@ -38,27 +38,31 @@
 						<div class='row' style='width:100%'>
 							<div class='w-70' style='padding-left:25px; text-align:left;'>
 								<span style='font-weight: bold;font-size:115%'>Created by: </span>
-								<span id='cardName' style='font-size:115%'></span>
+								<span id='cardName3W' style='font-size:115%'></span>
 								<div style='font-size:115%;'>
 									<span style='font-weight: bold;'>Type:</span>
-									<span id='cardType'></span>
+									<span id='cardType3W'></span>
 								</div>
 								<span style='display:block;font-weight: bold;font-size:115%'>Message: </span>
-								<textarea id='cardMessage' rows="3" style='display:block; min-height: 75px;width:100%;border-width:0px !important;font-size:115%' readonly="true"></textarea>
+								<textarea id='cardMessage3W' rows="3" style='display:block; min-height: 75px;width:100%;border-width:0px !important;font-size:115%'
+								 readonly="true"></textarea>
 								<div style='float:right;'>
 									<span style='font-weight: bold;'>Time Generated:</span>
-									<span id='cardGenerated'></span>
+									<span id='cardGenerated3W'></span>
 								</div>
 							</div>
 							<div class='w-30' style='text-align:right;'>
-								<button id='deleteCard' type="button" class="btn" style='background: white; border-color:black;margin-bottom:2px;' onclick='inactiveCard()'><i class="fas fa-cross fa-lg"></i>Delete</button>
-								<button id='carryOverCard' type="button" class="btn" style='background: white; border-color:black;display:none;' onclick='carryoverCard()'><i class="fas fa-angle-double-right fa-lg"></i>Carry over</button>
+								<button id='deleteCard3W' type="button" class="btn" style='background: white; border-color:black;margin-bottom:2px;' onclick='inactiveCard3W()'>
+									<i class="fas fa-cross fa-lg"></i>Delete</button>
+								<button id='carryOverCard3W' type="button" class="btn" style='background: white; border-color:black;display:none;' onclick='carryoverCard3W()'>
+									<i class="fas fa-angle-double-right fa-lg"></i>Carry over</button>
 							</div>
 						</div>
 					</div>
-					<div id='footerCardModal' class="modal-footer" style='background-color:#66adff;padding:5px;'>
-						<button id='completeCard' type="button" class="btn" style='background: white; border-color:black;' onclick='completeCard()'></button>
-						<button type="button" class="btn" data-dismiss="modal" style='background: white; border-color:black;'><i class="fas fa-cross fa-lg"></i>Close</button>
+					<div id='footerCardModal3W' class="modal-footer" style='background-color:#66adff;padding:5px;'>
+						<button id='completeCard3W' type="button" class="btn" style='background: white; border-color:black;' onclick='completeCard3W()'></button>
+						<button type="button" class="btn" data-dismiss="modal" style='background: white; border-color:black;'>
+							<i class="fas fa-cross fa-lg"></i>Close</button>
 					</div>
 				</div>
 			</div>
@@ -68,29 +72,35 @@
 				<div class="modal-content">
 					<div class="modal-header" style='padding:7px;'>
 						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
-							<h3 class="modal-title" style='padding-left:10px;'><b>3W: Instructions</b></h3>
+							<h3 class="modal-title" style='padding-left:10px;'>
+								<b>3W: Instructions</b>
+							</h3>
 						</div>
 					</div>
 					<div class="modal-body" style='width:100%;'>
 						<div class='row' style='width:100%;padding-left:5px;'>
 							<p class='floatLeft'>
 								3W is used to understand how the group felt during the sprint. There are two different colours to label a card,
-								<b>Good</b> (green) or <b>Bad</b> (red). Cards are then discussed and <b>Action Points</b> (blue) are created for future retrospectives
+								<b>Good</b> (green) or
+								<b>Bad</b> (red). Cards are then discussed and
+								<b>Action Points</b> (blue) are created for future retrospectives
 							</p>
-							<div style='min-height:15px;height:15px;width:100%'/>
-							<h5><b>How it works</b></h5>
+							<div style='min-height:15px;height:15px;width:100%' />
+							<h5>
+								<b>How it works</b>
+							</h5>
 							<div>
 								<img src="/assets/pictures/instructions_3W1.png" alt="" height="193px" width="auto" style='padding-right:10px'>
 								<img src="/assets/pictures/instructions_3W2.png" alt="" height="193px" width="auto" style='padding-left:10px'>
-								<div style='min-height:15px;height:15px;width:100%'/>
-								<p class='floatLeft'> 
-									Please select a feeling (top bar of colours) and write about why you felt that way in the provided space below,
-									and send it off to the board. After 5 minutes the group will come together and discuss each card and if necessary
-									action points (blue) will be created.
-								</p> 
+								<div style='min-height:15px;height:15px;width:100%' />
+								<p class='floatLeft'>
+									Please select a feeling (top bar of colours) and write about why you felt that way in the provided space below, and send
+									it off to the board. After 5 minutes the group will come together and discuss each card and if necessary action
+									points (blue) will be created.
+								</p>
 								<p class='floatLeft' style='padding-top:5px;display:block;'>
 									<b>Estimated Time: </b> 30 minutes
-								</p> 
+								</p>
 							</div>
 						</div>
 					</div>
@@ -119,7 +129,7 @@
 								</div>
 								<div style='width:60%;'>
 									<div style='height:50%;'>
-										<span>Color Selected:</span> 
+										<span>Color Selected:</span>
 									</div>
 									<div id='timelineColor' style='width:90px;height:50%;background-color: white; border: 2px solid black;margin: 0 auto;'></div>
 								</div>
@@ -131,7 +141,7 @@
 			</div>
 			<div class='w-15' style='width:14%;'>
 				<h1>Action Points</h1>
-				<table id='actionCards' style='margin-left:5px;'></table>
+				<table id='actionCardsTimeline' style='margin-left:5px;'></table>
 			</div>
 		</div>
 
@@ -147,25 +157,34 @@
 						<div class='row' style='width:100%'>
 							<div class='w-65' style='padding-left:25px; text-align:left;'>
 								<h3>Person</h3>
-								<table id='timelinePersonTable' style='max-height:170px;width:100%;overflow-y: scroll;'/>
+								<table id='timelinePersonTable' style='max-height:170px;width:100%;overflow-y: scroll;' />
 							</div>
 							<div class='w-35'>
 								<h3>Color</h3>
 								<table style='border-spacing: 5px;border-collapse: separate;float:right'>
 									<tr style='height:50px;'>
-										<td id='e6194b' style='width:50px;padding:1px;border:1px solid #e6194b; border-radius:5px; background-color:#e6194b' onclick="setCurrentColorTimeline('e6194b')"/>
-										<td id='3cb44b' style='width:50px;padding:1px;border:1px solid #3cb44b; border-radius:5px;background-color:#3cb44b' onclick="setCurrentColorTimeline('3cb44b')"/>
-										<td id='ffe119' style='width:50px;padding:1px;border:1px solid #ffe119; border-radius:5px;background-color:#ffe119' onclick="setCurrentColorTimeline('ffe119')"/>
+										<td id='e6194b' style='width:50px;padding:1px;border:1px solid #e6194b; border-radius:5px; background-color:#e6194b' onclick="setCurrentColorTimeline('e6194b')"
+										/>
+										<td id='3cb44b' style='width:50px;padding:1px;border:1px solid #3cb44b; border-radius:5px;background-color:#3cb44b' onclick="setCurrentColorTimeline('3cb44b')"
+										/>
+										<td id='ffe119' style='width:50px;padding:1px;border:1px solid #ffe119; border-radius:5px;background-color:#ffe119' onclick="setCurrentColorTimeline('ffe119')"
+										/>
 									</tr>
 									<tr style='height:50px;'>
-										<td id='0082c8' style='width:50px;padding:1px;border:1px solid #0082c8; border-radius:5px;background-color:#0082c8' onclick="setCurrentColorTimeline('0082c8')"/>
-										<td id='f58231' style='width:50px;padding:1px;border:1px solid #f58231; border-radius:5px;background-color:#f58231' onclick="setCurrentColorTimeline('f58231')"/>
-										<td id='911eb4' style='width:50px;padding:1px;border:1px solid #911eb4; border-radius:5px;background-color:#911eb4' onclick="setCurrentColorTimeline('911eb4')"/>
+										<td id='0082c8' style='width:50px;padding:1px;border:1px solid #0082c8; border-radius:5px;background-color:#0082c8' onclick="setCurrentColorTimeline('0082c8')"
+										/>
+										<td id='f58231' style='width:50px;padding:1px;border:1px solid #f58231; border-radius:5px;background-color:#f58231' onclick="setCurrentColorTimeline('f58231')"
+										/>
+										<td id='911eb4' style='width:50px;padding:1px;border:1px solid #911eb4; border-radius:5px;background-color:#911eb4' onclick="setCurrentColorTimeline('911eb4')"
+										/>
 									</tr>
 									<tr style='height:50px;'>
-										<td id='46f0f0' style='width:50px;padding:1px;border:1px solid #46f0f0; border-radius:5px;background-color:#46f0f0' onclick="setCurrentColorTimeline('46f0f0')"/>
-										<td id='f032e6' style='width:50px;padding:1px;border:1px solid #f032e6; border-radius:5px;background-color:#f032e6' onclick="setCurrentColorTimeline('f032e6')"/>
-										<td id='aa6e28' style='width:50px;padding:1px;border:1px solid #aa6e28; border-radius:5px;background-color:#aa6e28' onclick="setCurrentColorTimeline('aa6e28')"/>
+										<td id='46f0f0' style='width:50px;padding:1px;border:1px solid #46f0f0; border-radius:5px;background-color:#46f0f0' onclick="setCurrentColorTimeline('46f0f0')"
+										/>
+										<td id='f032e6' style='width:50px;padding:1px;border:1px solid #f032e6; border-radius:5px;background-color:#f032e6' onclick="setCurrentColorTimeline('f032e6')"
+										/>
+										<td id='aa6e28' style='width:50px;padding:1px;border:1px solid #aa6e28; border-radius:5px;background-color:#aa6e28' onclick="setCurrentColorTimeline('aa6e28')"
+										/>
 									</tr>
 								</table>
 							</div>
@@ -178,36 +197,91 @@
 			</div>
 		</div>
 
+		<div class="modal fade" id="cardPopupTimeline" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div id='headerCardModalTimeline' class="modal-header" style='background-color:#66adff;padding:7px;'>
+						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
+							<h5 class="modal-title" id="modalTitleTimeline" style='padding-left:10px;'></h5>
+						</div>
+					</div>
+					<div class="modal-body" style='width:100%; padding: 0px;'>
+						<div class='row' style='width:100%'>
+							<div class='w-70' style='padding-left:25px; text-align:left;'>
+							</div>
+							<div class='w-30' style='text-align:right;'>
+								<h3>Actions</h3>
+							</div>
+						</div>
+						<div class='row' style='width:100%'>
+							<div class='w-70' style='padding-left:25px; text-align:left;'>
+								<span style='font-weight: bold;font-size:115%'>Created by: </span>
+								<span id='cardNameTimeline' style='font-size:115%'></span>
+								<div style='font-size:115%;'>
+									<span style='font-weight: bold;'>Type:</span>
+									<span id='cardTypeTimeline'></span>
+								</div>
+								<span style='display:block;font-weight: bold;font-size:115%'>Message: </span>
+								<textarea id='cardMessageTimeline' rows="3" style='display:block; min-height: 75px;width:100%;border-width:0px !important;font-size:115%'
+								 readonly="true"></textarea>
+								<div style='float:right;'>
+									<span style='font-weight: bold;'>Time Generated:</span>
+									<span id='cardGeneratedTimeline'></span>
+								</div>
+							</div>
+							<div class='w-30' style='text-align:right;'>
+								<button id='deleteCardTimeline' type="button" class="btn" style='background: white; border-color:black;margin-bottom:2px;'
+								 onclick='inactiveCardTimeline()'>
+									<i class="fas fa-cross fa-lg"></i>Delete</button>
+								<button id='carryOverCardTimeline' type="button" class="btn" style='background: white; border-color:black;display:none;'
+								 onclick='carryoverCardTimeline()'>
+									<i class="fas fa-angle-double-right fa-lg"></i>Carry over</button>
+							</div>
+						</div>
+					</div>
+					<div id='footerCardModalTimeline' class="modal-footer" style='background-color:#66adff;padding:5px;'>
+						<button id='completeCardTimeline' type="button" class="btn" style='background: white; border-color:black;' onclick='completeCardTimeline()'></button>
+						<button type="button" class="btn" data-dismiss="modal" style='background: white; border-color:black;'>
+							<i class="fas fa-cross fa-lg"></i>Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="modal fade" id="timelineInstructions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header" style='padding:7px;'>
 						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
-							<h3 class="modal-title" style='padding-left:10px;'><b>Timeline: Instructions</b></h3>
+							<h3 class="modal-title" style='padding-left:10px;'>
+								<b>Timeline: Instructions</b>
+							</h3>
 						</div>
 					</div>
 					<div class="modal-body" style='width:100%;'>
 						<div class='row' style='width:100%;padding-left:5px;'>
 							<p class='floatLeft'>
-								Timeline is used to understand the groups feelings over the sprint, and how they changed during the sprint
-								Timeline is then discussed and <b>Action Points</b> (blue) are created for future retrospectives
+								Timeline is used to understand the groups feelings over the sprint, and how they changed during the sprint Timeline is then
+								discussed and
+								<b>Action Points</b> (blue) are created for future retrospectives
 							</p>
-							<div style='min-height:15px;height:15px;width:100%'/>
-							<h5><b>How it works</b></h5>
+							<div style='min-height:15px;height:15px;width:100%' />
+							<h5>
+								<b>How it works</b>
+							</h5>
 							<div>
 								<img src="/assets/pictures/instructions_timeline1.png" alt="" height="193px" width="auto" style='padding-right:10px'>
 								<img src="/assets/pictures/instructions_timeline2.png" alt="" height="120px" width="auto" style='padding-right:10px'>
 
-								<div style='min-height:15px;height:15px;width:100%'/>
-								<p class='floatLeft'> 
-									Please select yourself and a colour and draw a line on how you felt during the sprint, you may also include different
-									crunch points on the line to signal events such like finishing a block of work.
-
-									In discussion, <b>Action Cards</b> (blue) can be created to help with issues to be resolved during the following sprint.
-								</p> 
+								<div style='min-height:15px;height:15px;width:100%' />
+								<p class='floatLeft'>
+									Please select yourself and a colour and draw a line on how you felt during the sprint, you may also include different crunch
+									points on the line to signal events such like finishing a block of work. In discussion,
+									<b>Action Cards</b> (blue) can be created to help with issues to be resolved during the following sprint.
+								</p>
 								<p class='floatLeft' style='padding-top:5px;display:block;'>
 									<b>Estimated Time: </b> 30 minutes
-								</p> 
+								</p>
 							</div>
 						</div>
 					</div>
@@ -226,55 +300,107 @@
 				</div>
 				<div id='LTLPicking' style='padding-left:20px;display:none;'>
 					<table id='LTLScoreboard' style='margin-left:20px;'></table>
-					<div class='row' id='qualityCard' style='width:100%;display:none;'>
-						<div style='width:35%;min-height:150px;height:150px;'/>
-						<div id='LTLQualityCardOuterDiv' style='width:30%;background-color:yellow;border:2px solid black;min-height:150px;height:150px;'>
+					<div class='row' id='qualityCard' style='width:100%;display:none;padding-bottom: 15px;'>
+						<div style='width:35%;min-height:150px;height:150px;' />
+						<div id='LTLQualityCardOuterDiv' style='width:30%;border-radius:10px;background-color:yellow;border:2px solid black;min-height:150px;height:150px;'>
 							<span id='qualityCardInfo' style='font-size:40px;'></span>
 						</div>
-						<div style='width:35%;min-height:150px;height:150px;'/>
+						<div style='width:35%;min-height:150px;height:150px;' />
 					</div>
 					<div id='LTLCards'>
 						<table id='LTLCardsTable' style='margin-left:20px;'></table>
 					</div>
 				</div>
 				<div id='LTLResults' style='padding-left:20px;display:none;'>
-					<!--<table id='LTLScoreboard' style='margin-left:20px;'></table>-->
+					<table id='LTLResultsTable' style='margin-left:20px;'></table>
 				</div>
-				<div id="LTLFooter" style='background-color: #66adff;position: fixed; bottom:60px; width:inherit;border-top: 1px solid black; border-right: 1px solid black;'>
-					<img src="/assets/pictures/next.png" alt="" height="50px" width="50px"  style='float:right;margin-left:5px;margin-right:5px;' onclick='nextSectionLTL()'>                
-					<img src="/assets/pictures/redo.png" alt="" height="50px" width="50px"  style='float:right;margin-left:5px;' onclick='refreshClients()'>  
-					<img src="/assets/pictures/drawCard.png" alt="" height="50px" width="50px"  style='float:right;margin-left:5px;' onclick='drawQualityCard()'>                              
-				</div>
+
 			</div>
 			<div class='w-15' style='width:14%;'>
 				<h1>Action Points</h1>
-				<table id='actionCards' style='margin-left:5px;'></table>
+				<table id='actionCardsLiketoLike' style='margin-left:5px;'></table>
 			</div>
 		</div>
-		<div class="modal fade" id="LikeToLikeInstructions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal fade" id="cardPopupLiketoLike" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div id='headerCardModalLiketoLike' class="modal-header" style='background-color:#66adff;padding:7px;'>
+						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
+							<h5 class="modal-title" id="modalTitleLiketoLike" style='padding-left:10px;'></h5>
+						</div>
+					</div>
+					<div class="modal-body" style='width:100%; padding: 0px;'>
+						<div class='row' style='width:100%'>
+							<div class='w-70' style='padding-left:25px; text-align:left;'>
+							</div>
+							<div class='w-30' style='text-align:right;'>
+								<h3>Actions</h3>
+							</div>
+						</div>
+						<div class='row' style='width:100%'>
+							<div class='w-70' style='padding-left:25px; text-align:left;'>
+								<span style='font-weight: bold;font-size:115%'>Created by: </span>
+								<span id='cardNameLiketoLike' style='font-size:115%'></span>
+								<div style='font-size:115%;'>
+									<span style='font-weight: bold;'>Type:</span>
+									<span id='cardTypeLiketoLike'></span>
+								</div>
+								<span style='display:block;font-weight: bold;font-size:115%'>Message: </span>
+								<textarea id='cardMessageLiketoLike' rows="3" style='display:block; min-height: 75px;width:100%;border-width:0px !important;font-size:115%'
+								 readonly="true"></textarea>
+								<div style='float:right;'>
+									<span style='font-weight: bold;'>Time Generated:</span>
+									<span id='cardGeneratedLiketoLike'></span>
+								</div>
+							</div>
+							<div class='w-30' style='text-align:right;'>
+								<button id='deleteCardLiketoLike' type="button" class="btn" style='background: white; border-color:black;margin-bottom:2px;'
+								 onclick='inactiveCardLiketoLike()'>
+									<i class="fas fa-cross fa-lg"></i>Delete</button>
+								<button id='carryOverCardLiketoLike' type="button" class="btn" style='background: white; border-color:black;display:none;'
+								 onclick='carryoverCardLiketoLike()'>
+									<i class="fas fa-angle-double-right fa-lg"></i>Carry over</button>
+							</div>
+						</div>
+					</div>
+					<div id='footerCardModalLiketoLike' class="modal-footer" style='background-color:#66adff;padding:5px;'>
+						<button id='completeCardLiketoLike' type="button" class="btn" style='background: white; border-color:black;' onclick='completeCardLiketoLike()'></button>
+						<button type="button" class="btn" data-dismiss="modal" style='background: white; border-color:black;'>
+							<i class="fas fa-cross fa-lg"></i>Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="LikeToLikeInstructions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+		 aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header" style='padding:7px;'>
 						<div style='border-radius: 10px; background-color:white; width: 100%;display:inherit;'>
-							<h3 class="modal-title" style='padding-left:10px;'><b>Like to Like: Instructions</b></h3>
+							<h3 class="modal-title" style='padding-left:10px;'>
+								<b>Like to Like: Instructions</b>
+							</h3>
 						</div>
 					</div>
 					<div class="modal-body" style='width:100%;'>
 						<div class='row' style='width:100%;padding-left:5px;'>
 							<p class='floatLeft'>
 							</p>
-							<div style='min-height:15px;height:15px;width:100%'/>
-							<h5><b>How it works</b></h5>
+							<div style='min-height:15px;height:15px;width:100%' />
+							<h5>
+								<b>How it works</b>
+							</h5>
 							<div>
 								<img src="/assets/pictures/instructions_3W1.png" alt="" height="193px" width="auto" style='padding-right:10px'>
 								<img src="/assets/pictures/instructions_3W2.png" alt="" height="193px" width="auto" style='padding-left:10px'>
-								<div style='min-height:15px;height:15px;width:100%'/>
-								<p class='floatLeft'> 
+								<div style='min-height:15px;height:15px;width:100%' />
+								<p class='floatLeft'>
 
-								</p> 
+								</p>
 								<p class='floatLeft' style='padding-top:5px;display:block;'>
 									<b>Estimated Time: </b> 30 minutes
-								</p> 
+								</p>
 							</div>
 						</div>
 					</div>
@@ -289,13 +415,13 @@
 	<script>
 		$(function () {
 			let retrotype = window.location.href.split('type/')[1].split('/')[0]
-			if(retrotype == '3W'){
+			if (retrotype == '3W') {
 				$('#3W').css('display', 'block')
 			}
-			if(retrotype == 'Timeline'){
+			if (retrotype == 'Timeline') {
 				$('#Timeline').css('display', 'block')
 			}
-			if(retrotype == 'LiketoLike'){
+			if (retrotype == 'LiketoLike') {
 				$('#LikeToLike').css('display', 'block')
 			}
 		});
