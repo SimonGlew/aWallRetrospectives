@@ -155,7 +155,7 @@ function saveLTL(data, sessionId){
 }
 
 function getLTLCard(generatedId, sessionId){
-    return LTL.findOne({ generatedId: generatedId, sessionId: sessionId })
+    return LTL.findOne({ generatedId: generatedId, session: sessionId })
         .lean()
 }
 

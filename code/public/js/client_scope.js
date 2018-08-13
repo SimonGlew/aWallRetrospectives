@@ -329,10 +329,11 @@ function addCardLTL(){
 
 function drawCardLTL(){
     let tableHTML = ''
-    cardToTable = function(list, type, html){
+    function cardToTable(list, type, html){
+        console.log('type', type)
         list.forEach(r => {
             if(!r.used){
-                html += '<tr><td style="padding-bottom:5px;text-align:left;"><div style="font-size:250%;padding-left:10px;border:5px solid black;" onclick="selectLTLCard(' + "'" + r.id + "', " + type + ')">' + r.message + '</div></td></tr>'
+                html += '<tr><td style="padding-bottom:5px;text-align:left;"><div style="font-size:250%;padding-left:10px;border:5px solid black;" onclick="selectLTLCard(' + "'" + r.id + "', " + "'" + type + "'" + ')">' + r.message + '</div></td></tr>'
             }
         })
         return html
@@ -356,13 +357,15 @@ function drawCardLTL(){
 }
 
 function selectLTLCard(id, type){
+    console.log('fmiewofnwioe', id, type)
     let arr = LTLCards[type]
+    console.log('arr', arr)
     let index = arr.map(function(r){ return r.id }).indexOf(id)
-
+    console.log('index', index)
     arr[index].used = true
 
     //send to screen
-    socket.emit('Picked_LTLCard' , { generatedId: id, sessionId: sessionId })
+    socket.emit('Picked_LTLCard' , { generatedId: arr[index].id, sessionId: sessionId })
     drawCardLTL()
 }
 

@@ -77,12 +77,13 @@ socket.on('checkin_data', function (data) {
 })
 
 socket.on('LTL_RoundCard', function (data){
+    console.log("data", data)
     cardsUserMapLTL[data.name] = {
-        id: data._id
+        id: data._id,
         generatedId: data.generatedId,
         type: data.type,
-        message: data.message
-        name: data.name,
+        message: data.message,
+        name: data.name
     }
 
     drawLTLCards()
@@ -221,6 +222,7 @@ function drawQualityCard(){
 }
 
 function drawLTLCards(){
+    console.log('cardsUserMapLTL', cardsUserMapLTL)
     let tdWidth = ($('#LTLPicking').width() / allMembers.length) + 'px'
     let rowOne = '<tr style="margin-left:3px;width:' + tdWidth + ';">', rowTwo = '<tr style="margin-left:3px;width:' + tdWidth + ';">'
 
@@ -228,12 +230,12 @@ function drawLTLCards(){
         let card = cardsUserMapLTL[key]
         let styleColor = 'style="width:100%;max-height:200px;height:200px;border: 1px solid ' + (card.type == 'good' ? 'green' : (card.type == 'bad' ? 'red' : 'blue')) + '"'
         rowOne += '<td style="padding:0 10px 0 10px;"><div><span>' + card.name + '</span></div>'
-        rowTwo += '<td style="padding:0 10px 0 10px;"><div' + styleColor + '><span>' + card.name + '</span></div>'
+        rowTwo += '<td style="padding:0 10px 0 10px;"><div' + styleColor + '><span>' + card.message + '</span></div>'
     })
     rowOne += '</tr>'
     rowTwo += '</tr>'
 
-    $('#LTLScoreboard').html(rowOne + rowTwo)
+    $('#LTLCardsTable').html(rowOne + rowTwo)
 }
 
 function drawLTLScoreboard(){
