@@ -163,11 +163,11 @@ function redrawActionCards() {
     actionCards.forEach(function (card) {
         let carryBool = card.carryOver && card.carryOver.indexOf(sessionId) != -1
         let cardType = card.data.type
-        let completed = card.completed ? '<img src="/assets/pictures/finish_sprint.png" height="30" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
-        let carryOver = carryBool ? '<img src="/assets/pictures/next.png" height="30" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
+        let completed = card.completed ? '<img src="/assets/pictures/finish_sprint.png" height="30" width="auto" onclick="openCardTimeline(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
+        let carryOver = carryBool ? '<img src="/assets/pictures/next.png" height="30" width="auto" onclick="openCardTimeline(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
         let div = completed.length || carryOver.length ? '<div style="margin-top:-30px;margin-right:-60px;">' + completed + carryOver + '</div>' : ''
         tableHTML += '<tr style="margin-left:20px;">' +
-        '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' + div + '</td></tr>'
+        '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCardTimeline(' + "'" + card._id + "', " + null + "," + carryBool + ')">' + div + '</td></tr>'
     })
     if (sessionType == 'Timeline'){
         $('#actionCardsTimeline').html(tableHTML)
@@ -189,6 +189,22 @@ function carryoverCard() {
         }
     }
     $('#cardPopup').modal('hide');
+    redrawActionCards()
+}
+
+function carryoverCardTimeline() {
+    if (currentlySelectedCard) {
+        socket.emit('carryon_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
+
+        let index = actionCards.map(function (c) { return c._id }).indexOf(currentlySelectedCard._id)
+        if (index != -1) {
+            if (!actionCards[index].carryOver || !actionCards[index].carryOver.length)
+                actionCards[index].carryOver = []
+
+            actionCards[index].carryOver.indexOf(sessionId) == -1 ? actionCards[index].carryOver.push(sessionId) : null
+        }
+    }
+    $('#cardPopupTimeline').modal('hide');
     redrawActionCards()
 }
 
@@ -214,6 +230,28 @@ function inactiveCard() {
     redrawActionCards()
 }
 
+function inactiveCardTimeline() {
+    if (currentlySelectedCard) {
+        if (currentlySelectedCard.data.type != 'action') {
+            let index = cardsByUser[currentlySelectedCard.user].map(function (c) { return c._id }).indexOf(currentlySelectedCard._id)
+            cardsByUser[currentlySelectedCard.user].splice(index, 1)
+            if (cardsByUser[currentlySelectedCard.user].length == 0)
+                delete cardsByUser[currentlySelectedCard.user]
+        } else {
+            let index = actionCards.map(function (c) { return c._id }).indexOf(currentlySelectedCard._id)
+            actionCards.splice(index, 1)
+        }
+        delete cardsById[currentlySelectedCard._id]
+
+        socket.emit('inactive_card', { cardId: currentlySelectedCard._id })
+        currentlySelectedCard = null
+
+        $('#cardPopupTimeline').modal('hide');
+    }
+    redrawCardSystem()
+    redrawActionCards()
+}
+
 
 function openCard(cardId, index, carryOver) {
     $('#cardPopup').modal('show');
@@ -227,7 +265,7 @@ function openCard(cardId, index, carryOver) {
 
 
     $('#modalTitle').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action' + (currentlySelectedCard.carriedOver ? ' (Carried from last sprint)' : '')))
-    currentlySelectedCard.data.type == 'action' && carryOver == false ? $('#carryOverCard').css('display', 'initial') : $('#carryOverCard').css('display', 'none')
+    currentlySelectedCard.data.type == 'action' && carryOver == false ? $('#carryOverCardTimeline').css('display', 'initial') : $('#carryOverCardTimeline').css('display', 'none')
     $('#completeCard').html(currentlySelectedCard.completed ? '<i class="fas fa-check fa-lg"></i> Completed' : '<i class="fas fa-check fa-lg"></i> Complete')
     $('#cardName').html(currentlySelectedCard.user)
     $('#cardType').html(capitalizeFirstLetter(currentlySelectedCard.data.type))
@@ -236,11 +274,42 @@ function openCard(cardId, index, carryOver) {
 
 }
 
+function openCardTimeline(cardId, index, carryOver) {
+    $('#cardPopupTimeline').modal('show');
+
+    let colorMap = { 'good': '#00A51D', 'bad': '#FF5656', 'action': '#0094FF' }
+
+    currentlySelectedCard = cardsById[cardId]
+
+    $('#headerCardModalTimeline').css('background-color', colorMap[currentlySelectedCard.data.type])
+    $('#footerCardModalTimeline').css('background-color', colorMap[currentlySelectedCard.data.type])
+
+
+    $('#modalTitleTimeline').html('<i class="fas fa-check-square"></i>   ' + (index ? (currentlySelectedCard.user + "- Card: " + index) : 'Action' + (currentlySelectedCard.carriedOver ? ' (Carried from last sprint)' : '')))
+    currentlySelectedCard.data.type == 'action' && carryOver == false ? $('#carryOverCard').css('display', 'initial') : $('#carryOverCard').css('display', 'none')
+    $('#completeCardTimeline').html(currentlySelectedCard.completed ? '<i class="fas fa-check fa-lg"></i> Completed' : '<i class="fas fa-check fa-lg"></i> Complete')
+    $('#cardNameTimeline').html(currentlySelectedCard.user)
+    $('#cardTypeTimeline').html(capitalizeFirstLetter(currentlySelectedCard.data.type))
+    $('#cardMessageTimeline').html(currentlySelectedCard.data.message)
+    $('#cardGeneratedTimeline').html(formatDate(currentlySelectedCard.data.generated))
+
+}
+
 function completeCard() {
     if (currentlySelectedCard) {
         currentlySelectedCard.completed = !currentlySelectedCard.completed
         socket.emit('complete_card', { cardId: currentlySelectedCard._id })
         $('#cardPopup').modal('hide');
+    }
+    redrawCardSystem()
+    redrawActionCards()
+}
+
+function completeCardTimeline() {
+    if (currentlySelectedCard) {
+        currentlySelectedCard.completed = !currentlySelectedCard.completed
+        socket.emit('complete_card', { cardId: currentlySelectedCard._id })
+        $('#cardPopupTimeline').modal('hide');
     }
     redrawCardSystem()
     redrawActionCards()
