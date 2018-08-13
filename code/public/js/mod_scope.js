@@ -158,7 +158,7 @@ function redrawCardSystem() {
 }
 
 function redrawActionCards() {
-    let tableHTML = null
+    let tableHTML = ''
 
     actionCards.forEach(function (card) {
         let carryBool = card.carryOver && card.carryOver.indexOf(sessionId) != -1
@@ -169,10 +169,11 @@ function redrawActionCards() {
         tableHTML += '<tr style="margin-left:20px;">' +
         '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' + div + '</td></tr>'
     })
-    if (tableHTML)
+    if (sessionType == 'Timeline'){
+        $('#actionCardsTimeline').html(tableHTML)
+    }else{
         $('#actionCards').html(tableHTML)
-    else
-        $('#actionCards').html('')
+    }
 }
 
 function carryoverCard() {
@@ -479,6 +480,9 @@ function timelinePopupOpen() {
     })
     $('#timelinePersonTable').html(tableHTML)
 
+    if(currentlySelectedTimeline.person)
+        $('#' + currentlySelectedTimeline.person).css('border', '1px solid black')
+
     if (currentlySelectedTimeline.person && userToColor[currentlySelectedTimeline.person])
         $('#' + userToColor[currentlySelectedTimeline.person].substring(1)).html('<i class="fas fa-check fa-lg" style="color:white;font-size:22px"/>')
 
@@ -498,6 +502,9 @@ function closeTimelinePopup() {
 function setCurrentPersonTimeline(person) {
     if (currentlySelectedTimeline.person)
         $('#' + currentlySelectedTimeline.person).css('border', '')
+
+    if (currentlySelectedTimeline.person && userToColor[currentlySelectedTimeline.person])
+        $('#' + userToColor[currentlySelectedTimeline.person].substring(1)).html('')
 
     currentlySelectedTimeline.person = person
 
