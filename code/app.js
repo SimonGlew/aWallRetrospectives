@@ -1,4 +1,4 @@
-global.isProduction = (process.env.NODE_ENV == 'prod')
+global.isProduction = true
 
 var express = require('express');
 var app = express();
