@@ -30,6 +30,9 @@ var LTLScoring = {}
 var currentRoundCardsLTL = {}
 var currentQualityCard = null
 
+    var colorMap = { 'good': '#00A51D', 'bad': '#FF5656', 'action': '#0094FF' }
+
+
 
 var colorScale = d3.scale.linear()
     .domain([1, 5, 10])
@@ -195,8 +198,11 @@ function redrawCardSystem() {
         cardsByUser[member].forEach(function (card, index) {
             let message = card.data.message, type = card.data.type
             let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : 'badCard.png')
-            let completed = card.completed ? '<img src="/assets/pictures/finish_sprint.png" height="30" width="auto" style="margin-left:-30px;margin-top:20px;" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')">' : ''
-            tableHTML += '<td style="vertical-align:top;padding-right:10px;"><img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')">' + completed + '</td>'
+            let imageDiv = '<img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')">' 
+            if(card.completed){
+                imageDiv = '<div style="border: 2px solid ' +  colorMap[type] +';max-width:100px;width:100px;max-height:50px;height:50px;">' + message + '</div>'
+            }
+            tableHTML += '<td style="vertical-align:top;padding-right:10px;">' + imageDiv + '</td>'
         })
         tableHTML += '</tr>'
     })
@@ -232,7 +238,6 @@ function drawLTLCards() {
     let tdWidth = ((($('#LTLPicking').width() / allMembers.length) > 150) ? 150 : ($('#LTLPicking').width() / allMembers.length)) + 'px'
     let rowOne = '<tr style="margin-left:3px;max-width:' + tdWidth + ';">', rowTwo = '<tr style="margin-left:3px;max-width:' + tdWidth + ';">'
 
-    let colorMap = { 'good': '#00A51D', 'bad': '#FF5656', 'action': '#0094FF' }
 
     Object.keys(currentRoundCardsLTL).forEach(function (key) {
         let card = currentRoundCardsLTL[key]
@@ -452,8 +457,6 @@ function inactiveCardTimeline() {
 
 function openCard(cardId, index, carryOver) {
     $('#cardPopup' + sessionType).modal('show');
-
-    let colorMap = { 'good': '#00A51D', 'bad': '#FF5656', 'action': '#0094FF' }
 
     currentlySelectedCard = cardsById[cardId]
 
