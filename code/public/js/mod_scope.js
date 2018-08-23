@@ -106,8 +106,10 @@ socket.on('3w_card', function (data) {
 
         let obj = { _id: card._id, user: user, data: card.data.data, completed: card.completed }
 
-        cardsByUser[user].push(obj)
-        cardsById[card._id] = obj
+        if(cardsByUser[user].length < 6) {
+            cardsByUser[user].push(obj)
+            cardsById[card._id] = obj
+        }
     })
     redrawCardSystem()
 })
@@ -200,7 +202,7 @@ function redrawCardSystem() {
             let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : 'badCard.png')
             let imageDiv = '<img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')">' 
             if(card.completed){
-                imageDiv = '<div style="border: 2px solid ' +  colorMap[type] +';max-width:100px;width:100px;max-height:50px;height:50px;">' + message + '</div>'
+                imageDiv = '<div style="border: 2px solid ' +  colorMap[type] +';max-width:150px;width:150px;max-height:50px;height:50px;overflow-y:auto;" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')"><span style="max-height:50px;max-width:100px;">' + message + '</span></div>'
             }
             tableHTML += '<td style="vertical-align:top;padding-right:10px;">' + imageDiv + '</td>'
         })
@@ -343,11 +345,14 @@ function redrawActionCards() {
     actionCards.forEach(function (card) {
         let carryBool = card.carryOver && card.carryOver.indexOf(sessionId) != -1
         let cardType = card.data.type
-        let completed = card.completed ? '<img src="/assets/pictures/finish_sprint.png" height="30" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
-        let carryOver = carryBool ? '<img src="/assets/pictures/next.png" height="30" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' : ''
-        let div = completed.length || carryOver.length ? '<div style="margin-top:-30px;margin-right:-60px;">' + completed + carryOver + '</div>' : ''
+        
+        let imageDiv = '<img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">'
+        if(card.completed){
+            imageDiv = '<div style="border: 2px solid ' +  colorMap[cardType] +';max-width:150px;width:150px;max-height:50px;height:50px;overflow-y:auto;" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')"><span style="max-height:50px;max-width:100px;">' + card.data.message + '</span></div>'
+        }
+        
         tableHTML += '<tr style="margin-left:20px;">' +
-            '<td style="vertical-align:top;float:right;"><img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">' + div + '</td></tr>'
+            '<td style="vertical-align:top;float:right;margin-bottom:3px;">' + imageDiv + '</td></tr>'
     })
     $('#actionCards' + sessionType).html(tableHTML)
 }
