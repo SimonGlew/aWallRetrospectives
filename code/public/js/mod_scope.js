@@ -30,7 +30,7 @@ var LTLScoring = {}
 var currentRoundCardsLTL = {}
 var currentQualityCard = null
 
-    var colorMap = { 'good': '#00A51D', 'bad': '#FF5656', 'action': '#0094FF' }
+var colorMap = { 'good': '#00A51D', 'bad': '#FF5656', 'action': '#0094FF' }
 
 
 
@@ -106,12 +106,81 @@ socket.on('3w_card', function (data) {
 
         let obj = { _id: card._id, user: user, data: card.data.data, completed: card.completed }
 
-        if(cardsByUser[user].length < 6) {
+        if (cardsByUser[user].length < 6) {
             cardsByUser[user].push(obj)
             cardsById[card._id] = obj
         }
     })
     redrawCardSystem()
+})
+
+socket.on('updateCarryOnCard', function (data) {
+    if(data.user && data.id){
+        if(data.type == 'action'){
+            let index = actionCards.map(function (c) { return c._id }).indexOf(data.id)
+            if(index != -1){
+                actionCards[index].carryOver = data.flag
+            }
+        }else{
+            let index = cardsByUser[data.user].map(function (c) { return c._id }).indexOf(data.id)
+            if(index != -1){
+                cardsByUser[data.user][index].carryOver = data.flag
+            }
+        }
+        cardsById[data.id].carryOver = data.flag
+    }
+    if(data.type == 'action'){
+        redrawActionCards()
+    }
+    else{
+        redrawCardSystem()
+    }
+})
+
+socket.on('updateInactiveCard', function (data) {
+    if(data.user && data.id){
+        if(data.type == 'action'){
+            let index = actionCards.map(function (c) { return c._id }).indexOf(data.id)
+            if(index != -1){
+                actionCards[index].active = data.flag
+            }
+        }else{
+            let index = cardsByUser[data.user].map(function (c) { return c._id }).indexOf(data.id)
+            if(index != -1){
+                cardsByUser[data.user][index].active = data.flag
+            }
+        }
+        cardsById[data.id].active = data.flag
+    }
+    if(data.type == 'action'){
+        redrawActionCards()
+    }
+    else{
+        redrawCardSystem()
+    }
+})
+
+socket.on('updateCompletedCard', function (data) {
+    if(data.user && data.id){
+        if(data.type == 'action'){
+            let index = actionCards.map(function (c) { return c._id }).indexOf(data.id)
+            if(index != -1){
+                actionCards[index].completed = data.flag
+            }
+        }else{
+            let index = cardsByUser[data.user].map(function (c) { return c._id }).indexOf(data.id)
+            if(index != -1){
+                cardsByUser[data.user][index].completed = data.flag
+            }
+        }
+        cardsById[data.id].completed = data.flag
+    }
+    if(data.type == 'action'){
+        redrawActionCards()
+    }
+    else{
+        redrawCardSystem()
+    }
 })
 
 socket.on('action_card', function (data) {
@@ -200,9 +269,9 @@ function redrawCardSystem() {
         cardsByUser[member].forEach(function (card, index) {
             let message = card.data.message, type = card.data.type
             let imageString = "/assets/pictures/" + (type == 'good' ? 'goodCard.png' : 'badCard.png')
-            let imageDiv = '<img src="' + imageString + '" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')">' 
-            if(card.completed){
-                imageDiv = '<div style="border: 2px solid ' +  colorMap[type] +';max-width:150px;width:150px;max-height:50px;height:50px;overflow-y:auto;" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')"><span style="max-height:50px;max-width:100px;">' + message + '</span></div>'
+            let imageDiv = '<img src="' + imageString + '" alt="" height="75" width="auto" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')">'
+            if (card.completed) {
+                imageDiv = '<div style="border: 2px solid ' + colorMap[type] + ';max-width:150px;width:150px;max-height:75px;height:75px;overflow-y:auto;" onclick="openCard(' + "'" + card._id + "', " + (index + 1) + ')"><span style="max-height:50px;max-width:100px;">' + message + '</span></div>'
             }
             tableHTML += '<td style="vertical-align:top;padding-right:10px;">' + imageDiv + '</td>'
         })
@@ -302,12 +371,12 @@ function drawLTLScoreboardFinal() {
     let max = -1;
     let winnerMember = []
     let winner = Object.keys(LTLScoring).forEach(member => {
-        if(LTLScoring[member] >= max){
+        if (LTLScoring[member] >= max) {
             winnerMember.push(member)
             max = LTLScoring[member]
         }
-    }) 
-    
+    })
+
     allMembers.forEach(function (member) {
         let memberString = member.length > 6 ? member.substring(0, 5) + '...' : member
         let winnerBorder = winnerMember.indexOf(member) != -1 ? '"border:3px solid gold;"' : ''
@@ -345,12 +414,12 @@ function redrawActionCards() {
     actionCards.forEach(function (card) {
         let carryBool = card.carryOver && card.carryOver.indexOf(sessionId) != -1
         let cardType = card.data.type
-        
-        let imageDiv = '<img src="/assets/pictures/actionPointCard.png" alt="" height="50" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">'
-        if(card.completed){
-            imageDiv = '<div style="border: 2px solid ' +  colorMap[cardType] +';max-width:150px;width:150px;max-height:50px;height:50px;overflow-y:auto;" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')"><span style="max-height:50px;max-width:100px;">' + card.data.message + '</span></div>'
+
+        let imageDiv = '<img src="/assets/pictures/actionPointCard.png" alt="" height="75" width="auto" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')">'
+        if (card.completed) {
+            imageDiv = '<div style="border: 2px solid ' + colorMap[cardType] + ';max-width:150px;width:150px;max-height:75px;height:75px;overflow-y:auto;" onclick="openCard(' + "'" + card._id + "', " + null + "," + carryBool + ')"><span style="max-height:50px;max-width:100px;">' + card.data.message + '</span></div>'
         }
-        
+
         tableHTML += '<tr style="margin-left:20px;">' +
             '<td style="vertical-align:top;float:right;margin-bottom:3px;">' + imageDiv + '</td></tr>'
     })
@@ -418,7 +487,7 @@ function inactiveCard3W() {
         }
         delete cardsById[currentlySelectedCard._id]
 
-        socket.emit('inactive_card', { cardId: currentlySelectedCard._id })
+        socket.emit('inactive_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
         currentlySelectedCard = null
 
         $('#cardPopup3W').modal('hide');
@@ -434,7 +503,7 @@ function inactiveCardLiketoLike() {
 
         delete cardsById[currentlySelectedCard._id]
 
-        socket.emit('inactive_card', { cardId: currentlySelectedCard._id })
+        socket.emit('inactive_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
         currentlySelectedCard = null
 
         $('#cardPopupLiketoLike').modal('hide');
@@ -450,7 +519,7 @@ function inactiveCardTimeline() {
 
         delete cardsById[currentlySelectedCard._id]
 
-        socket.emit('inactive_card', { cardId: currentlySelectedCard._id })
+        socket.emit('inactive_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
         currentlySelectedCard = null
 
         $('#cardPopupTimeline').modal('hide');
@@ -482,7 +551,7 @@ function openCard(cardId, index, carryOver) {
 function completeCard3W() {
     if (currentlySelectedCard) {
         currentlySelectedCard.completed = !currentlySelectedCard.completed
-        socket.emit('complete_card', { cardId: currentlySelectedCard._id })
+        socket.emit('complete_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
         $('#cardPopup3W').modal('hide');
     }
     redrawCardSystem()
@@ -492,7 +561,7 @@ function completeCard3W() {
 function completeCardTimeline() {
     if (currentlySelectedCard) {
         currentlySelectedCard.completed = !currentlySelectedCard.completed
-        socket.emit('complete_card', { cardId: currentlySelectedCard._id })
+        socket.emit('complete_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
         $('#cardPopupTimeline').modal('hide');
     }
     redrawActionCards()
@@ -501,7 +570,7 @@ function completeCardTimeline() {
 function completeCardLiketoLike() {
     if (currentlySelectedCard) {
         currentlySelectedCard.completed = !currentlySelectedCard.completed
-        socket.emit('complete_card', { cardId: currentlySelectedCard._id })
+        socket.emit('complete_card', { cardId: currentlySelectedCard._id, sessionId: sessionId })
         $('#cardPopupLiketoLike').modal('hide');
     }
     redrawActionCards()

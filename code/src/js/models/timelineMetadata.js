@@ -12,4 +12,11 @@ let timelineSchema = new mongoose.Schema({
     }
 });
 
+timelineSchema.statics.download = function(sessionId){
+    return mongoose.model('timeline_metadata').aggregate([
+        { $match: { session: mongoose.Types.ObjectId(sessionId) } },
+        { $project: { _id: 0, colorMap: '$map' } }
+    ])
+}
+
 module.exports = mongoose.model('timeline_metadata', timelineSchema); 

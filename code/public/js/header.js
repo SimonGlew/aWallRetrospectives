@@ -102,6 +102,12 @@ function tick() {
     setTimeout(tick, 1000);
 }
 
+function downloadSession(){
+    var sessionId = window.location.href.split('session/')[1].split('/')[0]
+
+    window.location = "/api/session/" + sessionId + "/downloadSession";
+}
+
 function updateData(init) {
     var sessionId = window.location.href.split('session/')[1].split('/')[0]
     $.get('/api/session/' + sessionId + '/getMetadata', {})

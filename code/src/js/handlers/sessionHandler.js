@@ -2,6 +2,8 @@ const Session = require('../models/session'),
     RetrospectiveType = require('../models/retrospectiveType'),
     TimelineMetadata = require('../models/timelineMetadata')
 
+const mongoose = require('mongoose')
+
 function createSession(projectName, sprintNumber, boardName, password, rType, startDate, endDate) {
     return Session.count({ project: projectName, sprint: sprintNumber })
         .lean()
@@ -186,6 +188,48 @@ function getTimelineDatesAndMap(sessionId) {
         })
 }
 
+async function downloadSession(sessionId){
+    let returnJSON = {
+        _id: sessionId,
+        name: null,
+        sprintNumber: 0,
+        members: [],
+        retroType: null,
+        startDate: null,
+        endDate: null,
+        data: {
+            start: {},
+            middle: {},
+            end: {}
+        }
+    }
+
+    return Session.findOne({ _id: sessionId }, 'name sprint members retrospectiveType startDate endDate')
+        .populate('retrospectiveType', 'name')
+        .lean()
+        .then(async (session) => {
+            returnJSON.members = session.members
+            returnJSON.startDate = session.startDate
+            returnJSON.endDate = session.endDate
+            returnJSON.name = session.name,
+            returnJSON.sprintNumber = session.sprint
+            returnJSON.retroType = session.retrospectiveType.name
+
+            if(session.retrospectiveType.name == '3W'){
+                returnJSON.data.middle = await mongoose.model('boardData_3ws').download(sessionId)
+            }else if(session.retrospectiveType.name == 'Timeline'){
+                returnJSON.data.middle = await mongoose.model('timeline_metadata').download(sessionId)
+            }else if(session.retrospectiveType.name == 'LiketoLike'){
+                returnJSON.data.middle = await mongoose.model('boardData_ltl').download(sessionId)
+            }
+            returnJSON.data.start = await mongoose.model('boardData_checkin').download(sessionId)
+            returnJSON.data.end = await mongoose.model('endCard').download(sessionId)
+
+
+            return returnJSON
+        })
+}
+
 
 module.exports = {
     createSession: createSession,
@@ -203,5 +247,7 @@ module.exports = {
     changeState: changeState,
     addMember: addMember,
     removeMember: removeMember,
-    removeAllMembers: removeAllMembers
+    removeAllMembers: removeAllMembers,
+
+    downloadSession: downloadSession
 };
