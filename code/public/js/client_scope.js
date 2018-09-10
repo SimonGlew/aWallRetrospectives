@@ -1,6 +1,6 @@
 var socket = io()
 
-const PORT = 52724
+const PORT = 52723
 
 var sessionId = window.location.href.split('session/')[1].split('/')[0]
 var retroType = window.location.href.split('type/')[1].split('/')[0]
