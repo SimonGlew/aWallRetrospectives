@@ -1,13 +1,14 @@
 var config = {
     port: 52723,
     mongo: {
-        hosts: 'engr489awall-shard-00-00-ahazm.mongodb.net:27017,engr489awall-shard-00-01-ahazm.mongodb.net:27017,engr489awall-shard-00-02-ahazm.mongodb.net',
+        hosts: 'retrospectives-shard-00-00-i0v7x.mongodb.net:27017,retrospectives-shard-00-01-i0v7x.mongodb.net:27017,retrospectives-shard-00-02-i0v7x.mongodb.net',
         port: 27017,
         user: 'dev',
         password: 'Hblvb7YxspI5DsEn',
         db: 'aWall',
         ssl: true,
-        replicaSet: 'ENGR489aWall-shard-0',
+        retryWrites: true,
+        replicaSet: 'Retrospectives-shard-0',
         authSource: 'admin'
     }
 }
