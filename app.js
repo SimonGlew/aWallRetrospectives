@@ -26,7 +26,7 @@ mongoSetup.connect(config.mongo)
 	if (!res) throw "Mongo did not connect";
 })
 
-server.listen(config.port, function () {
+server.listen(process.env.PORT || config.port, function () {
 	console.log('Listening on port ' + config.port);
 });
 

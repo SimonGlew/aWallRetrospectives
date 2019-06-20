@@ -1,5 +1,5 @@
 var config = {
-    port: 52723,
+    port: 80,
     mongo: {
         hosts: 'retrospectives-shard-00-00-i0v7x.mongodb.net:27017,retrospectives-shard-00-01-i0v7x.mongodb.net:27017,retrospectives-shard-00-02-i0v7x.mongodb.net',
         port: 27017,
