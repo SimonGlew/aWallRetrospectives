@@ -1,1 +1,0 @@
-Repo that holds all the information and code that belongs to the aWall Honours Project being undertaken by Simon Glew. Supervisor for this project is Craig Anslow, working with Martin Kropp in Switzerland
