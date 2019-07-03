@@ -108,7 +108,7 @@ $('#createConfirmBtn').click(function () {
             else {
                 localStorage.setItem('username', 'moderator');
                 localStorage.setItem('sprint', $('#sprintNumberValue').val());
-                window.location = 'session/' + data._id + "/type/" + data.retrospectiveType.name + '/mod'
+                window.location = 'app/session/' + data._id + "/type/" + data.retrospectiveType.name + '/mod'
             }
         })
     }
@@ -135,7 +135,7 @@ $('#joinConfirmBtn').click(function () {
                 localStorage.setItem('username', $('#usernameValue').val());
                 localStorage.setItem('sprint', $('#sprintNumberValue').val());
                 let endURL = ($('#usernameValue').val() == 'mod' || checked) ? '/mod' : '/par'
-                window.location = 'session/' + data._id + "/type/" + data.retrospectiveType.name + endURL;
+                window.location = 'app/session/' + data._id + "/type/" + data.retrospectiveType.name + endURL;
             }
         })
     }
@@ -160,7 +160,7 @@ $('#joinConfirmBtnMobile').click(function () {
                 console.log(data)
                 localStorage.setItem('username', $('#usernameValueMobile').val());
                 let endURL = $('#usernameValueMobile').val() == 'mod' ? '/mod' : '/par'
-                window.location = 'session/' + data._id + "/type/" + data.retrospectiveType.name + endURL;
+                window.location = 'app/session/' + data._id + "/type/" + data.retrospectiveType.name + endURL;
             }
         })
     }

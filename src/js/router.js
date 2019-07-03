@@ -6,20 +6,25 @@ const sessionHandler = require('./handlers/sessionHandler'),
     retrospectiveTypesHandler = require('./handlers/retrospectiveTypesHandler')
 
 router.get('/', function (req, res) {
+    res.redirect('/app')
+    //res.render('login');
+});
+
+router.get('/app', function (req, res) {
+    res.render('landing');
+})
+
+router.get('/app/login', function (req, res) {
     res.render('login');
 });
 
-router.get('/login', function (req, res) {
-    res.render('login');
-});
-
-router.get('/session/:sessionId/type/:type/mod', function (req, res) {
+router.get('/app/session/:sessionId/type/:type/mod', function (req, res) {
     res.render('mod_scope', {
         sessionId: req.params.sessionId
     });
 });
 
-router.get('/session/:sessionId/type/:type/par', function (req, res) {
+router.get('/app/session/:sessionId/type/:type/par', function (req, res) {
     sessionHandler.getMetadata(req.params.sessionId)
         .then(data => {
             res.render('client_scope', {

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="/css/landing_style.css">
+
+    <style type="text/css">
+    </style>
+
+</head>
+
+<body style="background: #55575c url(/assets/pictures/bg.jpg);">
+    <div id="coming-soon">
+        <h1>Awesome Stuff Coming Page</h1>
+
+            <div id="subscribe">
+                <input id="goToLogin" type="submit" value="Check Out the App!">
+            </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $('#goToLogin').click(function () {
+            window.location = 'app/login'
+        });
+    </script>
+</body>
+
+</html>
